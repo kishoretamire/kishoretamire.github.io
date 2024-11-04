@@ -1180,103 +1180,4319 @@ button:hover,
 /* Update text controls styles */
 .text-controls {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
     padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
 }
 
-.text-controls .control-button {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
+.size-controls {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.3s ease;
 }
 
-.text-controls .control-button:disabled {
-    background-color: #95a5a6;
-    cursor: not-allowed;
-    opacity: 0.7;
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-.text-controls .control-button:not(:disabled):hover {
+.control-button:hover {
     background-color: var(--secondary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    color: white;
 }
 
-/* Update mobile styles */
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .text-controls {
-        justify-content: center;
-        margin-bottom: 0.5rem;
+        flex-direction: column;
+        gap: 1rem;
     }
     
-    .text-controls .control-button {
-        width: auto;
-        min-width: 100px;
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
     }
 }
 
-/* Add mobile styles for stats and char limit */
-@media (max-width: 768px) {
-    .stats {
-        grid-template-columns: repeat(2, 1fr);
-        margin-bottom: 40px;
-    }
-
-    .char-limit {
-        bottom: -30px;
-        right: 50%;
-        transform: translateX(50%);
-        background: var(--background-color);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    /* Dark theme support for mobile */
-    body.dark-theme .char-limit {
-        background: var(--dark-secondary);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
 }
 
-/* Update text controls styles for undo button */
-.text-controls {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-}
-
-.text-controls .control-button {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.5rem 1rem;
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.3s ease;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
 }
 
-.text-controls .control-button:disabled {
-    background-color: #95a5a6;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-.text-controls .control-button:not(:disabled):hover {
-    background-color: var(--secondary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+.dropdown-content button:hover {
+    background-color: var(--background-color);
 }
 
 /* Dark theme support */
-body.dark-theme .text-controls .control-button {
+body.dark-theme .dropdown-content {
     background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
+}
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
+
+/* Add loading spinner styles */
+.loading-spinner {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--secondary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Character limit indicator */
+.char-limit {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.char-limit.near-limit {
+    color: #e67e22;
+}
+
+.char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Update converter-box to handle absolute positioning */
+.converter-box {
+    position: relative;
+}
+
+/* Dark theme support for character limit */
+body.dark-theme .char-limit {
+    background: rgba(45, 45, 45, 0.9);
+    color: #aaa;
+}
+
+body.dark-theme .char-limit.near-limit {
+    color: #e67e22;
+}
+
+body.dark-theme .char-limit.at-limit {
+    color: #e74c3c;
+}
+
+/* Enhance textarea focus state */
+textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dark mode textarea styles */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border-color: var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Add smooth theme transition */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add transitions to elements that change with theme */
+.converter-box,
+.header-component,
+textarea,
+button,
+.nav-links a,
+.logo a,
+.footer-component,
+.stats,
+.tab-container,
+.blog-card,
+.contact-method,
+.faq-item,
+.char-limit {
+    transition: all 0.3s ease;
+}
+
+/* Specific transitions for dark theme elements */
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea,
+body.dark-theme .tab-container {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Smooth transition for theme toggle icon */
+.theme-button i {
+    transition: transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+button:hover,
+.nav-links a:hover,
+.footer-section a:hover {
+    transition: all 0.3s ease;
+}
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add these styles for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    text-align: left;
+    background: none;
+    color: var(--text-color);
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content button:hover {
+    background-color: var(--background-color);
+}
+
+/* Dark theme support */
+body.dark-theme .dropdown-content {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .dropdown-content button {
+    color: var(--dark-text);
+}
+
+body.dark-theme .dropdown-content button:hover {
+    background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
 }
 
 body.dark-theme .text-controls .control-button:disabled {
