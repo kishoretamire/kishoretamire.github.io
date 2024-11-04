@@ -50,6 +50,7 @@
                 <div class="tab-buttons">
                     <button class="tab-button active" data-tab="case-converter">Case Tools</button>
                     <button class="tab-button" data-tab="text-modifier">Text Formatter</button>
+                    <button class="tab-button" data-tab="text-tools">Text Tools</button>
                 </div>
 
                 <!-- Case Converter Tab -->
@@ -114,6 +115,40 @@
                             <span>Words: <span id="modifierWordCount">0</span></span>
                             <span>Lines: <span id="modifierLineCount">0</span></span>
                             <span>Sentences: <span id="modifierSentenceCount">0</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Tools Tab -->
+                <div class="tab-content" id="text-tools">
+                    <div class="converter-box">
+                        <textarea id="toolsInputText" placeholder="Enter or paste your text here..."></textarea>
+                        <div class="button-group">
+                            <button onclick="textTools('sort-lines')">Sort Lines</button>
+                            <button onclick="textTools('reverse-text')">Reverse Text</button>
+                            <button onclick="textTools('remove-duplicates')">Remove Duplicates</button>
+                            <button onclick="textTools('count-frequency')">Word Frequency</button>
+                            <button onclick="textTools('extract-emails')">Extract Emails</button>
+                            <button onclick="textTools('extract-numbers')">Extract Numbers</button>
+                            <button onclick="clearText('tools')">Clear</button>
+                            <button onclick="pasteText('tools')">Paste</button>
+                        </div>
+                        <div class="utility-buttons">
+                            <button class="utility-button" id="toolsUndo" onclick="undo('tools')" disabled>
+                                <i class="fas fa-undo"></i> Undo
+                            </button>
+                            <button class="utility-button" onclick="copyToClipboard('tools')">
+                                <i class="fas fa-copy"></i> Copy to Clipboard
+                            </button>
+                            <button class="utility-button" onclick="downloadText('tools')">
+                                <i class="fas fa-download"></i> Download Text
+                            </button>
+                        </div>
+                        <div class="stats">
+                            <span>Characters: <span id="toolsCharCount">0</span></span>
+                            <span>Words: <span id="toolsWordCount">0</span></span>
+                            <span>Lines: <span id="toolsLineCount">0</span></span>
+                            <span>Sentences: <span id="toolsSentenceCount">0</span></span>
                         </div>
                     </div>
                 </div>
