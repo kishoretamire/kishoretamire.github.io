@@ -43,9 +43,24 @@ async function pasteText() {
 
 function updateCounts() {
     const text = document.getElementById('inputText').value;
+    
+    // Character count
     document.getElementById('charCount').textContent = text.length;
+    
+    // Word count
     document.getElementById('wordCount').textContent = 
         text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    
+    // Line count
+    const lines = text.split(/\r\n|\r|\n/);
+    document.getElementById('lineCount').textContent = 
+        text.trim() === '' ? 0 : lines.length;
+    
+    // Sentence count
+    const sentences = text.trim().split(/[.!?]+\s*/)
+        .filter(sentence => sentence.length > 0);
+    document.getElementById('sentenceCount').textContent = 
+        text.trim() === '' ? 0 : sentences.length;
 }
 
 async function copyToClipboard() {
