@@ -7,10 +7,6 @@ const textHistory = {
     modifier: {
         stack: [],
         currentIndex: -1
-    },
-    tools: {
-        stack: [],
-        currentIndex: -1
     }
 };
 
@@ -461,67 +457,4 @@ document.addEventListener('DOMContentLoaded', function() {
         const textarea = document.getElementById(`${type}InputText`);
         textarea.addEventListener('input', () => saveToLocalStorage(type));
     });
-    
-    // Add listener for tools textarea
-    document.getElementById('toolsInputText')?.addEventListener('input', () => {
-        if (textHistory.tools.stack.length === 0) {
-            saveToHistory('tools', e.target.value);
-        }
-        updateCounts('tools');
-    });
 });
-
-// Add this new function for text tools
-function textTools(type) {
-    const input = document.getElementById('toolsInputText');
-    let text = input.value;
-    let newText = text;
-
-    switch(type) {
-        case 'sort-lines':
-            newText = text.split('\n')
-                .filter(line => line.trim())
-                .sort()
-                .join('\n');
-            break;
-
-        case 'reverse-text':
-            newText = text.split('').reverse().join('');
-            break;
-
-        case 'remove-duplicates':
-            newText = [...new Set(text.split('\n'))]
-                .filter(line => line.trim())
-                .join('\n');
-            break;
-
-        case 'count-frequency':
-            const words = text.toLowerCase()
-                .match(/\b\w+\b/g) || [];
-            const frequency = {};
-            words.forEach(word => {
-                frequency[word] = (frequency[word] || 0) + 1;
-            });
-            newText = Object.entries(frequency)
-                .sort((a, b) => b[1] - a[1])
-                .map(([word, count]) => `${word}: ${count}`)
-                .join('\n');
-            break;
-
-        case 'extract-emails':
-            const emails = text.match(/[\w.-]+@[\w.-]+\.\w+/g) || [];
-            newText = [...new Set(emails)].join('\n');
-            break;
-
-        case 'extract-numbers':
-            const numbers = text.match(/\b\d+(?:\.\d+)?\b/g) || [];
-            newText = numbers.join('\n');
-            break;
-    }
-
-    if (newText !== text) {
-        saveToHistory('tools', text);
-        input.value = newText;
-        updateCounts('tools');
-    }
-}
