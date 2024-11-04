@@ -10,6 +10,10 @@ const textHistory = {
     }
 };
 
+// Add these constants at the top of the file
+const MAX_CHARS = 100000;
+const WARN_THRESHOLD = 0.8; // Show warning at 80% of limit
+
 // Function to save state to history
 function saveToHistory(type, text) {
     const history = textHistory[type];
@@ -456,5 +460,56 @@ document.addEventListener('DOMContentLoaded', function() {
     ['case', 'modifier'].forEach(type => {
         const textarea = document.getElementById(`${type}InputText`);
         textarea.addEventListener('input', () => saveToLocalStorage(type));
+    });
+});
+
+// Add this function to create and update character limit indicator
+function updateCharLimit(type) {
+    const textarea = document.getElementById(`${type}InputText`);
+    let charLimitDiv = document.getElementById(`${type}CharLimit`);
+    
+    if (!charLimitDiv) {
+        charLimitDiv = document.createElement('div');
+        charLimitDiv.id = `${type}CharLimit`;
+        charLimitDiv.className = 'char-limit';
+        textarea.parentElement.appendChild(charLimitDiv);
+    }
+    
+    const charCount = textarea.value.length;
+    const percentUsed = charCount / MAX_CHARS;
+    
+    charLimitDiv.textContent = `${charCount.toLocaleString()} / ${MAX_CHARS.toLocaleString()}`;
+    
+    // Update classes based on usage
+    charLimitDiv.classList.remove('near-limit', 'at-limit');
+    if (percentUsed >= 1) {
+        charLimitDiv.classList.add('at-limit');
+    } else if (percentUsed >= WARN_THRESHOLD) {
+        charLimitDiv.classList.add('near-limit');
+    }
+}
+
+// Update the textarea input event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    ['case', 'modifier'].forEach(type => {
+        const textarea = document.getElementById(`${type}InputText`);
+        if (textarea) {
+            textarea.addEventListener('input', (e) => {
+                if (textHistory[type].stack.length === 0) {
+                    saveToHistory(type, e.target.value);
+                }
+                updateCounts(type);
+                updateCharLimit(type);
+                
+                // Prevent input if at limit
+                if (e.target.value.length > MAX_CHARS) {
+                    e.target.value = e.target.value.substring(0, MAX_CHARS);
+                    showNotification('Character limit reached!', 'error');
+                }
+            });
+            
+            // Initialize character limit display
+            updateCharLimit(type);
+        }
     });
 });
