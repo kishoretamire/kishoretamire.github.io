@@ -17,4 +17,32 @@
             </button>
         </div>
     </nav>
-</header> 
+</header>
+
+<!-- Add this script to handle theme -->
+<script>
+    // Initialize theme when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        initTheme();
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    });
+
+    function initTheme() {
+        const theme = localStorage.getItem('theme') || 'light';
+        document.body.classList.toggle('dark-theme', theme === 'dark');
+        updateThemeIcon();
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+        const icon = document.querySelector('#themeToggle i');
+        const isDark = document.body.classList.contains('dark-theme');
+        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+    }
+</script> 
