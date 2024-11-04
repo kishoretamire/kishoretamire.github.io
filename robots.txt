@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /private/
+
+Sitemap: https://www.caseconverter.com/sitemap.xml 
