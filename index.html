@@ -55,6 +55,11 @@
                 <div class="tab-content active" id="case-converter">
                     <div class="converter-box">
                         <textarea id="caseInputText" placeholder="Enter or paste your text here..."></textarea>
+                        <div class="text-controls">
+                            <button class="control-button" id="caseUndo" onclick="undo('case')" disabled>
+                                <i class="fas fa-undo"></i> Undo
+                            </button>
+                        </div>
                         <div class="button-group">
                             <button onclick="convertCase('lower')">lowercase</button>
                             <button onclick="convertCase('upper')">UPPERCASE</button>
@@ -65,9 +70,6 @@
                             <button onclick="pasteText('case')">Paste</button>
                         </div>
                         <div class="utility-buttons">
-                            <button class="utility-button" id="caseUndo" onclick="undo('case')" disabled>
-                                <i class="fas fa-undo"></i> Undo
-                            </button>
                             <button class="utility-button" onclick="copyToClipboard('case')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>
@@ -88,6 +90,11 @@
                 <div class="tab-content" id="text-modifier">
                     <div class="converter-box">
                         <textarea id="modifierInputText" placeholder="Enter or paste your text here..."></textarea>
+                        <div class="text-controls">
+                            <button class="control-button" id="modifierUndo" onclick="undo('modifier')" disabled>
+                                <i class="fas fa-undo"></i> Undo
+                            </button>
+                        </div>
                         <div class="button-group">
                             <button onclick="modifyText('remove-linebreaks')">Remove Line Breaks</button>
                             <button onclick="modifyText('remove-whitespace')">Remove Extra Spaces</button>
@@ -98,9 +105,6 @@
                             <button onclick="pasteText('modifier')">Paste</button>
                         </div>
                         <div class="utility-buttons">
-                            <button class="utility-button" id="modifierUndo" onclick="undo('modifier')" disabled>
-                                <i class="fas fa-undo"></i> Undo
-                            </button>
                             <button class="utility-button" onclick="copyToClipboard('modifier')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>

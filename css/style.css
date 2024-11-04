@@ -852,3 +852,47 @@ button:hover,
 .footer-section a:hover {
     transition: all 0.3s ease;
 }
+
+/* Update text controls styles */
+.text-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+.text-controls .control-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.text-controls .control-button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.text-controls .control-button:not(:disabled):hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+/* Update mobile styles */
+@media (max-width: 768px) {
+    .text-controls {
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .text-controls .control-button {
+        width: auto;
+        min-width: 100px;
+    }
+}
