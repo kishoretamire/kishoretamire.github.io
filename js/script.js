@@ -48,5 +48,50 @@ function updateCounts() {
         text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
 }
 
-// Add event listener for input changes
-document.getElementById('inputText').addEventListener('input', updateCounts); 
+async function copyToClipboard() {
+    const text = document.getElementById('inputText').value;
+    try {
+        await navigator.clipboard.writeText(text);
+        showNotification('Text copied to clipboard!');
+    } catch (err) {
+        showNotification('Failed to copy text!', 'error');
+    }
+}
+
+function downloadText() {
+    const text = document.getElementById('inputText').value;
+    if (!text.trim()) {
+        showNotification('Please enter some text to download!', 'error');
+        return;
+    }
+    
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'converted-text.txt';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    showNotification('Text downloaded successfully!');
+}
+
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('fade-out');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 500);
+    }, 2000);
+}
+
+// Add event listeners when document loads
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('inputText')?.addEventListener('input', updateCounts);
+});
