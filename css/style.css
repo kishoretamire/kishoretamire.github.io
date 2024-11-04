@@ -633,3 +633,38 @@ body.dark-theme .logo a {
 body.dark-theme .theme-button {
     color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
 }
+
+/* Update textarea styles for dark mode */
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark-theme textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+body.dark-theme textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Update converter box styles for dark mode */
+body.dark-theme .converter-box {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update tab container styles for dark mode */
+body.dark-theme .tab-container {
+    background-color: var(--dark-primary);
+    border: 1px solid var(--dark-border);
+}
+
+/* Update stats text color in dark mode */
+body.dark-theme .stats {
+    color: var(--dark-text);
+    border-top-color: var(--dark-border);
+}
