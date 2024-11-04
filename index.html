@@ -47,6 +47,9 @@
                             <button onclick="pasteText('case')">Paste</button>
                         </div>
                         <div class="utility-buttons">
+                            <button class="utility-button" id="caseUndo" onclick="undo('case')" disabled>
+                                <i class="fas fa-undo"></i> Undo
+                            </button>
                             <button class="utility-button" onclick="copyToClipboard('case')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>
@@ -77,6 +80,9 @@
                             <button onclick="pasteText('modifier')">Paste</button>
                         </div>
                         <div class="utility-buttons">
+                            <button class="utility-button" id="modifierUndo" onclick="undo('modifier')" disabled>
+                                <i class="fas fa-undo"></i> Undo
+                            </button>
                             <button class="utility-button" onclick="copyToClipboard('modifier')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>

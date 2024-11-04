@@ -1,3 +1,58 @@
+// Add history stacks at the beginning of the file
+const textHistory = {
+    case: {
+        stack: [],
+        currentIndex: -1
+    },
+    modifier: {
+        stack: [],
+        currentIndex: -1
+    }
+};
+
+// Function to save state to history
+function saveToHistory(type, text) {
+    const history = textHistory[type];
+    
+    // Remove any future states if we're in the middle of the history
+    if (history.currentIndex < history.stack.length - 1) {
+        history.stack = history.stack.slice(0, history.currentIndex + 1);
+    }
+    
+    // Add new state
+    history.stack.push(text);
+    history.currentIndex++;
+    
+    // Limit history size (optional)
+    if (history.stack.length > 50) {
+        history.stack.shift();
+        history.currentIndex--;
+    }
+    
+    // Enable/disable undo button
+    updateUndoButton(type);
+}
+
+// Function to undo
+function undo(type) {
+    const history = textHistory[type];
+    if (history.currentIndex > 0) {
+        history.currentIndex--;
+        const text = history.stack[history.currentIndex];
+        document.getElementById(`${type}InputText`).value = text;
+        updateCounts(type);
+        updateUndoButton(type);
+    }
+}
+
+// Function to update undo button state
+function updateUndoButton(type) {
+    const undoButton = document.getElementById(`${type}Undo`);
+    if (undoButton) {
+        undoButton.disabled = textHistory[type].currentIndex <= 0;
+    }
+}
+
 // Tab Switching
 document.addEventListener('DOMContentLoaded', function() {
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -24,42 +79,56 @@ document.addEventListener('DOMContentLoaded', function() {
 function modifyText(type) {
     const input = document.getElementById('modifierInputText');
     let text = input.value;
+    let newText = text;
 
     switch(type) {
         case 'remove-linebreaks':
-            input.value = text.replace(/[\r\n]+/g, ' ');
+            newText = text.replace(/[\r\n]+/g, ' ');
             break;
         case 'remove-whitespace':
-            input.value = text.replace(/\s+/g, ' ');
+            newText = text.replace(/\s+/g, ' ');
             break;
         case 'remove-all-spaces':
-            input.value = text.replace(/\s+/g, '');
+            newText = text.replace(/\s+/g, '');
             break;
         case 'trim-lines':
-            input.value = text.split('\n')
+            newText = text.split('\n')
                 .map(line => line.trim())
                 .join('\n');
             break;
         case 'remove-empty-lines':
-            input.value = text.split('\n')
+            newText = text.split('\n')
                 .filter(line => line.trim().length > 0)
                 .join('\n');
             break;
     }
-    updateCounts('modifier');
+    
+    if (newText !== text) {
+        saveToHistory('modifier', text);
+        input.value = newText;
+        updateCounts('modifier');
+    }
 }
 
 // Update existing functions to handle both tabs
 function clearText(type) {
-    document.getElementById(`${type}InputText`).value = '';
-    updateCounts(type);
+    const input = document.getElementById(`${type}InputText`);
+    if (input.value) {
+        saveToHistory(type, input.value);
+        input.value = '';
+        updateCounts(type);
+    }
 }
 
 async function pasteText(type) {
     try {
         const text = await navigator.clipboard.readText();
-        document.getElementById(`${type}InputText`).value = text;
-        updateCounts(type);
+        const currentText = document.getElementById(`${type}InputText`).value;
+        if (text !== currentText) {
+            saveToHistory(type, currentText);
+            document.getElementById(`${type}InputText`).value = text;
+            updateCounts(type);
+        }
     } catch (err) {
         showNotification('Failed to read clipboard. Please check browser permissions.', 'error');
     }
@@ -120,27 +189,48 @@ function downloadText(type) {
 function convertCase(type) {
     const input = document.getElementById('caseInputText');
     let text = input.value;
+    let newText = text;
 
     switch(type) {
         case 'lower':
-            input.value = text.toLowerCase();
+            newText = text.toLowerCase();
             break;
         case 'upper':
-            input.value = text.toUpperCase();
+            newText = text.toUpperCase();
             break;
         case 'title':
-            input.value = text.toLowerCase().split(' ')
+            newText = text.toLowerCase().split(' ')
                 .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(' ');
             break;
         case 'sentence':
-            input.value = text.toLowerCase().replace(/(^\w|\.\s+\w)/gm, 
+            newText = text.toLowerCase().replace(/(^\w|\.\s+\w)/gm, 
                 letter => letter.toUpperCase());
             break;
         case 'alternate':
-            input.value = text.split('').map((char, i) => 
+            newText = text.split('').map((char, i) => 
                 i % 2 === 0 ? char.toLowerCase() : char.toUpperCase()).join('');
             break;
     }
-    updateCounts('case');
+    
+    if (newText !== text) {
+        saveToHistory('case', text);
+        input.value = newText;
+        updateCounts('case');
+    }
 }
+
+// Initialize history when text is first entered
+document.addEventListener('DOMContentLoaded', function() {
+    ['case', 'modifier'].forEach(type => {
+        const textarea = document.getElementById(`${type}InputText`);
+        if (textarea) {
+            textarea.addEventListener('input', (e) => {
+                if (textHistory[type].stack.length === 0) {
+                    saveToHistory(type, e.target.value);
+                }
+                updateCounts(type);
+            });
+        }
+    });
+});

@@ -418,3 +418,14 @@ footer {
     box-shadow: none;
     padding: 0;
 }
+
+/* Add these styles to your existing CSS */
+.utility-button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.utility-button:disabled:hover {
+    background-color: #95a5a6;
+}
