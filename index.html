@@ -54,36 +54,6 @@
 
                 <!-- Case Converter Tab -->
                 <div class="tab-content active" id="case-converter">
-                    <div class="text-controls">
-                        <div class="size-controls">
-                            <button onclick="adjustTextSize('decrease')" class="control-button">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <span id="fontSizeDisplay">16px</span>
-                            <button onclick="adjustTextSize('increase')" class="control-button">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <div class="export-controls">
-                            <button class="control-button" onclick="exportText('pdf')">
-                                <i class="fas fa-file-pdf"></i> PDF
-                            </button>
-                            <button class="control-button" onclick="exportText('doc')">
-                                <i class="fas fa-file-word"></i> DOC
-                            </button>
-                        </div>
-                        <div class="share-controls">
-                            <button class="control-button" onclick="shareText('copy')">
-                                <i class="fas fa-link"></i> Copy Link
-                            </button>
-                            <button class="control-button" onclick="shareText('twitter')">
-                                <i class="fab fa-twitter"></i>
-                            </button>
-                            <button class="control-button" onclick="shareText('facebook')">
-                                <i class="fab fa-facebook"></i>
-                            </button>
-                        </div>
-                    </div>
                     <div class="converter-box">
                         <textarea id="caseInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="button-group">
@@ -102,9 +72,22 @@
                             <button class="utility-button" onclick="copyToClipboard('case')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>
-                            <button class="utility-button" onclick="downloadText('case')">
-                                <i class="fas fa-download"></i> Download Text
-                            </button>
+                            <div class="dropdown">
+                                <button class="utility-button download-button">
+                                    <i class="fas fa-download"></i> Download Text
+                                </button>
+                                <div class="dropdown-content">
+                                    <button onclick="downloadText('case', 'txt')">
+                                        <i class="fas fa-file-alt"></i> Text File (.txt)
+                                    </button>
+                                    <button onclick="downloadText('case', 'doc')">
+                                        <i class="fas fa-file-word"></i> Word Document (.doc)
+                                    </button>
+                                    <button onclick="downloadText('case', 'pdf')">
+                                        <i class="fas fa-file-pdf"></i> PDF Document (.pdf)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div class="stats">
                             <span>Characters: <span id="caseCharCount">0</span></span>
@@ -117,36 +100,6 @@
 
                 <!-- Text Modifier Tab -->
                 <div class="tab-content" id="text-modifier">
-                    <div class="text-controls">
-                        <div class="size-controls">
-                            <button onclick="adjustTextSize('decrease')" class="control-button">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <span id="fontSizeDisplay">16px</span>
-                            <button onclick="adjustTextSize('increase')" class="control-button">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        <div class="export-controls">
-                            <button class="control-button" onclick="exportText('pdf')">
-                                <i class="fas fa-file-pdf"></i> PDF
-                            </button>
-                            <button class="control-button" onclick="exportText('doc')">
-                                <i class="fas fa-file-word"></i> DOC
-                            </button>
-                        </div>
-                        <div class="share-controls">
-                            <button class="control-button" onclick="shareText('copy')">
-                                <i class="fas fa-link"></i> Copy Link
-                            </button>
-                            <button class="control-button" onclick="shareText('twitter')">
-                                <i class="fab fa-twitter"></i>
-                            </button>
-                            <button class="control-button" onclick="shareText('facebook')">
-                                <i class="fab fa-facebook"></i>
-                            </button>
-                        </div>
-                    </div>
                     <div class="converter-box">
                         <textarea id="modifierInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="button-group">
@@ -165,9 +118,22 @@
                             <button class="utility-button" onclick="copyToClipboard('modifier')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>
-                            <button class="utility-button" onclick="downloadText('modifier')">
-                                <i class="fas fa-download"></i> Download Text
-                            </button>
+                            <div class="dropdown">
+                                <button class="utility-button download-button">
+                                    <i class="fas fa-download"></i> Download Text
+                                </button>
+                                <div class="dropdown-content">
+                                    <button onclick="downloadText('modifier', 'txt')">
+                                        <i class="fas fa-file-alt"></i> Text File (.txt)
+                                    </button>
+                                    <button onclick="downloadText('modifier', 'doc')">
+                                        <i class="fas fa-file-word"></i> Word Document (.doc)
+                                    </button>
+                                    <button onclick="downloadText('modifier', 'pdf')">
+                                        <i class="fas fa-file-pdf"></i> PDF Document (.pdf)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div class="stats">
                             <span>Characters: <span id="modifierCharCount">0</span></span>

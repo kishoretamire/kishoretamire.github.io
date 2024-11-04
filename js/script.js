@@ -166,23 +166,70 @@ async function copyToClipboard(type) {
     }
 }
 
-function downloadText(type) {
+function downloadText(type, format) {
     const text = document.getElementById(`${type}InputText`).value;
     if (!text.trim()) {
         showNotification('Please enter some text to download!', 'error');
         return;
     }
     
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${type}-text.txt`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-    showNotification('Text downloaded successfully!');
+    try {
+        switch(format) {
+            case 'txt':
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'converted-text.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                break;
+                
+            case 'doc':
+                const docBlob = new Blob([text], { type: 'application/msword' });
+                const docUrl = window.URL.createObjectURL(docBlob);
+                const docLink = document.createElement('a');
+                docLink.href = docUrl;
+                docLink.download = 'converted-text.doc';
+                document.body.appendChild(docLink);
+                docLink.click();
+                window.URL.revokeObjectURL(docUrl);
+                document.body.removeChild(docLink);
+                break;
+                
+            case 'pdf':
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                doc.setFontSize(12);
+                const lineHeight = 7;
+                
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                const margin = 20;
+                const maxWidth = pageWidth - (margin * 2);
+                
+                const splitLines = doc.splitTextToSize(text, maxWidth);
+                const linesPerPage = Math.floor((pageHeight - (margin * 2)) / lineHeight);
+                
+                for (let i = 0; i < splitLines.length; i += linesPerPage) {
+                    if (i > 0) {
+                        doc.addPage();
+                    }
+                    const pageLines = splitLines.slice(i, i + linesPerPage);
+                    doc.text(pageLines, margin, margin + lineHeight);
+                }
+                
+                doc.save('converted-text.pdf');
+                break;
+        }
+        showNotification(`Text downloaded as ${format.toUpperCase()}!`);
+    } catch (err) {
+        console.error('Download error:', err);
+        showNotification('Failed to download text!', 'error');
+    }
 }
 
 // Update convertCase function to use the new ID
@@ -354,28 +401,64 @@ async function shareText(platform) {
         return;
     }
     
-    const encodedText = encodeURIComponent(text);
-    const currentUrl = window.location.href;
+    // Create a shorter hash from the text
+    const hash = await createShortHash(text);
+    const shortUrl = `${window.location.origin}/?t=${hash}`;
     
     switch(platform) {
         case 'copy':
-            const shareUrl = `${currentUrl}?text=${encodedText}`;
-            await navigator.clipboard.writeText(shareUrl);
+            await navigator.clipboard.writeText(shortUrl);
             showNotification('Share link copied to clipboard!');
             break;
         case 'twitter':
-            window.open(`https://twitter.com/intent/tweet?text=${encodedText}`);
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shortUrl)}`);
             break;
         case 'facebook':
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}&quote=${encodedText}`);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shortUrl)}`);
             break;
     }
 }
 
+// Add these new functions
+async function createShortHash(text) {
+    // Create a hash of the text
+    const msgBuffer = new TextEncoder().encode(text);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    
+    // Take first 8 characters of the hash
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 8);
+}
+
+// Add this to handle incoming short URLs
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if there's a text hash in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const textHash = urlParams.get('t');
+    
+    if (textHash) {
+        // Here you would typically fetch the text from localStorage or your preferred storage
+        const savedText = localStorage.getItem(textHash);
+        if (savedText) {
+            document.getElementById('caseInputText').value = savedText;
+            updateCounts('case');
+        }
+    }
+});
+
 // Local Storage
 function saveToLocalStorage(type) {
     const textarea = document.getElementById(`${type}InputText`);
-    localStorage.setItem(`${type}Text`, textarea.value);
+    const text = textarea.value;
+    localStorage.setItem(`${type}Text`, text);
+    
+    // Also save with hash for sharing
+    if (text.trim()) {
+        createShortHash(text).then(hash => {
+            localStorage.setItem(hash, text);
+            // Optionally cleanup old hashes here
+        });
+    }
 }
 
 function loadFromLocalStorage() {
