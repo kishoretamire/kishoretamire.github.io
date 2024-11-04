@@ -56,9 +56,15 @@
                     <div class="converter-box">
                         <textarea id="caseInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="text-controls">
-                            <button class="control-button" id="caseUndo" onclick="undo('case')" disabled>
-                                <i class="fas fa-undo"></i> Undo
-                            </button>
+                            <div class="size-controls">
+                                <button onclick="adjustTextSize('decrease')" class="control-button">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span id="fontSizeDisplay">16px</span>
+                                <button onclick="adjustTextSize('increase')" class="control-button">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="button-group">
                             <button onclick="convertCase('lower')">lowercase</button>
@@ -91,9 +97,15 @@
                     <div class="converter-box">
                         <textarea id="modifierInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="text-controls">
-                            <button class="control-button" id="modifierUndo" onclick="undo('modifier')" disabled>
-                                <i class="fas fa-undo"></i> Undo
-                            </button>
+                            <div class="size-controls">
+                                <button onclick="adjustTextSize('decrease')" class="control-button">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span id="fontSizeDisplay">16px</span>
+                                <button onclick="adjustTextSize('increase')" class="control-button">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="button-group">
                             <button onclick="modifyText('remove-linebreaks')">Remove Line Breaks</button>

@@ -14,6 +14,9 @@ const textHistory = {
 const MAX_CHARS = 100000;
 const WARN_THRESHOLD = 0.8; // Show warning at 80% of limit
 
+// Add these variables at the top of the file
+let currentFontSize = 16;
+
 // Function to save state to history
 function saveToHistory(type, text) {
     const history = textHistory[type];
@@ -53,7 +56,8 @@ function undo(type) {
 function updateUndoButton(type) {
     const undoButton = document.getElementById(`${type}Undo`);
     if (undoButton) {
-        undoButton.disabled = textHistory[type].currentIndex <= 0;
+        // Disable if there's no history or we're at the initial state
+        undoButton.disabled = !textHistory[type].stack.length || textHistory[type].currentIndex <= 0;
     }
 }
 
@@ -266,8 +270,6 @@ function updateThemeIcon() {
 }
 
 // Text Size Controls
-let currentFontSize = 16;
-
 function adjustTextSize(action) {
     const minSize = 12;
     const maxSize = 24;
@@ -495,8 +497,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const textarea = document.getElementById(`${type}InputText`);
         if (textarea) {
             textarea.addEventListener('input', (e) => {
-                if (textHistory[type].stack.length === 0) {
-                    saveToHistory(type, e.target.value);
+                // Only save to history if there's actual content
+                if (e.target.value.trim()) {
+                    if (textHistory[type].stack.length === 0) {
+                        saveToHistory(type, e.target.value);
+                    }
+                } else {
+                    // Reset history if textarea is empty
+                    textHistory[type].stack = [];
+                    textHistory[type].currentIndex = -1;
+                    updateUndoButton(type);
                 }
                 updateCounts(type);
                 updateCharLimit(type);

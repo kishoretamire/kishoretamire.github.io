@@ -756,6 +756,7 @@ body.dark-theme .stats {
     padding: 2px 8px;
     border-radius: 3px;
     transition: all 0.3s ease;
+    z-index: 1;
 }
 
 .char-limit.near-limit {
@@ -894,5 +895,27 @@ button:hover,
     .text-controls .control-button {
         width: auto;
         min-width: 100px;
+    }
+}
+
+/* Add mobile styles for stats and char limit */
+@media (max-width: 768px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+        margin-bottom: 40px;
+    }
+
+    .char-limit {
+        bottom: -30px;
+        right: 50%;
+        transform: translateX(50%);
+        background: var(--background-color);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Dark theme support for mobile */
+    body.dark-theme .char-limit {
+        background: var(--dark-secondary);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 }
