@@ -72,22 +72,9 @@
                             <button class="utility-button" onclick="copyToClipboard('case')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>
-                            <div class="dropdown">
-                                <button class="utility-button download-button">
-                                    <i class="fas fa-download"></i> Download Text
-                                </button>
-                                <div class="dropdown-content">
-                                    <button onclick="downloadText('case', 'txt')">
-                                        <i class="fas fa-file-alt"></i> Text File (.txt)
-                                    </button>
-                                    <button onclick="downloadText('case', 'doc')">
-                                        <i class="fas fa-file-word"></i> Word Document (.doc)
-                                    </button>
-                                    <button onclick="downloadText('case', 'pdf')">
-                                        <i class="fas fa-file-pdf"></i> PDF Document (.pdf)
-                                    </button>
-                                </div>
-                            </div>
+                            <button class="utility-button" onclick="downloadText('case')">
+                                <i class="fas fa-download"></i> Download Text
+                            </button>
                         </div>
                         <div class="stats">
                             <span>Characters: <span id="caseCharCount">0</span></span>
@@ -118,22 +105,9 @@
                             <button class="utility-button" onclick="copyToClipboard('modifier')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>
-                            <div class="dropdown">
-                                <button class="utility-button download-button">
-                                    <i class="fas fa-download"></i> Download Text
-                                </button>
-                                <div class="dropdown-content">
-                                    <button onclick="downloadText('modifier', 'txt')">
-                                        <i class="fas fa-file-alt"></i> Text File (.txt)
-                                    </button>
-                                    <button onclick="downloadText('modifier', 'doc')">
-                                        <i class="fas fa-file-word"></i> Word Document (.doc)
-                                    </button>
-                                    <button onclick="downloadText('modifier', 'pdf')">
-                                        <i class="fas fa-file-pdf"></i> PDF Document (.pdf)
-                                    </button>
-                                </div>
-                            </div>
+                            <button class="utility-button" onclick="downloadText('modifier')">
+                                <i class="fas fa-download"></i> Download Text
+                            </button>
                         </div>
                         <div class="stats">
                             <span>Characters: <span id="modifierCharCount">0</span></span>

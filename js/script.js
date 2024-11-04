@@ -166,7 +166,8 @@ async function copyToClipboard(type) {
     }
 }
 
-function downloadText(type, format) {
+// Update the downloadText function
+function downloadText(type) {
     const text = document.getElementById(`${type}InputText`).value;
     if (!text.trim()) {
         showNotification('Please enter some text to download!', 'error');
@@ -174,58 +175,16 @@ function downloadText(type, format) {
     }
     
     try {
-        switch(format) {
-            case 'txt':
-                const blob = new Blob([text], { type: 'text/plain' });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'converted-text.txt';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
-                break;
-                
-            case 'doc':
-                const docBlob = new Blob([text], { type: 'application/msword' });
-                const docUrl = window.URL.createObjectURL(docBlob);
-                const docLink = document.createElement('a');
-                docLink.href = docUrl;
-                docLink.download = 'converted-text.doc';
-                document.body.appendChild(docLink);
-                docLink.click();
-                window.URL.revokeObjectURL(docUrl);
-                document.body.removeChild(docLink);
-                break;
-                
-            case 'pdf':
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                
-                doc.setFontSize(12);
-                const lineHeight = 7;
-                
-                const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
-                const margin = 20;
-                const maxWidth = pageWidth - (margin * 2);
-                
-                const splitLines = doc.splitTextToSize(text, maxWidth);
-                const linesPerPage = Math.floor((pageHeight - (margin * 2)) / lineHeight);
-                
-                for (let i = 0; i < splitLines.length; i += linesPerPage) {
-                    if (i > 0) {
-                        doc.addPage();
-                    }
-                    const pageLines = splitLines.slice(i, i + linesPerPage);
-                    doc.text(pageLines, margin, margin + lineHeight);
-                }
-                
-                doc.save('converted-text.pdf');
-                break;
-        }
-        showNotification(`Text downloaded as ${format.toUpperCase()}!`);
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'converted-text.txt';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        showNotification('Text downloaded successfully!');
     } catch (err) {
         console.error('Download error:', err);
         showNotification('Failed to download text!', 'error');
