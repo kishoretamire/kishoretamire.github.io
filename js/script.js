@@ -292,7 +292,38 @@ async function exportText(format) {
         if (format === 'pdf') {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            doc.text(text, 10, 10);
+            
+            // Set font size and line height
+            doc.setFontSize(12);
+            const lineHeight = 7;
+            
+            // Split text into lines
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 20;
+            const maxWidth = pageWidth - (margin * 2);
+            
+            // Function to handle text wrapping
+            const splitLines = doc.splitTextToSize(text, maxWidth);
+            
+            // Calculate how many lines can fit on one page
+            const linesPerPage = Math.floor((pageHeight - (margin * 2)) / lineHeight);
+            
+            // Add pages and text
+            let currentPage = 1;
+            for (let i = 0; i < splitLines.length; i += linesPerPage) {
+                if (i > 0) {
+                    doc.addPage();
+                    currentPage++;
+                }
+                
+                // Get lines for current page
+                const pageLines = splitLines.slice(i, i + linesPerPage);
+                
+                // Add text to page
+                doc.text(pageLines, margin, margin + lineHeight);
+            }
+            
             doc.save('converted-text.pdf');
         } else if (format === 'doc') {
             const blob = new Blob([text], { type: 'application/msword' });
@@ -307,6 +338,7 @@ async function exportText(format) {
         }
         showNotification(`Text exported as ${format.toUpperCase()}!`);
     } catch (err) {
+        console.error('Export error:', err);
         showNotification('Failed to export text!', 'error');
     }
 }
