@@ -7,6 +7,36 @@
         <priority>1.0</priority>
     </url>
     <url>
+        <loc>https://www.caseconverter.com/blog/</loc>
+        <lastmod>2024-01-25</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.caseconverter.com/blog/title-case-vs-sentence-case.html</loc>
+        <lastmod>2024-01-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.caseconverter.com/blog/text-formatting-best-practices.html</loc>
+        <lastmod>2024-01-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.caseconverter.com/blog/text-formatting-seo.html</loc>
+        <lastmod>2024-01-25</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.caseconverter.com/faq.html</loc>
+        <lastmod>2024-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://www.caseconverter.com/about.html</loc>
         <lastmod>2024-01-01</lastmod>
         <changefreq>monthly</changefreq>
