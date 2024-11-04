@@ -368,3 +368,53 @@ footer {
     padding: 2rem 0;
     margin-top: 2rem;
 }
+
+/* Add these new styles after your existing CSS */
+
+.tab-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.tab-buttons {
+    display: flex;
+    background-color: var(--primary-color);
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.tab-button {
+    background: transparent;
+    color: white;
+    border: 2px solid transparent;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.tab-button:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.tab-button.active {
+    border-color: white;
+    background: rgba(255,255,255,0.1);
+}
+
+.tab-content {
+    display: none;
+    padding: 2rem;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.converter-box {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+}
