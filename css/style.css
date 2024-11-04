@@ -440,6 +440,12 @@ body.dark-theme {
     color: var(--dark-text);
 }
 
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3 {
+    color: var(--dark-text);
+}
+
 body.dark-theme .converter-box,
 body.dark-theme .header-component,
 body.dark-theme textarea {
@@ -572,4 +578,28 @@ body.dark-theme .dropdown-content button {
 
 body.dark-theme .dropdown-content button:hover {
     background-color: var(--dark-primary);
+}
+
+/* Fix contact page elements in dark mode */
+body.dark-theme .contact-method {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .contact-method i {
+    color: var(--secondary-color);
+}
+
+body.dark-theme .contact-method h3,
+body.dark-theme .contact-method p {
+    color: var(--dark-text);
+}
+
+/* Add this if blog headings need fixing too */
+body.dark-theme .blog-content h2 {
+    color: var(--dark-text);
+}
+
+body.dark-theme .blog-card h2 {
+    color: var(--dark-text);
 }
