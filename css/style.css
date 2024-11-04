@@ -123,10 +123,11 @@ button:hover {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
-    color: #666;
+    color: #333;
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #eee;
+    font-weight: 500;
 }
 
 .stats span {
