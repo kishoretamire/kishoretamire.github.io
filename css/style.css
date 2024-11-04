@@ -3,6 +3,10 @@
     --secondary-color: #3498db;
     --background-color: #f5f6fa;
     --text-color: #2c3e50;
+    --dark-primary: #1a1a1a;
+    --dark-secondary: #2d2d2d;
+    --dark-text: #ffffff;
+    --dark-border: #404040;
 }
 
 * {
@@ -428,4 +432,93 @@ footer {
 
 .utility-button:disabled:hover {
     background-color: #95a5a6;
+}
+
+/* Dark theme styles */
+body.dark-theme {
+    background-color: var(--dark-primary);
+    color: var(--dark-text);
+}
+
+body.dark-theme .converter-box,
+body.dark-theme .header-component,
+body.dark-theme textarea {
+    background-color: var(--dark-secondary);
+    color: var(--dark-text);
+}
+
+body.dark-theme textarea {
+    border-color: var(--dark-border);
+}
+
+/* Theme toggle button */
+.theme-controls {
+    margin-left: 2rem;
+}
+
+.theme-button {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+}
+
+/* Text controls */
+.text-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,0.05);
+    border-radius: 5px;
+}
+
+.size-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-button {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.control-button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+#fontSizeDisplay {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.export-controls,
+.share-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .text-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .size-controls,
+    .export-controls,
+    .share-controls {
+        width: 100%;
+        justify-content: center;
+    }
 }

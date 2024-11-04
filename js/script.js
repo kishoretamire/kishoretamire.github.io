@@ -234,3 +234,153 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Theme Toggle
+function initTheme() {
+    const theme = localStorage.getItem('theme') || 'light';
+    document.body.classList.toggle('dark-theme', theme === 'dark');
+    updateThemeIcon();
+}
+
+function toggleTheme() {
+    document.body.classList.toggle('dark-theme');
+    const isDark = document.body.classList.contains('dark-theme');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    updateThemeIcon();
+}
+
+function updateThemeIcon() {
+    const icon = document.querySelector('#themeToggle i');
+    const isDark = document.body.classList.contains('dark-theme');
+    icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+// Text Size Controls
+let currentFontSize = 16;
+
+function adjustTextSize(action) {
+    const minSize = 12;
+    const maxSize = 24;
+    const step = 2;
+    
+    if (action === 'increase' && currentFontSize < maxSize) {
+        currentFontSize += step;
+    } else if (action === 'decrease' && currentFontSize > minSize) {
+        currentFontSize -= step;
+    }
+    
+    document.querySelectorAll('textarea').forEach(textarea => {
+        textarea.style.fontSize = `${currentFontSize}px`;
+    });
+    
+    document.getElementById('fontSizeDisplay').textContent = `${currentFontSize}px`;
+    localStorage.setItem('fontSize', currentFontSize);
+}
+
+// Export functionality
+async function exportText(format) {
+    const activeTab = document.querySelector('.tab-content.active');
+    const textarea = activeTab.querySelector('textarea');
+    const text = textarea.value;
+    
+    if (!text.trim()) {
+        showNotification('Please enter some text to export!', 'error');
+        return;
+    }
+    
+    try {
+        if (format === 'pdf') {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text(text, 10, 10);
+            doc.save('converted-text.pdf');
+        } else if (format === 'doc') {
+            const blob = new Blob([text], { type: 'application/msword' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'converted-text.doc';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+        showNotification(`Text exported as ${format.toUpperCase()}!`);
+    } catch (err) {
+        showNotification('Failed to export text!', 'error');
+    }
+}
+
+// Share functionality
+async function shareText(platform) {
+    const activeTab = document.querySelector('.tab-content.active');
+    const textarea = activeTab.querySelector('textarea');
+    const text = textarea.value;
+    
+    if (!text.trim()) {
+        showNotification('Please enter some text to share!', 'error');
+        return;
+    }
+    
+    const encodedText = encodeURIComponent(text);
+    const currentUrl = window.location.href;
+    
+    switch(platform) {
+        case 'copy':
+            const shareUrl = `${currentUrl}?text=${encodedText}`;
+            await navigator.clipboard.writeText(shareUrl);
+            showNotification('Share link copied to clipboard!');
+            break;
+        case 'twitter':
+            window.open(`https://twitter.com/intent/tweet?text=${encodedText}`);
+            break;
+        case 'facebook':
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}&quote=${encodedText}`);
+            break;
+    }
+}
+
+// Local Storage
+function saveToLocalStorage(type) {
+    const textarea = document.getElementById(`${type}InputText`);
+    localStorage.setItem(`${type}Text`, textarea.value);
+}
+
+function loadFromLocalStorage() {
+    ['case', 'modifier'].forEach(type => {
+        const savedText = localStorage.getItem(`${type}Text`);
+        if (savedText) {
+            const textarea = document.getElementById(`${type}InputText`);
+            textarea.value = savedText;
+            updateCounts(type);
+        }
+    });
+}
+
+// Initialize everything when the document loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Existing initialization code...
+    
+    // Initialize theme
+    initTheme();
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    
+    // Initialize font size
+    const savedFontSize = localStorage.getItem('fontSize');
+    if (savedFontSize) {
+        currentFontSize = parseInt(savedFontSize);
+        document.querySelectorAll('textarea').forEach(textarea => {
+            textarea.style.fontSize = `${currentFontSize}px`;
+        });
+        document.getElementById('fontSizeDisplay').textContent = `${currentFontSize}px`;
+    }
+    
+    // Load saved text
+    loadFromLocalStorage();
+    
+    // Add auto-save functionality
+    ['case', 'modifier'].forEach(type => {
+        const textarea = document.getElementById(`${type}InputText`);
+        textarea.addEventListener('input', () => saveToLocalStorage(type));
+    });
+});

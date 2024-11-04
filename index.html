@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=your-client-id" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <header class="header-component">
@@ -21,6 +22,11 @@
                 <li><a href="/contact.html">Contact</a></li>
                 <li><a href="/privacy-policy.html">Privacy Policy</a></li>
             </ul>
+            <div class="theme-controls">
+                <button id="themeToggle" class="theme-button">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </nav>
     </header>
 
@@ -35,6 +41,36 @@
 
                 <!-- Case Converter Tab -->
                 <div class="tab-content active" id="case-converter">
+                    <div class="text-controls">
+                        <div class="size-controls">
+                            <button onclick="adjustTextSize('decrease')" class="control-button">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span id="fontSizeDisplay">16px</span>
+                            <button onclick="adjustTextSize('increase')" class="control-button">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="export-controls">
+                            <button class="control-button" onclick="exportText('pdf')">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                            <button class="control-button" onclick="exportText('doc')">
+                                <i class="fas fa-file-word"></i> DOC
+                            </button>
+                        </div>
+                        <div class="share-controls">
+                            <button class="control-button" onclick="shareText('copy')">
+                                <i class="fas fa-link"></i> Copy Link
+                            </button>
+                            <button class="control-button" onclick="shareText('twitter')">
+                                <i class="fab fa-twitter"></i>
+                            </button>
+                            <button class="control-button" onclick="shareText('facebook')">
+                                <i class="fab fa-facebook"></i>
+                            </button>
+                        </div>
+                    </div>
                     <div class="converter-box">
                         <textarea id="caseInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="button-group">
@@ -68,6 +104,36 @@
 
                 <!-- Text Modifier Tab -->
                 <div class="tab-content" id="text-modifier">
+                    <div class="text-controls">
+                        <div class="size-controls">
+                            <button onclick="adjustTextSize('decrease')" class="control-button">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span id="fontSizeDisplay">16px</span>
+                            <button onclick="adjustTextSize('increase')" class="control-button">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="export-controls">
+                            <button class="control-button" onclick="exportText('pdf')">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                            <button class="control-button" onclick="exportText('doc')">
+                                <i class="fas fa-file-word"></i> DOC
+                            </button>
+                        </div>
+                        <div class="share-controls">
+                            <button class="control-button" onclick="shareText('copy')">
+                                <i class="fas fa-link"></i> Copy Link
+                            </button>
+                            <button class="control-button" onclick="shareText('twitter')">
+                                <i class="fab fa-twitter"></i>
+                            </button>
+                            <button class="control-button" onclick="shareText('facebook')">
+                                <i class="fab fa-facebook"></i>
+                            </button>
+                        </div>
+                    </div>
                     <div class="converter-box">
                         <textarea id="modifierInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="button-group">
