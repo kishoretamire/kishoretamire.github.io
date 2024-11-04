@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Case Converter</title>
+    <meta name="description" content="Get in touch with Case Converter team for support or feedback">
+    <meta name="keywords" content="contact case converter, text converter support, feedback">
+    <meta name="author" content="Case Converter">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Contact Case Converter - Get Support">
+    <meta property="og:description" content="Get in touch with our team for support or feedback about our text conversion tools.">
+    <meta property="og:url" content="https://www.caseconverter.com/contact.html">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Contact Case Converter">
+    <meta name="twitter:description" content="Get in touch with our team for support or feedback.">
+    
+    <link rel="canonical" href="https://www.caseconverter.com/contact.html">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -15,10 +31,17 @@
             </div>
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
+                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/faq.html">FAQ</a></li>
                 <li><a href="/about.html">About</a></li>
                 <li><a href="/contact.html">Contact</a></li>
                 <li><a href="/privacy-policy.html">Privacy Policy</a></li>
             </ul>
+            <div class="theme-controls">
+                <button id="themeToggle" class="theme-button">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </nav>
     </header>
 
@@ -92,5 +115,42 @@
             <p>&copy; 2024 Case Converter. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Theme Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        });
+
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.body.classList.toggle('dark-theme', theme === 'dark');
+            updateThemeIcon();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const icon = document.querySelector('#themeToggle i');
+            const isDark = document.body.classList.contains('dark-theme');
+            icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        }
+    </script>
+
+    <!-- Contact Form Script -->
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add your form submission logic here
+            alert('Thank you for your message. We will get back to you soon!');
+            this.reset();
+        });
+    </script>
 </body>
 </html> 

@@ -4,11 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terms of Service - Case Converter</title>
+    <meta name="description" content="Terms of service and usage guidelines for Case Converter text formatting tools">
+    <meta name="keywords" content="terms of service, case converter terms, usage terms">
+    <meta name="author" content="Case Converter">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Terms of Service - Case Converter">
+    <meta property="og:description" content="Read our terms of service and usage guidelines.">
+    <meta property="og:url" content="https://www.caseconverter.com/terms.html">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Terms of Service - Case Converter">
+    <meta name="twitter:description" content="Read our terms of service and usage guidelines.">
+    
+    <link rel="canonical" href="https://www.caseconverter.com/terms.html">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Replace placeholder header with actual header component -->
     <header class="header-component">
         <nav>
             <div class="logo">
@@ -16,10 +31,17 @@
             </div>
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
+                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/faq.html">FAQ</a></li>
                 <li><a href="/about.html">About</a></li>
                 <li><a href="/contact.html">Contact</a></li>
                 <li><a href="/privacy-policy.html">Privacy Policy</a></li>
             </ul>
+            <div class="theme-controls">
+                <button id="themeToggle" class="theme-button">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </nav>
     </header>
 
@@ -65,7 +87,6 @@
         </div>
     </main>
 
-    <!-- Replace placeholder footer with actual footer component -->
     <footer class="footer-component">
         <div class="footer-content">
             <div class="footer-section">
@@ -86,5 +107,32 @@
             <p>&copy; 2024 Case Converter. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Theme Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        });
+
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.body.classList.toggle('dark-theme', theme === 'dark');
+            updateThemeIcon();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const icon = document.querySelector('#themeToggle i');
+            const isDark = document.body.classList.contains('dark-theme');
+            icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        }
+    </script>
 </body>
 </html> 
