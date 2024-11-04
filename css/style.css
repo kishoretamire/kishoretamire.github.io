@@ -60,6 +60,7 @@ nav {
     text-decoration: none;
     color: var(--text-color);
     font-weight: 500;
+    transition: color 0.3s;
 }
 
 main {
@@ -602,4 +603,33 @@ body.dark-theme .blog-content h2 {
 
 body.dark-theme .blog-card h2 {
     color: var(--dark-text);
+}
+
+/* Update header link styles */
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+/* Add/update dark theme styles for header links */
+body.dark-theme .header-component {
+    background-color: var(--dark-secondary);
+}
+
+body.dark-theme .nav-links a {
+    color: var(--dark-text);  /* Makes links white in dark mode */
+}
+
+body.dark-theme .nav-links a:hover {
+    color: var(--secondary-color);  /* Blue color on hover */
+}
+
+body.dark-theme .logo a {
+    color: var(--dark-text);  /* Makes logo white in dark mode */
+}
+
+body.dark-theme .theme-button {
+    color: var(--dark-text);  /* Makes theme toggle button white in dark mode */
 }
