@@ -11,14 +11,6 @@ const textHistory = {
     analyzer: {
         stack: [],
         currentIndex: -1
-    },
-    comparison1: {
-        stack: [],
-        currentIndex: -1
-    },
-    comparison2: {
-        stack: [],
-        currentIndex: -1
     }
 };
 
@@ -30,9 +22,7 @@ const WARN_THRESHOLD = 0.8; // Show warning at 80% of limit
 const fontSizes = {
     case: 16,
     modifier: 16,
-    analyzer: 16,
-    comparison1: 16,
-    comparison2: 16
+    analyzer: 16
 };
 
 // Function to save state to history
@@ -111,11 +101,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (textarea) {
             textarea.addEventListener('input', () => {
                 updateCounts(type);
+                updateCharLimit(type);
                 if (textHistory[type].stack.length === 0) {
                     saveToHistory(type, '');
                 }
                 saveToHistory(type, textarea.value);
             });
+            
+            // Initialize character limit display
+            updateCharLimit(type);
         }
     });
 
@@ -160,12 +154,13 @@ function modifyText(type) {
             break;
         case 'format-json':
             try {
-                // Parse the JSON to validate it
+                // First try to parse the JSON to validate it
                 const jsonObj = JSON.parse(text);
-                // Format with 2 spaces indentation
+                // Format with 2 spaces indentation and proper sorting
                 newText = JSON.stringify(jsonObj, null, 2);
+                showNotification('JSON formatted successfully!', 'success');
             } catch (err) {
-                showNotification('Invalid JSON format!', 'error');
+                showNotification('Invalid JSON format: ' + err.message, 'error');
                 return;
             }
             break;
@@ -185,17 +180,21 @@ function clearText(type) {
         saveToHistory(type, input.value);
         input.value = '';
         updateCounts(type);
+        updateCharLimit(type);
     }
 }
 
 async function pasteText(type) {
     try {
         const text = await navigator.clipboard.readText();
-        const currentText = document.getElementById(`${type}InputText`).value;
+        const textarea = document.getElementById(`${type}InputText`);
+        const currentText = textarea.value;
+        
         if (text !== currentText) {
             saveToHistory(type, currentText);
-            document.getElementById(`${type}InputText`).value = text;
+            textarea.value = text;
             updateCounts(type);
+            updateCharLimit(type);
         }
     } catch (err) {
         showNotification('Failed to read clipboard. Please check browser permissions.', 'error');
@@ -496,7 +495,7 @@ function saveToLocalStorage(type) {
 }
 
 function loadFromLocalStorage() {
-    ['case', 'modifier', 'analyzer'].forEach(type => {
+    ['case', 'modifier'].forEach(type => {
         const savedText = localStorage.getItem(`${type}Text`);
         if (savedText) {
             const textarea = document.getElementById(`${type}InputText`);
@@ -562,7 +561,7 @@ function updateCharLimit(type) {
 
 // Update the textarea input event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    ['case', 'modifier', 'analyzer'].forEach(type => {
+    ['case', 'modifier'].forEach(type => {
         const textarea = document.getElementById(`${type}InputText`);
         if (textarea) {
             textarea.addEventListener('input', (e) => {
@@ -622,18 +621,10 @@ function analyzeText(type) {
         case 'char-distribution':
             result = getCharacterDistribution(text);
             break;
-        case 'sentiment':
-            result = getSentimentAnalysis(text);
-            break;
-        case 'longest-words':
-            result = getLongestWords(text);
-            break;
-        case 'repeated-phrases':
-            result = getRepeatedPhrases(text);
-            break;
     }
 
     outputDiv.innerHTML = result;
+    outputDiv.classList.remove('hidden');
     resultsDiv.style.display = 'block';
 }
 
@@ -859,184 +850,17 @@ function getSentimentAnalysis(text) {
     `;
 }
 
-// Text Comparison Functions
-function compareTexts(type) {
-    const text1 = document.getElementById('comparison1InputText').value;
-    const text2 = document.getElementById('comparison2InputText').value;
-    const resultsDiv = document.querySelector('.comparison-results');
-    const outputDiv = document.getElementById('comparisonOutput');
-    
-    if (!text1.trim() || !text2.trim()) {
-        showNotification('Please enter both texts to compare!', 'error');
-        return;
-    }
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
 
-    let result = '';
-    switch(type) {
-        case 'similarity':
-            result = checkSimilarity(text1, text2);
-            break;
-        case 'differences':
-            result = findDifferences(text1, text2);
-            break;
-        case 'common-words':
-            result = findCommonWords(text1, text2);
-            break;
-        case 'unique-words':
-            result = findUniqueWords(text1, text2);
-            break;
-        case 'length-stats':
-            result = getLengthStats(text1, text2);
-            break;
-    }
-
-    outputDiv.innerHTML = result;
-    resultsDiv.style.display = 'block';
-}
-
-function checkSimilarity(text1, text2) {
-    const words1 = text1.toLowerCase().match(/\b\w+\b/g) || [];
-    const words2 = text2.toLowerCase().match(/\b\w+\b/g) || [];
-    
-    const intersection = words1.filter(word => words2.includes(word));
-    const similarity = (intersection.length * 2) / (words1.length + words2.length);
-    const percentage = (similarity * 100).toFixed(1);
-
-    return `
-        <h3>Text Similarity Analysis</h3>
-        <p>Similarity Score: <strong>${percentage}%</strong></p>
-        <p>Common Words: ${intersection.length}</p>
-        <p>Text 1 Words: ${words1.length}</p>
-        <p>Text 2 Words: ${words2.length}</p>
-    `;
-}
-
-function findDifferences(text1, text2) {
-    const lines1 = text1.split('\n');
-    const lines2 = text2.split('\n');
-    const maxLines = Math.max(lines1.length, lines2.length);
-    
-    let diffHtml = '<h3>Line by Line Differences</h3><table><tr><th>Line</th><th>Text 1</th><th>Text 2</th></tr>';
-    
-    for (let i = 0; i < maxLines; i++) {
-        const line1 = lines1[i] || '';
-        const line2 = lines2[i] || '';
-        const isDifferent = line1 !== line2;
-        
-        diffHtml += `
-            <tr${isDifferent ? ' class="difference"' : ''}>
-                <td>${i + 1}</td>
-                <td>${line1}</td>
-                <td>${line2}</td>
-            </tr>
-        `;
-    }
-    
-    return diffHtml + '</table>';
-}
-
-function findCommonWords(text1, text2) {
-    const words1 = new Set(text1.toLowerCase().match(/\b\w+\b/g) || []);
-    const words2 = new Set(text2.toLowerCase().match(/\b\w+\b/g) || []);
-    
-    const commonWords = [...words1].filter(word => words2.has(word))
-        .sort((a, b) => a.localeCompare(b));
-
-    return `
-        <h3>Common Words (${commonWords.length})</h3>
-        <p>${commonWords.join(', ') || 'No common words found.'}</p>
-    `;
-}
-
-function findUniqueWords(text1, text2) {
-    const words1 = new Set(text1.toLowerCase().match(/\b\w+\b/g) || []);
-    const words2 = new Set(text2.toLowerCase().match(/\b\w+\b/g) || []);
-    
-    const uniqueToText1 = [...words1].filter(word => !words2.has(word))
-        .sort((a, b) => a.localeCompare(b));
-    const uniqueToText2 = [...words2].filter(word => !words1.has(word))
-        .sort((a, b) => a.localeCompare(b));
-
-    return `
-        <h3>Unique Words Analysis</h3>
-        <h4>Unique to Text 1 (${uniqueToText1.length})</h4>
-        <p>${uniqueToText1.join(', ') || 'No unique words.'}</p>
-        <h4>Unique to Text 2 (${uniqueToText2.length})</h4>
-        <p>${uniqueToText2.join(', ') || 'No unique words.'}</p>
-    `;
-}
-
-function getLengthStats(text1, text2) {
-    const stats1 = getTextStats(text1);
-    const stats2 = getTextStats(text2);
-    
-    return `
-        <h3>Length Statistics Comparison</h3>
-        <table>
-            <tr>
-                <th>Metric</th>
-                <th>Text 1</th>
-                <th>Text 2</th>
-                <th>Difference</th>
-            </tr>
-            <tr>
-                <td>Characters</td>
-                <td>${stats1.chars}</td>
-                <td>${stats2.chars}</td>
-                <td>${Math.abs(stats1.chars - stats2.chars)}</td>
-            </tr>
-            <tr>
-                <td>Words</td>
-                <td>${stats1.words}</td>
-                <td>${stats2.words}</td>
-                <td>${Math.abs(stats1.words - stats2.words)}</td>
-            </tr>
-            <tr>
-                <td>Lines</td>
-                <td>${stats1.lines}</td>
-                <td>${stats2.lines}</td>
-                <td>${Math.abs(stats1.lines - stats2.lines)}</td>
-            </tr>
-            <tr>
-                <td>Average Word Length</td>
-                <td>${stats1.avgWordLength}</td>
-                <td>${stats2.avgWordLength}</td>
-                <td>${Math.abs(stats1.avgWordLength - stats2.avgWordLength).toFixed(1)}</td>
-            </tr>
-        </table>
-    `;
-}
-
-function getTextStats(text) {
-    const chars = text.length;
-    const words = text.trim().split(/\s+/).length;
-    const lines = text.split('\n').length;
-    const avgWordLength = chars / words;
-    
-    return {
-        chars,
-        words,
-        lines,
-        avgWordLength
-    };
-}
-
-function clearComparison() {
-    document.getElementById('comparison1InputText').value = '';
-    document.getElementById('comparison2InputText').value = '';
-    document.querySelector('.comparison-results').style.display = 'none';
-    updateCounts('comparison1');
-    updateCounts('comparison2');
-}
-
-function swapTexts() {
-    const text1 = document.getElementById('comparison1InputText');
-    const text2 = document.getElementById('comparison2InputText');
-    const temp = text1.value;
-    
-    text1.value = text2.value;
-    text2.value = temp;
-    
-    updateCounts('comparison1');
-    updateCounts('comparison2');
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.classList.add('fade-out');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 500);
+    }, 3000);
 }

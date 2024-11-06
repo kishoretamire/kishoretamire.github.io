@@ -16,6 +16,17 @@
     <meta name="twitter:image" content="https://www.onlinetexteditor.com/images/twitter-card.png">
     <link rel="canonical" href="https://www.onlinetexteditor.com">
     <title>Online Text Editor - Professional Text Editing Tools | Format Text Online</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Alternative sizes and formats -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/site.webmanifest">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=your-client-id" crossorigin="anonymous"></script>
@@ -47,51 +58,51 @@
             <h1>Text Tools</h1>
             <div class="tab-container">
                 <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="text-editor">Text Editor</button>
+                    <button class="tab-button active" data-tab="case-converter">Case Converter</button>
                     <button class="tab-button" data-tab="text-modifier">Text Formatter</button>
                     <button class="tab-button" data-tab="text-analyzer">Text Analyzer</button>
                 </div>
 
-                <!-- Text Editor Tab -->
-                <div class="tab-content active" id="text-editor">
+                <!-- Case Converter Tab -->
+                <div class="tab-content active" id="case-converter">
                     <div class="converter-box">
                         <div class="text-controls">
                             <div class="size-controls">
-                                <button onclick="adjustTextSize('decrease', 'text-editor')" class="control-button">
+                                <button onclick="adjustTextSize('decrease', 'case')" class="control-button">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <span id="textEditorFontSizeDisplay">16px</span>
-                                <button onclick="adjustTextSize('increase', 'text-editor')" class="control-button">
+                                <span id="caseFontSizeDisplay">16px</span>
+                                <button onclick="adjustTextSize('increase', 'case')" class="control-button">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
-                            <button class="control-button" id="textEditorUndo" onclick="undo('text-editor')" disabled>
+                            <button class="control-button" id="caseUndo" onclick="undo('case')" disabled>
                                 <i class="fas fa-undo"></i> Undo
                             </button>
                         </div>
-                        <textarea id="textEditorInputText" placeholder="Enter or paste your text here..."></textarea>
+                        <textarea id="caseInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="button-group">
                             <button onclick="convertCase('lower')">lowercase</button>
                             <button onclick="convertCase('upper')">UPPERCASE</button>
                             <button onclick="convertCase('title')">Title Case</button>
                             <button onclick="convertCase('sentence')">Sentence case</button>
                             <button onclick="convertCase('alternate')">aLtErNaTe CaSe</button>
-                            <button onclick="clearText('text-editor')">Clear</button>
-                            <button onclick="pasteText('text-editor')">Paste</button>
+                            <button onclick="clearText('case')">Clear</button>
+                            <button onclick="pasteText('case')">Paste</button>
                         </div>
                         <div class="utility-buttons">
-                            <button class="utility-button" onclick="copyToClipboard('text-editor')">
+                            <button class="utility-button" onclick="copyToClipboard('case-converter')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>
-                            <button class="utility-button" onclick="downloadText('text-editor')">
+                            <button class="utility-button" onclick="downloadText('case-converter')">
                                 <i class="fas fa-download"></i> Download Text
                             </button>
                         </div>
                         <div class="stats">
-                            <span>Characters: <span id="textEditorCharCount">0</span></span>
-                            <span>Words: <span id="textEditorWordCount">0</span></span>
-                            <span>Lines: <span id="textEditorLineCount">0</span></span>
-                            <span>Sentences: <span id="textEditorSentenceCount">0</span></span>
+                            <span>Characters: <span id="caseCharCount">0</span></span>
+                            <span>Words: <span id="caseWordCount">0</span></span>
+                            <span>Lines: <span id="caseLineCount">0</span></span>
+                            <span>Sentences: <span id="caseSentenceCount">0</span></span>
                         </div>
                     </div>
                 </div>
@@ -101,19 +112,19 @@
                     <div class="converter-box">
                         <div class="text-controls">
                             <div class="size-controls">
-                                <button onclick="adjustTextSize('decrease', 'text-modifier')" class="control-button">
+                                <button onclick="adjustTextSize('decrease', 'modifier')" class="control-button">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <span id="textModifierFontSizeDisplay">16px</span>
-                                <button onclick="adjustTextSize('increase', 'text-modifier')" class="control-button">
+                                <span id="modifierFontSizeDisplay">16px</span>
+                                <button onclick="adjustTextSize('increase', 'modifier')" class="control-button">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
-                            <button class="control-button" id="textModifierUndo" onclick="undo('text-modifier')" disabled>
+                            <button class="control-button" id="modifierUndo" onclick="undo('modifier')" disabled>
                                 <i class="fas fa-undo"></i> Undo
                             </button>
                         </div>
-                        <textarea id="textModifierInputText" placeholder="Enter or paste your text here..."></textarea>
+                        <textarea id="modifierInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="button-group">
                             <button onclick="modifyText('remove-linebreaks')">Remove Line Breaks</button>
                             <button onclick="modifyText('remove-whitespace')">Remove Extra Spaces</button>
@@ -121,22 +132,22 @@
                             <button onclick="modifyText('trim-lines')">Trim Lines</button>
                             <button onclick="modifyText('remove-empty-lines')">Remove Empty Lines</button>
                             <button onclick="modifyText('format-json')">Format JSON</button>
-                            <button onclick="clearText('text-modifier')">Clear</button>
-                            <button onclick="pasteText('text-modifier')">Paste</button>
+                            <button onclick="clearText('modifier')">Clear</button>
+                            <button onclick="pasteText('modifier')">Paste</button>
                         </div>
                         <div class="utility-buttons">
-                            <button class="utility-button" onclick="copyToClipboard('text-modifier')">
+                            <button class="utility-button" onclick="copyToClipboard('modifier')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>
-                            <button class="utility-button" onclick="downloadText('text-modifier')">
+                            <button class="utility-button" onclick="downloadText('modifier')">
                                 <i class="fas fa-download"></i> Download Text
                             </button>
                         </div>
                         <div class="stats">
-                            <span>Characters: <span id="textModifierCharCount">0</span></span>
-                            <span>Words: <span id="textModifierWordCount">0</span></span>
-                            <span>Lines: <span id="textModifierLineCount">0</span></span>
-                            <span>Sentences: <span id="textModifierSentenceCount">0</span></span>
+                            <span>Characters: <span id="modifierCharCount">0</span></span>
+                            <span>Words: <span id="modifierWordCount">0</span></span>
+                            <span>Lines: <span id="modifierLineCount">0</span></span>
+                            <span>Sentences: <span id="modifierSentenceCount">0</span></span>
                         </div>
                     </div>
                 </div>
@@ -146,47 +157,44 @@
                     <div class="converter-box">
                         <div class="text-controls">
                             <div class="size-controls">
-                                <button onclick="adjustTextSize('decrease', 'text-analyzer')" class="control-button">
+                                <button onclick="adjustTextSize('decrease', 'analyzer')" class="control-button">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <span id="textAnalyzerFontSizeDisplay">16px</span>
-                                <button onclick="adjustTextSize('increase', 'text-analyzer')" class="control-button">
+                                <span id="analyzerFontSizeDisplay">16px</span>
+                                <button onclick="adjustTextSize('increase', 'analyzer')" class="control-button">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
-                            <button class="control-button" id="textAnalyzerUndo" onclick="undo('text-analyzer')" disabled>
+                            <button class="control-button" id="analyzerUndo" onclick="undo('analyzer')" disabled>
                                 <i class="fas fa-undo"></i> Undo
                             </button>
                         </div>
-                        <textarea id="textAnalyzerInputText" placeholder="Enter or paste your text here..."></textarea>
+                        <textarea id="analyzerInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="button-group">
                             <button onclick="analyzeText('word-frequency')">Word Frequency</button>
                             <button onclick="analyzeText('reading-time')">Reading Time</button>
                             <button onclick="analyzeText('keyword-density')">Keyword Density</button>
                             <button onclick="analyzeText('readability')">Readability Score</button>
                             <button onclick="analyzeText('char-distribution')">Character Distribution</button>
-                            <button onclick="analyzeText('sentiment')">Sentiment Analysis</button>
-                            <button onclick="analyzeText('longest-words')">Longest Words</button>
-                            <button onclick="analyzeText('repeated-phrases')">Repeated Phrases</button>
-                            <button onclick="clearText('text-analyzer')">Clear</button>
-                            <button onclick="pasteText('text-analyzer')">Paste</button>
+                            <button onclick="clearText('analyzer')">Clear</button>
+                            <button onclick="pasteText('analyzer')">Paste</button>
                         </div>
                         <div class="analysis-results">
                             <div id="analysisOutput" class="hidden"></div>
                         </div>
                         <div class="utility-buttons">
-                            <button class="utility-button" onclick="copyToClipboard('text-analyzer')">
+                            <button class="utility-button" onclick="copyToClipboard('analyzer')">
                                 <i class="fas fa-copy"></i> Copy to Clipboard
                             </button>
-                            <button class="utility-button" onclick="downloadText('text-analyzer')">
+                            <button class="utility-button" onclick="downloadText('analyzer')">
                                 <i class="fas fa-download"></i> Download Text
                             </button>
                         </div>
                         <div class="stats">
-                            <span>Characters: <span id="textAnalyzerCharCount">0</span></span>
-                            <span>Words: <span id="textAnalyzerWordCount">0</span></span>
-                            <span>Lines: <span id="textAnalyzerLineCount">0</span></span>
-                            <span>Sentences: <span id="textAnalyzerSentenceCount">0</span></span>
+                            <span>Characters: <span id="analyzerCharCount">0</span></span>
+                            <span>Words: <span id="analyzerWordCount">0</span></span>
+                            <span>Lines: <span id="analyzerLineCount">0</span></span>
+                            <span>Sentences: <span id="analyzerSentenceCount">0</span></span>
                         </div>
                     </div>
                 </div>
