@@ -49,6 +49,7 @@
                 <div class="tab-buttons">
                     <button class="tab-button active" data-tab="case-converter">Case Converter</button>
                     <button class="tab-button" data-tab="text-modifier">Text Formatter</button>
+                    <button class="tab-button" data-tab="text-analyzer">Text Analyzer</button>
                 </div>
 
                 <!-- Case Converter Tab -->
@@ -119,6 +120,7 @@
                             <button onclick="modifyText('remove-all-spaces')">Remove All Spaces</button>
                             <button onclick="modifyText('trim-lines')">Trim Lines</button>
                             <button onclick="modifyText('remove-empty-lines')">Remove Empty Lines</button>
+                            <button onclick="modifyText('format-json')">Format JSON</button>
                             <button onclick="clearText('modifier')">Clear</button>
                             <button onclick="pasteText('modifier')">Paste</button>
                         </div>
@@ -135,6 +137,56 @@
                             <span>Words: <span id="modifierWordCount">0</span></span>
                             <span>Lines: <span id="modifierLineCount">0</span></span>
                             <span>Sentences: <span id="modifierSentenceCount">0</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Analyzer Tab -->
+                <div class="tab-content" id="text-analyzer">
+                    <div class="converter-box">
+                        <div class="text-controls">
+                            <div class="size-controls">
+                                <button onclick="adjustTextSize('decrease', 'analyzer')" class="control-button">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span id="analyzerFontSizeDisplay">16px</span>
+                                <button onclick="adjustTextSize('increase', 'analyzer')" class="control-button">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <button class="control-button" id="analyzerUndo" onclick="undo('analyzer')" disabled>
+                                <i class="fas fa-undo"></i> Undo
+                            </button>
+                        </div>
+                        <textarea id="analyzerInputText" placeholder="Enter or paste your text here..."></textarea>
+                        <div class="button-group">
+                            <button onclick="analyzeText('word-frequency')">Word Frequency</button>
+                            <button onclick="analyzeText('reading-time')">Reading Time</button>
+                            <button onclick="analyzeText('keyword-density')">Keyword Density</button>
+                            <button onclick="analyzeText('readability')">Readability Score</button>
+                            <button onclick="analyzeText('char-distribution')">Character Distribution</button>
+                            <button onclick="analyzeText('sentiment')">Sentiment Analysis</button>
+                            <button onclick="analyzeText('longest-words')">Longest Words</button>
+                            <button onclick="analyzeText('repeated-phrases')">Repeated Phrases</button>
+                            <button onclick="clearText('analyzer')">Clear</button>
+                            <button onclick="pasteText('analyzer')">Paste</button>
+                        </div>
+                        <div class="analysis-results">
+                            <div id="analysisOutput" class="hidden"></div>
+                        </div>
+                        <div class="utility-buttons">
+                            <button class="utility-button" onclick="copyToClipboard('analyzer')">
+                                <i class="fas fa-copy"></i> Copy to Clipboard
+                            </button>
+                            <button class="utility-button" onclick="downloadText('analyzer')">
+                                <i class="fas fa-download"></i> Download Text
+                            </button>
+                        </div>
+                        <div class="stats">
+                            <span>Characters: <span id="analyzerCharCount">0</span></span>
+                            <span>Words: <span id="analyzerWordCount">0</span></span>
+                            <span>Lines: <span id="analyzerLineCount">0</span></span>
+                            <span>Sentences: <span id="analyzerSentenceCount">0</span></span>
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,18 @@ const textHistory = {
     modifier: {
         stack: [],
         currentIndex: -1
+    },
+    analyzer: {
+        stack: [],
+        currentIndex: -1
+    },
+    comparison1: {
+        stack: [],
+        currentIndex: -1
+    },
+    comparison2: {
+        stack: [],
+        currentIndex: -1
     }
 };
 
@@ -17,7 +29,10 @@ const WARN_THRESHOLD = 0.8; // Show warning at 80% of limit
 // Add these variables at the top of the file
 const fontSizes = {
     case: 16,
-    modifier: 16
+    modifier: 16,
+    analyzer: 16,
+    comparison1: 16,
+    comparison2: 16
 };
 
 // Function to save state to history
@@ -90,9 +105,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add input listeners for both textareas
-    document.getElementById('caseInputText')?.addEventListener('input', () => updateCounts('case'));
-    document.getElementById('modifierInputText')?.addEventListener('input', () => updateCounts('modifier'));
+    // Add input listeners for all textareas
+    ['case', 'modifier', 'analyzer'].forEach(type => {
+        const textarea = document.getElementById(`${type}InputText`);
+        if (textarea) {
+            textarea.addEventListener('input', () => {
+                updateCounts(type);
+                if (textHistory[type].stack.length === 0) {
+                    saveToHistory(type, '');
+                }
+                saveToHistory(type, textarea.value);
+            });
+        }
+    });
+
+    // Initialize theme
+    initTheme();
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    
+    // Load saved text
+    loadFromLocalStorage();
 });
 
 // Text Modification Functions
@@ -125,6 +157,17 @@ function modifyText(type) {
             newText = text.split('\n')
                 .filter(line => line.trim().length > 0)
                 .join('\n');
+            break;
+        case 'format-json':
+            try {
+                // Parse the JSON to validate it
+                const jsonObj = JSON.parse(text);
+                // Format with 2 spaces indentation
+                newText = JSON.stringify(jsonObj, null, 2);
+            } catch (err) {
+                showNotification('Invalid JSON format!', 'error');
+                return;
+            }
             break;
     }
     
@@ -453,7 +496,7 @@ function saveToLocalStorage(type) {
 }
 
 function loadFromLocalStorage() {
-    ['case', 'modifier'].forEach(type => {
+    ['case', 'modifier', 'analyzer'].forEach(type => {
         const savedText = localStorage.getItem(`${type}Text`);
         if (savedText) {
             const textarea = document.getElementById(`${type}InputText`);
@@ -519,7 +562,7 @@ function updateCharLimit(type) {
 
 // Update the textarea input event listeners
 document.addEventListener('DOMContentLoaded', function() {
-    ['case', 'modifier'].forEach(type => {
+    ['case', 'modifier', 'analyzer'].forEach(type => {
         const textarea = document.getElementById(`${type}InputText`);
         if (textarea) {
             textarea.addEventListener('input', (e) => {
@@ -549,3 +592,451 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Text Analysis Functions
+function analyzeText(type) {
+    const input = document.getElementById('analyzerInputText');
+    const text = input.value;
+    const resultsDiv = document.querySelector('.analysis-results');
+    const outputDiv = document.getElementById('analysisOutput');
+    
+    if (!text.trim()) {
+        showNotification('Please enter some text to analyze!', 'error');
+        return;
+    }
+
+    let result = '';
+    switch(type) {
+        case 'word-frequency':
+            result = getWordFrequency(text);
+            break;
+        case 'reading-time':
+            result = getReadingTime(text);
+            break;
+        case 'keyword-density':
+            result = getKeywordDensity(text);
+            break;
+        case 'readability':
+            result = getReadabilityScore(text);
+            break;
+        case 'char-distribution':
+            result = getCharacterDistribution(text);
+            break;
+        case 'sentiment':
+            result = getSentimentAnalysis(text);
+            break;
+        case 'longest-words':
+            result = getLongestWords(text);
+            break;
+        case 'repeated-phrases':
+            result = getRepeatedPhrases(text);
+            break;
+    }
+
+    outputDiv.innerHTML = result;
+    resultsDiv.style.display = 'block';
+}
+
+function getWordFrequency(text) {
+    const words = text.toLowerCase().match(/\b\w+\b/g);
+    const frequency = {};
+    words.forEach(word => {
+        frequency[word] = (frequency[word] || 0) + 1;
+    });
+
+    const sorted = Object.entries(frequency)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+    return `
+        <h3>Top 10 Most Frequent Words</h3>
+        <table>
+            <tr><th>Word</th><th>Frequency</th></tr>
+            ${sorted.map(([word, count]) => 
+                `<tr><td>${word}</td><td>${count}</td></tr>`
+            ).join('')}
+        </table>
+    `;
+}
+
+function getReadingTime(text) {
+    const wordsPerMinute = 200;
+    const wordCount = text.trim().split(/\s+/).length;
+    const minutes = Math.ceil(wordCount / wordsPerMinute);
+
+    return `
+        <h3>Estimated Reading Time</h3>
+        <p>${minutes} minute${minutes !== 1 ? 's' : ''} (at ${wordsPerMinute} words per minute)</p>
+        <p>Total words: ${wordCount}</p>
+    `;
+}
+
+function getKeywordDensity(text) {
+    const words = text.toLowerCase().match(/\b\w+\b/g);
+    const totalWords = words.length;
+    const frequency = {};
+    
+    words.forEach(word => {
+        frequency[word] = (frequency[word] || 0) + 1;
+    });
+
+    const density = Object.entries(frequency)
+        .map(([word, count]) => ({
+            word,
+            count,
+            density: ((count / totalWords) * 100).toFixed(2)
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
+
+    return `
+        <h3>Keyword Density (Top 10)</h3>
+        <table>
+            <tr><th>Keyword</th><th>Count</th><th>Density (%)</th></tr>
+            ${density.map(({word, count, density}) => 
+                `<tr><td>${word}</td><td>${count}</td><td>${density}%</td></tr>`
+            ).join('')}
+        </table>
+    `;
+}
+
+function getReadabilityScore(text) {
+    const sentences = text.split(/[.!?]+/).length;
+    const words = text.trim().split(/\s+/).length;
+    const syllables = countSyllables(text);
+    
+    // Flesch Reading Ease score
+    const score = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
+    const level = getReadingLevel(score);
+
+    return `
+        <h3>Readability Analysis</h3>
+        <p>Flesch Reading Ease Score: ${Math.round(score)}</p>
+        <p>Reading Level: ${level}</p>
+        <p>Average words per sentence: ${(words / sentences).toFixed(1)}</p>
+        <p>Average syllables per word: ${(syllables / words).toFixed(1)}</p>
+    `;
+}
+
+function getCharacterDistribution(text) {
+    const chars = text.split('');
+    const distribution = {};
+    
+    chars.forEach(char => {
+        if (char.match(/[a-z0-9]/i)) {
+            distribution[char.toLowerCase()] = (distribution[char.toLowerCase()] || 0) + 1;
+        }
+    });
+
+    const sorted = Object.entries(distribution)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+    return `
+        <h3>Character Distribution (Top 10)</h3>
+        <table>
+            <tr><th>Character</th><th>Count</th></tr>
+            ${sorted.map(([char, count]) => 
+                `<tr><td>${char}</td><td>${count}</td></tr>`
+            ).join('')}
+        </table>
+    `;
+}
+
+// Helper functions
+function countSyllables(text) {
+    return text.toLowerCase()
+        .replace(/[^a-z]/g, '')
+        .replace(/[^aeiouy]*[aeiouy]+/g, 'a')
+        .length;
+}
+
+function getReadingLevel(score) {
+    if (score >= 90) return 'Very Easy';
+    if (score >= 80) return 'Easy';
+    if (score >= 70) return 'Fairly Easy';
+    if (score >= 60) return 'Standard';
+    if (score >= 50) return 'Fairly Difficult';
+    if (score >= 30) return 'Difficult';
+    return 'Very Difficult';
+}
+
+// Add these new analysis functions
+
+function getLongestWords(text) {
+    const words = text.toLowerCase()
+        .match(/\b[a-z]+\b/g)
+        .sort((a, b) => b.length - a.length)
+        .slice(0, 10);
+
+    return `
+        <h3>10 Longest Words</h3>
+        <table>
+            <tr><th>Word</th><th>Length</th></tr>
+            ${words.map(word => 
+                `<tr><td>${word}</td><td>${word.length} characters</td></tr>`
+            ).join('')}
+        </table>
+    `;
+}
+
+function getRepeatedPhrases(text) {
+    const phrases = {};
+    const words = text.toLowerCase().match(/\b\w+\b/g);
+    
+    // Look for 2-4 word phrases
+    for (let phraseLength = 2; phraseLength <= 4; phraseLength++) {
+        for (let i = 0; i <= words.length - phraseLength; i++) {
+            const phrase = words.slice(i, i + phraseLength).join(' ');
+            phrases[phrase] = (phrases[phrase] || 0) + 1;
+        }
+    }
+
+    const repeatedPhrases = Object.entries(phrases)
+        .filter(([_, count]) => count > 1)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+
+    return `
+        <h3>Most Repeated Phrases</h3>
+        <table>
+            <tr><th>Phrase</th><th>Occurrences</th></tr>
+            ${repeatedPhrases.map(([phrase, count]) => 
+                `<tr><td>"${phrase}"</td><td>${count}</td></tr>`
+            ).join('')}
+        </table>
+    `;
+}
+
+function getSentimentAnalysis(text) {
+    // Simple sentiment analysis using keyword matching
+    const positiveWords = new Set([
+        'good', 'great', 'awesome', 'excellent', 'happy', 'love', 'wonderful',
+        'fantastic', 'amazing', 'beautiful', 'best', 'perfect', 'brilliant'
+    ]);
+    
+    const negativeWords = new Set([
+        'bad', 'terrible', 'awful', 'horrible', 'sad', 'hate', 'worst',
+        'poor', 'disappointing', 'negative', 'wrong', 'difficult', 'failed'
+    ]);
+
+    const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+    let positiveCount = 0;
+    let negativeCount = 0;
+    let neutralCount = 0;
+
+    words.forEach(word => {
+        if (positiveWords.has(word)) positiveCount++;
+        else if (negativeWords.has(word)) negativeCount++;
+        else neutralCount++;
+    });
+
+    const total = words.length;
+    const sentiment = positiveCount > negativeCount ? 'Positive' :
+                     positiveCount < negativeCount ? 'Negative' : 'Neutral';
+    
+    return `
+        <h3>Basic Sentiment Analysis</h3>
+        <p>Overall Sentiment: <strong>${sentiment}</strong></p>
+        <table>
+            <tr><th>Type</th><th>Count</th><th>Percentage</th></tr>
+            <tr>
+                <td>Positive Words</td>
+                <td>${positiveCount}</td>
+                <td>${((positiveCount/total) * 100).toFixed(1)}%</td>
+            </tr>
+            <tr>
+                <td>Negative Words</td>
+                <td>${negativeCount}</td>
+                <td>${((negativeCount/total) * 100).toFixed(1)}%</td>
+            </tr>
+            <tr>
+                <td>Neutral Words</td>
+                <td>${neutralCount}</td>
+                <td>${((neutralCount/total) * 100).toFixed(1)}%</td>
+            </tr>
+        </table>
+    `;
+}
+
+// Text Comparison Functions
+function compareTexts(type) {
+    const text1 = document.getElementById('comparison1InputText').value;
+    const text2 = document.getElementById('comparison2InputText').value;
+    const resultsDiv = document.querySelector('.comparison-results');
+    const outputDiv = document.getElementById('comparisonOutput');
+    
+    if (!text1.trim() || !text2.trim()) {
+        showNotification('Please enter both texts to compare!', 'error');
+        return;
+    }
+
+    let result = '';
+    switch(type) {
+        case 'similarity':
+            result = checkSimilarity(text1, text2);
+            break;
+        case 'differences':
+            result = findDifferences(text1, text2);
+            break;
+        case 'common-words':
+            result = findCommonWords(text1, text2);
+            break;
+        case 'unique-words':
+            result = findUniqueWords(text1, text2);
+            break;
+        case 'length-stats':
+            result = getLengthStats(text1, text2);
+            break;
+    }
+
+    outputDiv.innerHTML = result;
+    resultsDiv.style.display = 'block';
+}
+
+function checkSimilarity(text1, text2) {
+    const words1 = text1.toLowerCase().match(/\b\w+\b/g) || [];
+    const words2 = text2.toLowerCase().match(/\b\w+\b/g) || [];
+    
+    const intersection = words1.filter(word => words2.includes(word));
+    const similarity = (intersection.length * 2) / (words1.length + words2.length);
+    const percentage = (similarity * 100).toFixed(1);
+
+    return `
+        <h3>Text Similarity Analysis</h3>
+        <p>Similarity Score: <strong>${percentage}%</strong></p>
+        <p>Common Words: ${intersection.length}</p>
+        <p>Text 1 Words: ${words1.length}</p>
+        <p>Text 2 Words: ${words2.length}</p>
+    `;
+}
+
+function findDifferences(text1, text2) {
+    const lines1 = text1.split('\n');
+    const lines2 = text2.split('\n');
+    const maxLines = Math.max(lines1.length, lines2.length);
+    
+    let diffHtml = '<h3>Line by Line Differences</h3><table><tr><th>Line</th><th>Text 1</th><th>Text 2</th></tr>';
+    
+    for (let i = 0; i < maxLines; i++) {
+        const line1 = lines1[i] || '';
+        const line2 = lines2[i] || '';
+        const isDifferent = line1 !== line2;
+        
+        diffHtml += `
+            <tr${isDifferent ? ' class="difference"' : ''}>
+                <td>${i + 1}</td>
+                <td>${line1}</td>
+                <td>${line2}</td>
+            </tr>
+        `;
+    }
+    
+    return diffHtml + '</table>';
+}
+
+function findCommonWords(text1, text2) {
+    const words1 = new Set(text1.toLowerCase().match(/\b\w+\b/g) || []);
+    const words2 = new Set(text2.toLowerCase().match(/\b\w+\b/g) || []);
+    
+    const commonWords = [...words1].filter(word => words2.has(word))
+        .sort((a, b) => a.localeCompare(b));
+
+    return `
+        <h3>Common Words (${commonWords.length})</h3>
+        <p>${commonWords.join(', ') || 'No common words found.'}</p>
+    `;
+}
+
+function findUniqueWords(text1, text2) {
+    const words1 = new Set(text1.toLowerCase().match(/\b\w+\b/g) || []);
+    const words2 = new Set(text2.toLowerCase().match(/\b\w+\b/g) || []);
+    
+    const uniqueToText1 = [...words1].filter(word => !words2.has(word))
+        .sort((a, b) => a.localeCompare(b));
+    const uniqueToText2 = [...words2].filter(word => !words1.has(word))
+        .sort((a, b) => a.localeCompare(b));
+
+    return `
+        <h3>Unique Words Analysis</h3>
+        <h4>Unique to Text 1 (${uniqueToText1.length})</h4>
+        <p>${uniqueToText1.join(', ') || 'No unique words.'}</p>
+        <h4>Unique to Text 2 (${uniqueToText2.length})</h4>
+        <p>${uniqueToText2.join(', ') || 'No unique words.'}</p>
+    `;
+}
+
+function getLengthStats(text1, text2) {
+    const stats1 = getTextStats(text1);
+    const stats2 = getTextStats(text2);
+    
+    return `
+        <h3>Length Statistics Comparison</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Text 1</th>
+                <th>Text 2</th>
+                <th>Difference</th>
+            </tr>
+            <tr>
+                <td>Characters</td>
+                <td>${stats1.chars}</td>
+                <td>${stats2.chars}</td>
+                <td>${Math.abs(stats1.chars - stats2.chars)}</td>
+            </tr>
+            <tr>
+                <td>Words</td>
+                <td>${stats1.words}</td>
+                <td>${stats2.words}</td>
+                <td>${Math.abs(stats1.words - stats2.words)}</td>
+            </tr>
+            <tr>
+                <td>Lines</td>
+                <td>${stats1.lines}</td>
+                <td>${stats2.lines}</td>
+                <td>${Math.abs(stats1.lines - stats2.lines)}</td>
+            </tr>
+            <tr>
+                <td>Average Word Length</td>
+                <td>${stats1.avgWordLength}</td>
+                <td>${stats2.avgWordLength}</td>
+                <td>${Math.abs(stats1.avgWordLength - stats2.avgWordLength).toFixed(1)}</td>
+            </tr>
+        </table>
+    `;
+}
+
+function getTextStats(text) {
+    const chars = text.length;
+    const words = text.trim().split(/\s+/).length;
+    const lines = text.split('\n').length;
+    const avgWordLength = chars / words;
+    
+    return {
+        chars,
+        words,
+        lines,
+        avgWordLength
+    };
+}
+
+function clearComparison() {
+    document.getElementById('comparison1InputText').value = '';
+    document.getElementById('comparison2InputText').value = '';
+    document.querySelector('.comparison-results').style.display = 'none';
+    updateCounts('comparison1');
+    updateCounts('comparison2');
+}
+
+function swapTexts() {
+    const text1 = document.getElementById('comparison1InputText');
+    const text2 = document.getElementById('comparison2InputText');
+    const temp = text1.value;
+    
+    text1.value = text2.value;
+    text2.value = temp;
+    
+    updateCounts('comparison1');
+    updateCounts('comparison2');
+}
