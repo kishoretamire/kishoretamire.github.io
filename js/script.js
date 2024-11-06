@@ -15,11 +15,19 @@ const MAX_CHARS = 100000;
 const WARN_THRESHOLD = 0.8; // Show warning at 80% of limit
 
 // Add these variables at the top of the file
-let currentFontSize = 16;
+const fontSizes = {
+    case: 16,
+    modifier: 16
+};
 
 // Function to save state to history
 function saveToHistory(type, text) {
     const history = textHistory[type];
+    
+    // Don't save if the text is identical to the current state
+    if (history.stack[history.currentIndex] === text) {
+        return;
+    }
     
     // Remove any future states if we're in the middle of the history
     if (history.currentIndex < history.stack.length - 1) {
@@ -30,7 +38,7 @@ function saveToHistory(type, text) {
     history.stack.push(text);
     history.currentIndex++;
     
-    // Limit history size (optional)
+    // Limit history size
     if (history.stack.length > 50) {
         history.stack.shift();
         history.currentIndex--;
@@ -45,8 +53,13 @@ function undo(type) {
     const history = textHistory[type];
     if (history.currentIndex > 0) {
         history.currentIndex--;
-        const text = history.stack[history.currentIndex];
-        document.getElementById(`${type}InputText`).value = text;
+        const previousState = history.stack[history.currentIndex];
+        
+        // Update the text area
+        const textarea = document.getElementById(`${type}InputText`);
+        textarea.value = previousState;
+        
+        // Update counts and undo button state
         updateCounts(type);
         updateUndoButton(type);
     }
@@ -56,8 +69,7 @@ function undo(type) {
 function updateUndoButton(type) {
     const undoButton = document.getElementById(`${type}Undo`);
     if (undoButton) {
-        // Disable if there's no history or we're at the initial state
-        undoButton.disabled = !textHistory[type].stack.length || textHistory[type].currentIndex <= 0;
+        undoButton.disabled = textHistory[type].currentIndex <= 0;
     }
 }
 
@@ -87,8 +99,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function modifyText(type) {
     const input = document.getElementById('modifierInputText');
     let text = input.value;
+    
+    // Save current state before modification
+    if (text !== textHistory.modifier.stack[textHistory.modifier.currentIndex]) {
+        saveToHistory('modifier', text);
+    }
+    
     let newText = text;
-
     switch(type) {
         case 'remove-linebreaks':
             newText = text.replace(/[\r\n]+/g, ' ');
@@ -112,8 +129,8 @@ function modifyText(type) {
     }
     
     if (newText !== text) {
-        saveToHistory('modifier', text);
         input.value = newText;
+        saveToHistory('modifier', newText);
         updateCounts('modifier');
     }
 }
@@ -203,8 +220,13 @@ function downloadText(type) {
 function convertCase(type) {
     const input = document.getElementById('caseInputText');
     let text = input.value;
+    
+    // Save current state before modification
+    if (text !== textHistory.case.stack[textHistory.case.currentIndex]) {
+        saveToHistory('case', text);
+    }
+    
     let newText = text;
-
     switch(type) {
         case 'lower':
             newText = text.toLowerCase();
@@ -228,8 +250,8 @@ function convertCase(type) {
     }
     
     if (newText !== text) {
-        saveToHistory('case', text);
         input.value = newText;
+        saveToHistory('case', newText);
         updateCounts('case');
     }
 }
@@ -240,9 +262,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const textarea = document.getElementById(`${type}InputText`);
         if (textarea) {
             textarea.addEventListener('input', (e) => {
+                // Save initial state if history is empty
                 if (textHistory[type].stack.length === 0) {
-                    saveToHistory(type, e.target.value);
+                    saveToHistory(type, '');
                 }
+                saveToHistory(type, e.target.value);
                 updateCounts(type);
             });
         }
@@ -270,23 +294,25 @@ function updateThemeIcon() {
 }
 
 // Text Size Controls
-function adjustTextSize(action) {
+function adjustTextSize(action, type) {
     const minSize = 12;
     const maxSize = 24;
     const step = 2;
     
-    if (action === 'increase' && currentFontSize < maxSize) {
-        currentFontSize += step;
-    } else if (action === 'decrease' && currentFontSize > minSize) {
-        currentFontSize -= step;
+    if (action === 'increase' && fontSizes[type] < maxSize) {
+        fontSizes[type] += step;
+    } else if (action === 'decrease' && fontSizes[type] > minSize) {
+        fontSizes[type] -= step;
     }
     
-    document.querySelectorAll('textarea').forEach(textarea => {
-        textarea.style.fontSize = `${currentFontSize}px`;
-    });
+    // Update the textarea font size
+    document.getElementById(`${type}InputText`).style.fontSize = `${fontSizes[type]}px`;
     
-    document.getElementById('fontSizeDisplay').textContent = `${currentFontSize}px`;
-    localStorage.setItem('fontSize', currentFontSize);
+    // Update the display
+    document.getElementById(`${type}FontSizeDisplay`).textContent = `${fontSizes[type]}px`;
+    
+    // Save to localStorage
+    localStorage.setItem(`${type}FontSize`, fontSizes[type]);
 }
 
 // Export functionality
@@ -445,15 +471,15 @@ document.addEventListener('DOMContentLoaded', function() {
     initTheme();
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     
-    // Initialize font size
-    const savedFontSize = localStorage.getItem('fontSize');
-    if (savedFontSize) {
-        currentFontSize = parseInt(savedFontSize);
-        document.querySelectorAll('textarea').forEach(textarea => {
-            textarea.style.fontSize = `${currentFontSize}px`;
-        });
-        document.getElementById('fontSizeDisplay').textContent = `${currentFontSize}px`;
-    }
+    // Initialize font sizes from localStorage
+    ['case', 'modifier'].forEach(type => {
+        const savedSize = localStorage.getItem(`${type}FontSize`);
+        if (savedSize) {
+            fontSizes[type] = parseInt(savedSize);
+            document.getElementById(`${type}InputText`).style.fontSize = `${fontSizes[type]}px`;
+            document.getElementById(`${type}FontSizeDisplay`).textContent = `${fontSizes[type]}px`;
+        }
+    });
     
     // Load saved text
     loadFromLocalStorage();

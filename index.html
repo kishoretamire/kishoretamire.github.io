@@ -54,18 +54,21 @@
                 <!-- Case Converter Tab -->
                 <div class="tab-content active" id="case-converter">
                     <div class="converter-box">
-                        <textarea id="caseInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="text-controls">
                             <div class="size-controls">
-                                <button onclick="adjustTextSize('decrease')" class="control-button">
+                                <button onclick="adjustTextSize('decrease', 'case')" class="control-button">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <span id="fontSizeDisplay">16px</span>
-                                <button onclick="adjustTextSize('increase')" class="control-button">
+                                <span id="caseFontSizeDisplay">16px</span>
+                                <button onclick="adjustTextSize('increase', 'case')" class="control-button">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
+                            <button class="control-button" id="caseUndo" onclick="undo('case')" disabled>
+                                <i class="fas fa-undo"></i> Undo
+                            </button>
                         </div>
+                        <textarea id="caseInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="button-group">
                             <button onclick="convertCase('lower')">lowercase</button>
                             <button onclick="convertCase('upper')">UPPERCASE</button>
@@ -95,14 +98,13 @@
                 <!-- Text Modifier Tab -->
                 <div class="tab-content" id="text-modifier">
                     <div class="converter-box">
-                        <textarea id="modifierInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="text-controls">
                             <div class="size-controls">
-                                <button onclick="adjustTextSize('decrease')" class="control-button">
+                                <button onclick="adjustTextSize('decrease', 'modifier')" class="control-button">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <span id="fontSizeDisplay">16px</span>
-                                <button onclick="adjustTextSize('increase')" class="control-button">
+                                <span id="modifierFontSizeDisplay">16px</span>
+                                <button onclick="adjustTextSize('increase', 'modifier')" class="control-button">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -110,6 +112,7 @@
                                 <i class="fas fa-undo"></i> Undo
                             </button>
                         </div>
+                        <textarea id="modifierInputText" placeholder="Enter or paste your text here..."></textarea>
                         <div class="button-group">
                             <button onclick="modifyText('remove-linebreaks')">Remove Line Breaks</button>
                             <button onclick="modifyText('remove-whitespace')">Remove Extra Spaces</button>
