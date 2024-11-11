@@ -445,17 +445,9 @@ class VideoPlayer {
             <div class="col-12">
                 <div class="alert alert-danger">
                     <p>${message}</p>
-                    <div class="mt-3">
-                        <p class="mb-2">Please ensure:</p>
-                        <ol>
-                            <li>You've run video_fetcher.py to fetch videos</li>
-                            <li>You've run db_to_json.py to generate JSON files</li>
-                            <li>The static/data directory exists with JSON files</li>
-                        </ol>
-                        <button class="btn btn-outline-danger mt-2" onclick="window.location.reload()">
-                            Try Again
-                        </button>
-                    </div>
+                    <button class="btn btn-outline-danger mt-2" onclick="window.location.reload()">
+                        Try Again
+                    </button>
                 </div>
             </div>
         `;
