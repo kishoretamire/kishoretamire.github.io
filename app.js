@@ -14,7 +14,27 @@ class VideoPlayer {
             'classic': 'Classic Matches',
             'other': 'Other Videos'
         };
+
+        // Get base path dynamically based on current URL
+        this.basePath = this.getBasePath();
         this.init();
+    }
+
+    getBasePath() {
+        // Get the current path excluding the file name
+        const currentPath = window.location.pathname;
+        const pathParts = currentPath.split('/');
+        
+        // Remove the last part if it's a file
+        if (currentPath.endsWith('.html') || currentPath.endsWith('/')) {
+            pathParts.pop();
+        }
+        
+        // Join the remaining parts to form the base path
+        const basePath = pathParts.join('/');
+        
+        // If base path is empty, return '.' for root
+        return basePath || '.';
     }
 
     renderCategories() {
@@ -76,7 +96,8 @@ class VideoPlayer {
             document.getElementById('loading').style.display = 'block';
             document.getElementById('load-more').style.display = 'none';
             
-            const url = `static/data/${this.currentCategory}_videos.json`;
+            // Construct URL using basePath
+            const url = `${this.basePath}/static/data/${this.currentCategory}_videos.json`;
             console.log('Fetching videos from:', url);
             
             const response = await fetch(url);
@@ -109,7 +130,7 @@ class VideoPlayer {
             }
         } catch (error) {
             console.error('Error loading videos:', error);
-            this.showError(`Failed to load videos: ${error.message}`);
+            this.showError(`Failed to load videos: ${error.message}. Path: ${url}`);
         } finally {
             document.getElementById('loading').style.display = 'none';
         }
@@ -196,8 +217,8 @@ class VideoPlayer {
             this.loading = true;
             document.getElementById('loading').style.display = 'block';
             
-            // Load all videos again
-            const response = await fetch(`static/data/${this.currentCategory}_videos.json`);
+            const url = `${this.basePath}/static/data/${this.currentCategory}_videos.json`;
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error('Failed to load more videos');
             }

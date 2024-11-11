@@ -20,6 +20,10 @@ videos.db
 .DS_Store
 Thumbs.db
 
-
 # Logs
-*.log 
+*.log
+
+# Do NOT ignore these
+!static/
+!static/data/
+!static/data/*.json
