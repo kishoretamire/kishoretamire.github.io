@@ -4,29 +4,149 @@ body {
     color: #fff;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container-fluid {
     max-width: 100% !important;
     padding: 0 2rem;
+    flex: 1;
 }
 
-/* Header */
-header {
+/* Site Header */
+.site-header {
     background: #1a1a1a;
-    padding: 1.5rem 0;
+    padding: 1rem 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    margin-bottom: 2rem !important;
-    width: 100%;
+    border-bottom: 1px solid #333;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-header h1 {
+.site-header .navbar-brand h1 {
     color: #fff;
+    font-size: 1.5rem;
     font-weight: 600;
     margin: 0;
 }
 
-/* Navigation */
+/* Header Navigation */
+.site-header .navbar-nav {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.5rem 0;
+}
+
+.site-header .nav-link {
+    color: #909090;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.site-header .nav-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.site-header .nav-link.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Responsive Header */
+@media (max-width: 991px) {
+    .site-header .navbar-collapse {
+        background: #1a1a1a;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+
+    .site-header .navbar-nav {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        padding-bottom: 0.5rem;
+    }
+}
+
+/* Main Content Area */
+.main-content {
+    padding: 2rem 0;
+    flex: 1;
+}
+
+/* Footer */
+.site-footer {
+    background: #1a1a1a;
+    padding: 3rem 0 1rem;
+    margin-top: 3rem;
+    border-top: 1px solid #333;
+}
+
+.site-footer h3 {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.site-footer p {
+    color: #909090;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+    color: #909090;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.social-icons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icons a {
+    color: #909090;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: #fff;
+}
+
+.copyright-text {
+    color: #909090;
+    font-size: 0.85rem;
+}
+
+/* Navigation Tabs */
 .nav-tabs {
     border: none;
     background: #1a1a1a;
@@ -445,4 +565,84 @@ header h1 {
 .no-more-videos-message {
     margin-top: 2rem !important;
     margin-bottom: 2rem !important;
+}
+
+/* Team Filter */
+#team-filter {
+    background: #1a1a1a;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+#team-filter .form-select {
+    background-color: #242424;
+    border-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+#team-filter .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+    border-color: #444;
+}
+
+#team-filter .form-select option {
+    background-color: #242424;
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 0 1rem;
+    }
+    
+    .site-header {
+        padding: 0.5rem 0;
+    }
+    
+    .site-footer {
+        padding: 2rem 0 1rem;
+    }
+    
+    .footer-section {
+        margin-bottom: 2rem;
+    }
+    
+    .social-icons {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
+    .copyright-text {
+        text-align: center;
+    }
+}
+
+/* SEO-friendly elements */
+.seo-description {
+    display: none;
+}
+
+/* Accessibility improvements */
+.skip-to-content {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.skip-to-content:focus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    padding: 1rem;
+    background: #1a1a1a;
+    z-index: 9999;
+    color: #fff;
 }

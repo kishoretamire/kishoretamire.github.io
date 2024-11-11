@@ -85,18 +85,86 @@ def is_short(video_details):
         logger.error(f"Error checking if video is short: {e}")
         return False
 
-def categorize_video(title):
-    """Categorize video based on its title"""
+def get_team_variations():
+    """Get variations of team names"""
+    return {
+        'australia': ['australia', 'aussies', 'aus'],
+        'india': ['india', 'ind', 'bcci', 'team india'],
+        'england': ['england', 'eng', 'english'],
+        'pakistan': ['pakistan', 'pak', 'pcb'],
+        'south africa': ['south africa', 'sa', 'proteas'],
+        'new zealand': ['new zealand', 'nz', 'black caps', 'blackcaps'],
+        'west indies': ['west indies', 'wi', 'windies', 'caribbean'],
+        'sri lanka': ['sri lanka', 'sl', 'lanka'],
+        'bangladesh': ['bangladesh', 'ban', 'tigers']
+    }
+
+def extract_teams_from_text(text):
+    """Extract team names from text using variations"""
+    teams = set()
+    text_lower = text.lower()
+    team_variations = get_team_variations()
+    
+    for team, variations in team_variations.items():
+        if any(variation in text_lower for variation in variations):
+            teams.add(team.title())
+    
+    return list(teams)
+
+def categorize_video(title, description=''):
+    """Categorize video based on its title and description"""
     title_lower = title.lower()
-    if any(term in title_lower for term in ['vs', 'highlights', ' v ', 'match', 'innings']):
-        if 'classic' in title_lower or 'archive' in title_lower:
-            return 'classic'
-        return 'matches'
-    if any(term in title_lower for term in ['interview', 'press', 'conference', 'speaks']):
-        return 'interviews'
-    if any(term in title_lower for term in ['training', 'practice', 'behind the scenes', 'nets']):
-        return 'training'
-    return 'other'
+    description_lower = description.lower() if description else ''
+    
+    # Extract teams from both title and description
+    teams = extract_teams_from_text(f"{title_lower} {description_lower}")
+    
+    # Match Highlights - ONLY check title for highlights
+    highlight_indicators = [
+        'highlights', 'match highlights', 'innings highlights',
+        'batting highlights', 'bowling highlights'
+    ]
+    
+    # Check for highlights in title only
+    if any(indicator in title_lower for indicator in highlight_indicators):
+        if any(indicator in title_lower for indicator in ['classic', 'archive', 'throwback', 'on this day']):
+            return 'classic', teams
+        return 'matches', teams
+    
+    # For other categories, check both title and description
+    combined_text = f"{title_lower} {description_lower}"
+    
+    # Press/Interviews
+    interview_indicators = [
+        'interview', 'press conference', 'press', 'conference',
+        'speaks to media', 'media session', 'presser', 'media briefing',
+        'post match press', 'pre match press'
+    ]
+    
+    # Classic/Archive
+    classic_indicators = [
+        'classic', 'archive', 'throwback', 'on this day',
+        'vintage', 'retro', 'from the vault', 'memories'
+    ]
+    
+    if any(indicator in combined_text for indicator in interview_indicators):
+        return 'interviews', teams
+    
+    if any(indicator in combined_text for indicator in classic_indicators):
+        return 'classic', teams
+    
+    # Additional match indicators - only if not already categorized
+    match_indicators = [
+        ' vs ', ' v ', 'test match', 't20', 'odi', 
+        'final', 'semi final', 'quarter final'
+    ]
+    if any(indicator in combined_text for indicator in match_indicators):
+        if any(indicator in combined_text for indicator in classic_indicators):
+            return 'classic', teams
+        return 'matches', teams
+    
+    # If no specific category is found
+    return 'other', teams
 
 def get_best_thumbnail(video):
     """Get the best quality thumbnail URL"""
@@ -142,7 +210,7 @@ class VideoFetcher:
                 part="id",
                 channelId=channel_id,
                 order="date",
-                maxResults=15,  # Request more to account for filtered videos
+                maxResults=15,
                 type="video"
             )
             response = request.execute()
@@ -153,18 +221,23 @@ class VideoFetcher:
             if not video_ids:
                 return []
             
-            # Get detailed video information including status
+            # Get detailed video information
             video_response = self.youtube.videos().list(
-                part="snippet,contentDetails,statistics,status",  # Added status part
+                part="snippet,contentDetails,statistics,status",
                 id=','.join(video_ids)
             ).execute()
             
             for video in video_response.get('items', []):
-                # Check if video is embeddable and public
                 if (video['status'].get('embeddable', False) and 
                     video['status'].get('privacyStatus') == 'public' and 
                     not is_short(video)):
                     try:
+                        # Get category and teams using both title and description
+                        category, teams = categorize_video(
+                            video['snippet']['title'],
+                            video['snippet'].get('description', '')
+                        )
+                        
                         video_data = {
                             'id': video['id'],
                             'title': video['snippet']['title'],
@@ -172,14 +245,15 @@ class VideoFetcher:
                             'thumbnail_url': get_best_thumbnail(video),
                             'duration': video['contentDetails']['duration'],
                             'views': video['statistics'].get('viewCount', 'N/A'),
-                            'category': categorize_video(video['snippet']['title']),
+                            'category': category,
+                            'teams': teams,
                             'channel_id': channel_id,
                             'channel_name': channel_name,
                             'upload_date': video['snippet']['publishedAt']
                         }
                         videos.append(video_data)
                         
-                        if len(videos) >= 5:  # Only keep 5 embeddable non-short videos
+                        if len(videos) >= 5:
                             break
                     except Exception as e:
                         logger.error(f"Error processing video {video.get('id')}: {e}")

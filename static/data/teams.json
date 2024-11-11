@@ -1,56 +1,53 @@
-[
-  {
-    "name": "Sri Lanka",
-    "video_count": 10,
-    "latest_video": {
-      "id": "T9x_8aQf3KY",
-      "title": "Fall of Sri Lanka A wickets in their 1st innings vs Pakistan Shaheens | 1st Four-Day Match, 2024",
-      "upload_date": "2024-11-11T15:52:40Z"
-    }
-  },
-  {
-    "name": "Pakistan",
-    "video_count": 4,
-    "latest_video": {
-      "id": "T9x_8aQf3KY",
-      "title": "Fall of Sri Lanka A wickets in their 1st innings vs Pakistan Shaheens | 1st Four-Day Match, 2024",
-      "upload_date": "2024-11-11T15:52:40Z"
-    }
-  },
-  {
-    "name": "England",
-    "video_count": 5,
-    "latest_video": {
-      "id": "Ax9MUcx8nt4",
-      "title": "Buttler Smacks 83 off 45 | Highlights | West Indies v England | 2nd T20I",
-      "upload_date": "2024-11-11T04:19:58Z"
-    }
-  },
-  {
-    "name": "West Indies",
-    "video_count": 6,
-    "latest_video": {
-      "id": "Ax9MUcx8nt4",
-      "title": "Buttler Smacks 83 off 45 | Highlights | West Indies v England | 2nd T20I",
-      "upload_date": "2024-11-11T04:19:58Z"
-    }
-  },
-  {
-    "name": "New Zealand",
-    "video_count": 6,
-    "latest_video": {
-      "id": "URmw3bDF0dI",
-      "title": "Charith Asalanka | Post Match Press Conference | 2nd T20 Sri Lanka vs New Zealand 2024",
-      "upload_date": "2024-11-10T18:46:42Z"
-    }
-  },
-  {
-    "name": "Australia",
-    "video_count": 4,
-    "latest_video": {
-      "id": "Ik8Fw9AMCgo",
-      "title": "Going Super Saim! Young gun delivers clinical knock | Australia v Pakistan 2024-25",
-      "upload_date": "2024-11-08T12:00:19Z"
-    }
+{
+  "teams": [],
+  "variations": {
+    "australia": [
+      "australia",
+      "aussies",
+      "aus"
+    ],
+    "india": [
+      "india",
+      "ind",
+      "bcci",
+      "team india"
+    ],
+    "england": [
+      "england",
+      "eng",
+      "english"
+    ],
+    "pakistan": [
+      "pakistan",
+      "pak",
+      "pcb"
+    ],
+    "south africa": [
+      "south africa",
+      "sa",
+      "proteas"
+    ],
+    "new zealand": [
+      "new zealand",
+      "nz",
+      "black caps",
+      "blackcaps"
+    ],
+    "west indies": [
+      "west indies",
+      "wi",
+      "windies",
+      "caribbean"
+    ],
+    "sri lanka": [
+      "sri lanka",
+      "sl",
+      "lanka"
+    ],
+    "bangladesh": [
+      "bangladesh",
+      "ban",
+      "tigers"
+    ]
   }
-]
+}
