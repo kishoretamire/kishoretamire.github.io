@@ -20,8 +20,6 @@ videos.db
 .DS_Store
 Thumbs.db
 
-# Generated files
-static/data/*.json
 
 # Logs
 *.log 
