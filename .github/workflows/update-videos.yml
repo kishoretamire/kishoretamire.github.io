@@ -1,0 +1,45 @@
+name: Update Videos
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight
+  workflow_dispatch:      # Allow manual trigger
+
+jobs:
+  update-videos:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: gh-pages
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Create .env file
+      run: |
+        echo "YOUTUBE_API_KEY_1=${{ secrets.YOUTUBE_API_KEY_1 }}" >> .env
+        echo "YOUTUBE_API_KEY_2=${{ secrets.YOUTUBE_API_KEY_2 }}" >> .env
+        echo "YOUTUBE_API_KEY_3=${{ secrets.YOUTUBE_API_KEY_3 }}" >> .env
+        echo "YOUTUBE_API_KEY_4=${{ secrets.YOUTUBE_API_KEY_4 }}" >> .env
+        echo "YOUTUBE_API_KEY_5=${{ secrets.YOUTUBE_API_KEY_5 }}" >> .env
+    
+    - name: Fetch videos and generate JSON
+      run: |
+        python video_fetcher.py
+        python db_to_json.py
+    
+    - name: Commit and push if changed
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add static/data/*.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update video data" && git push) 
