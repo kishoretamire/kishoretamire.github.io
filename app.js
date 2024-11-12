@@ -18,6 +18,7 @@ class VideoPlayer {
         // Get base path dynamically based on current URL
         this.basePath = this.getBasePath();
         this.init();
+        this.initTheme();
     }
 
     getBasePath() {
@@ -82,6 +83,9 @@ class VideoPlayer {
             
             // Setup event listeners
             this.setupEventListeners();
+            
+            // Initialize header scroll effect
+            this.initHeaderScroll();
             
         } catch (error) {
             console.error('Error initializing:', error);
@@ -451,6 +455,54 @@ class VideoPlayer {
                 </div>
             </div>
         `;
+    }
+
+    initTheme() {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => this.toggleTheme());
+            // Set initial icon
+            this.updateThemeIcon();
+        }
+    }
+
+    toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        html.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        this.updateThemeIcon();
+    }
+
+    updateThemeIcon() {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        const darkIcon = document.querySelector('.dark-icon');
+        const lightIcon = document.querySelector('.light-icon');
+        
+        if (darkIcon && lightIcon) {
+            if (currentTheme === 'dark') {
+                darkIcon.style.display = 'none';
+                lightIcon.style.display = 'inline-block';
+            } else {
+                darkIcon.style.display = 'inline-block';
+                lightIcon.style.display = 'none';
+            }
+        }
+    }
+
+    initHeaderScroll() {
+        const header = document.querySelector('.site-header');
+        if (header) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 10) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
     }
 }
 

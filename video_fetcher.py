@@ -111,14 +111,93 @@ def extract_teams_from_text(text):
     
     return list(teams)
 
-def categorize_video(title, description=''):
-    """Categorize video based on its title and description"""
+def categorize_video(title, description='', channel_id=''):
+    """
+    Categorize video based on its title and description.
+    For Pakistan Cricket channel, only use title.
+    """
     title_lower = title.lower()
     description_lower = description.lower() if description else ''
     
     # Extract teams from both title and description
     teams = extract_teams_from_text(f"{title_lower} {description_lower}")
     
+    # Pakistan Cricket channel - only use title
+    if channel_id == 'UCiWrjBhlICf_L_RK5y6Vrxw':  # Pakistan Cricket channel ID
+        # Match Highlights - ONLY check title
+        highlight_indicators = [
+            'highlights', 'match highlights', 'innings highlights',
+            'batting highlights', 'bowling highlights'
+        ]
+        
+        # Check for highlights in title only
+        if any(indicator in title_lower for indicator in highlight_indicators):
+            if any(indicator in title_lower for indicator in ['classic', 'archive', 'throwback', 'on this day']):
+                return 'classic', teams
+            return 'matches', teams
+        
+        # Press/Interviews - title only
+        interview_indicators = [
+            'interview', 'press conference', 'press', 'conference',
+            'speaks to media', 'media session', 'presser', 'media briefing'
+        ]
+        if any(indicator in title_lower for indicator in interview_indicators):
+            return 'interviews', teams
+        
+        # Classic/Archive - title only
+        classic_indicators = [
+            'classic', 'archive', 'throwback', 'on this day',
+            'vintage', 'retro', 'from the vault', 'memories'
+        ]
+        if any(indicator in title_lower for indicator in classic_indicators):
+            return 'classic', teams
+    
+        
+        return 'other', teams
+    
+# West Indies Cricket channel - only use title
+    if channel_id == 'UC2MHTOXktfTK26aDKyQs3cQ':  # Pakistan Cricket channel ID
+        # Match Highlights - ONLY check title
+        highlight_indicators = [
+            'highlights', 'match highlights', 'innings highlights',
+            'batting highlights', 'bowling highlights'
+        ]
+        
+        # Check for highlights in title only
+        if any(indicator in title_lower for indicator in highlight_indicators):
+            if any(indicator in title_lower for indicator in ['classic', 'archive', 'throwback', 'on this day']):
+                return 'classic', teams
+            return 'matches', teams
+        
+        # Press/Interviews - title only
+        interview_indicators = [
+            'interview', 'press conference', 'press', 'conference',
+            'speaks to media', 'media session', 'presser', 'media briefing'
+        ]
+        if any(indicator in title_lower for indicator in interview_indicators):
+            return 'interviews', teams
+        
+        # Classic/Archive - title only
+        classic_indicators = [
+            'classic', 'archive', 'throwback', 'on this day',
+            'vintage', 'retro', 'from the vault', 'memories'
+        ]
+        if any(indicator in title_lower for indicator in classic_indicators):
+            return 'classic', teams
+
+        # Additional match indicators - only if not already categorized
+        match_indicators = [
+            ' vs ', ' v ', 'test match', 't20', 'odi', 
+            'final', 'semi final', 'quarter final'
+        ]
+        if any(indicator in title_lower for indicator in match_indicators):
+            if any(indicator in title_lower for indicator in classic_indicators):
+                return 'classic', teams
+            return 'matches', teams
+        
+        return 'other', teams
+    
+    # For all other channels, use both title and description
     # Match Highlights - ONLY check title for highlights
     highlight_indicators = [
         'highlights', 'match highlights', 'innings highlights',
@@ -235,7 +314,8 @@ class VideoFetcher:
                         # Get category and teams using both title and description
                         category, teams = categorize_video(
                             video['snippet']['title'],
-                            video['snippet'].get('description', '')
+                            video['snippet'].get('description', ''),
+                            video['snippet'].get('channelId', '')
                         )
                         
                         video_data = {
