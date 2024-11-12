@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Cricket Videos - Get in touch with us for any queries, feedback, or content-related issues.">
+    <meta name="keywords" content="cricket videos, contact us, support, feedback, cricket content">
+    <meta name="author" content="Cricket Videos">
+    <meta name="robots" content="index, follow">
+    
+    <title>Contact Us - Cricket Videos</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <a class="navbar-brand" href="index.html" aria-label="Cricket Videos Home">
+                    <h1>Cricket Videos</h1>
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button class="navbar-toggler" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#navbarContent" 
+                        aria-controls="navbarContent" 
+                        aria-expanded="false" 
+                        aria-label="Toggle navigation">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <!-- Navigation Content -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <!-- Categories -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                    </ul>
+
+                    <!-- Additional Navigation -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contact</a>
+                        </li>
+                    </ul>
+
+                    <!-- Theme Toggle -->
+                    <div class="theme-toggle-wrapper">
+                        <button id="theme-toggle" class="btn btn-link nav-link" aria-label="Toggle theme">
+                            <i class="bi bi-moon-fill dark-icon"></i>
+                            <i class="bi bi-sun-fill light-icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container-fluid main-content">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <section class="contact-section mb-5">
+                    <h2 class="mb-4">Contact Us</h2>
+                    <p class="lead mb-4">Get in touch with us for any queries or feedback.</p>
+                    
+                    <div class="row">
+                        <!-- Contact Information -->
+                        <div class="col-md-5 mb-4 mb-md-0">
+                            <div class="contact-info">
+                                <h3>Contact Information</h3>
+                                <ul class="contact-list">
+                                    <li>
+                                        <i class="bi bi-envelope"></i>
+                                        <a href="mailto:contact@cricketvideos.com">contact@cricketvideos.com</a>
+                                    </li>
+                                    <li>
+                                        <i class="bi bi-clock"></i>
+                                        Response Time: Within 24 hours
+                                    </li>
+                                </ul>
+
+                                <h3 class="mt-4">Follow Us</h3>
+                                <div class="social-links">
+                                    <a href="#" class="social-link" aria-label="Facebook">
+                                        <i class="bi bi-facebook"></i>
+                                    </a>
+                                    <a href="#" class="social-link" aria-label="Twitter">
+                                        <i class="bi bi-twitter"></i>
+                                    </a>
+                                    <a href="#" class="social-link" aria-label="YouTube">
+                                        <i class="bi bi-youtube"></i>
+                                    </a>
+                                </div>
+
+                                <div class="contact-note mt-4">
+                                    <h3>Content Issues</h3>
+                                    <p>For any content-related issues or copyright concerns, please provide:</p>
+                                    <ul>
+                                        <li>Video URL/Title</li>
+                                        <li>Specific concern</li>
+                                        <li>Your relation to the content</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Form -->
+                        <div class="col-md-7">
+                            <div class="contact-form">
+                                <h3>Send us a Message</h3>
+                                <form id="contactForm" action="#" method="POST">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="subject" class="form-label">Subject</label>
+                                        <select class="form-select" id="subject" name="subject" required>
+                                            <option value="">Select a subject</option>
+                                            <option value="general">General Inquiry</option>
+                                            <option value="content">Content Issue</option>
+                                            <option value="feedback">Feedback</option>
+                                            <option value="copyright">Copyright Issue</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label">Message</label>
+                                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">Send Message</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>About Cricket Videos</h3>
+                    <p>Cricket Videos brings you the latest cricket content from around the world. Watch match highlights, interviews, press conferences, and classic matches from international cricket boards.</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3>Legal Information</h3>
+                    <p>All videos are sourced from official cricket board channels. Cricket Videos does not host any videos directly. All rights belong to their respective owners.</p>
+                    <p>For any content-related issues, please contact us at <a href="mailto:contact@cricketvideos.com">contact@cricketvideos.com</a></p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="copyright-text">
+                        Copyright © 2024 Cricket Videos. All rights reserved.
+                        All trademarks, logos, and content are property of their respective owners.
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <ul class="social-icons" aria-label="Social media links">
+                        <li><a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a></li>
+                        <li><a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a></li>
+                        <li><a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme initialization and toggle
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-bs-theme', theme);
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update icon
+            const darkIcon = document.querySelector('.dark-icon');
+            const lightIcon = document.querySelector('.light-icon');
+            if (newTheme === 'dark') {
+                darkIcon.style.display = 'none';
+                lightIcon.style.display = 'inline-block';
+            } else {
+                darkIcon.style.display = 'inline-block';
+                lightIcon.style.display = 'none';
+            }
+        });
+
+        // Form submission handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message. We will get back to you soon!');
+            this.reset();
+        });
+    </script>
+</body>
+</html> 

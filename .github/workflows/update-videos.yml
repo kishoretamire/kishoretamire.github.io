@@ -11,8 +11,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-      with:
-        ref: gh-pages
     
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -32,30 +30,19 @@ jobs:
         echo "YOUTUBE_API_KEY_4=${{ secrets.YOUTUBE_API_KEY_4 }}" >> .env
         echo "YOUTUBE_API_KEY_5=${{ secrets.YOUTUBE_API_KEY_5 }}" >> .env
     
+    - name: Create static data directory
+      run: |
+        mkdir -p static/data
+    
     - name: Fetch videos and generate JSON
       run: |
         python video_fetcher.py
         python db_to_json.py
     
-    - name: Commit and push if changed
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add static/data/*.json
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Update video data" && git push) 
-    
-    - name: Create static data directory
-      run: |
-        mkdir -p static/data
-        
-    - name: Generate JSON files
-      run: |
-        python video_fetcher.py
-        python db_to_json.py
-        
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: .
         force_orphan: true
+        enable_jekyll: false

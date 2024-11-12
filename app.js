@@ -389,6 +389,15 @@ class VideoPlayer {
                     e.preventDefault();
                     const category = e.target.dataset.category;
                     this.changeCategory(category);
+                    
+                    // Close mobile menu after category selection
+                    const navbarCollapse = document.getElementById('navbarContent');
+                    if (navbarCollapse) {
+                        const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                        if (bsCollapse && window.innerWidth < 992) {  // 992px is Bootstrap's lg breakpoint
+                            bsCollapse.hide();
+                        }
+                    }
                 }
             });
         }
