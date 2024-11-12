@@ -122,6 +122,10 @@ def categorize_video(title, description='', channel_id=''):
     # Extract teams from both title and description
     teams = extract_teams_from_text(f"{title_lower} {description_lower}")
     
+    # Check for live videos first - these go to 'other' category
+    if 'live' in title_lower:
+        return 'other', teams
+    
     # Pakistan Cricket channel - only use title
     if channel_id == 'UCiWrjBhlICf_L_RK5y6Vrxw':  # Pakistan Cricket channel ID
         # Match Highlights - ONLY check title
@@ -155,8 +159,41 @@ def categorize_video(title, description='', channel_id=''):
         
         return 'other', teams
     
+    # England Cricket channel - only use title
+    if channel_id == 'UCz1D0n02BR3t51KuBOPmfTQ':  # England Cricket channel ID
+        # Match Highlights - ONLY check title
+        highlight_indicators = [
+            'highlights', 'match highlights', 'innings highlights',
+            'batting highlights', 'bowling highlights'
+        ]
+        
+        # Check for highlights in title only
+        if any(indicator in title_lower for indicator in highlight_indicators):
+            if any(indicator in title_lower for indicator in ['classic', 'archive', 'throwback', 'on this day']):
+                return 'classic', teams
+            return 'matches', teams
+        
+        # Press/Interviews - title only
+        interview_indicators = [
+            'interview', 'press conference', 'press', 'conference',
+            'speaks to media', 'media session', 'presser', 'media briefing'
+        ]
+        if any(indicator in title_lower for indicator in interview_indicators):
+            return 'interviews', teams
+        
+        # Classic/Archive - title only
+        classic_indicators = [
+            'classic', 'archive', 'throwback', 'on this day',
+            'vintage', 'retro', 'from the vault', 'memories'
+        ]
+        if any(indicator in title_lower for indicator in classic_indicators):
+            return 'classic', teams
+    
+        
+        return 'other', teams
+    
 # West Indies Cricket channel - only use title
-    if channel_id == 'UC2MHTOXktfTK26aDKyQs3cQ':  # Pakistan Cricket channel ID
+    if channel_id == 'UC2MHTOXktfTK26aDKyQs3cQ':  # West Indies Cricket channel ID
         # Match Highlights - ONLY check title
         highlight_indicators = [
             'highlights', 'match highlights', 'innings highlights',
@@ -289,7 +326,7 @@ class VideoFetcher:
                 part="id",
                 channelId=channel_id,
                 order="date",
-                maxResults=15,
+                maxResults=50,
                 type="video"
             )
             response = request.execute()
@@ -333,7 +370,7 @@ class VideoFetcher:
                         }
                         videos.append(video_data)
                         
-                        if len(videos) >= 5:
+                        if len(videos) >= 30:
                             break
                     except Exception as e:
                         logger.error(f"Error processing video {video.get('id')}: {e}")

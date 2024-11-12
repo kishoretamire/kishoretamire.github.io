@@ -979,3 +979,111 @@ body {
         right: 4rem; /* Give space for mobile menu button */
     }
 }
+
+/* Mobile Menu Button */
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+    color: var(--text-primary-dark);
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+[data-bs-theme="light"] .navbar-toggler {
+    color: var(--text-primary-light);
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* Header Navigation */
+.navbar-collapse {
+    flex-grow: 1;
+}
+
+#category-tabs {
+    margin: 0;
+    padding: 0;
+}
+
+/* Theme Toggle Position */
+.theme-toggle-wrapper {
+    margin-left: auto;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background: var(--bg-secondary-dark);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    [data-bs-theme="light"] .navbar-collapse {
+        background: var(--bg-secondary-light);
+    }
+
+    #category-tabs {
+        margin-bottom: 1rem;
+    }
+
+    #category-tabs .nav-link {
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+    }
+
+    .theme-toggle-wrapper {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #theme-toggle {
+        position: static;
+        transform: none;
+    }
+}
+
+/* Navigation Links - Desktop */
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+[data-bs-theme="light"] .navbar-nav .nav-link {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #fff;
+}
+
+[data-bs-theme="light"] .navbar-nav .nav-link:hover,
+[data-bs-theme="light"] .navbar-nav .nav-link.active {
+    color: #000;
+}
+
+/* Red underline for active/hover state */
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #E50914;  /* Netflix red */
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+    transform: scaleX(1);
+}

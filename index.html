@@ -51,24 +51,36 @@
     <header class="site-header">
         <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
             <div class="container-fluid">
-                <!-- Left side: Logo and Categories -->
-                <div class="d-flex align-items-center">
-                    <a class="navbar-brand" href="/" aria-label="Cricket Videos Home">
-                        <h1>Cricket Videos</h1>
-                    </a>
-                    <div class="primary-navigation">
-                        <ul class="navbar-nav" id="category-tabs" role="tablist">
-                            <!-- Tabs will be populated here -->
-                        </ul>
-                    </div>
-                </div>
+                <!-- Logo -->
+                <a class="navbar-brand" href="/" aria-label="Cricket Videos Home">
+                    <h1>Cricket Videos</h1>
+                </a>
 
-                <!-- Right side: Theme Toggle -->
-                <div class="secondary-navigation">
-                    <button id="theme-toggle" class="btn btn-link nav-link" aria-label="Toggle theme">
-                        <i class="bi bi-moon-fill dark-icon"></i>
-                        <i class="bi bi-sun-fill light-icon"></i>
-                    </button>
+                <!-- Mobile Menu Button -->
+                <button class="navbar-toggler" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#navbarContent" 
+                        aria-controls="navbarContent" 
+                        aria-expanded="false" 
+                        aria-label="Toggle navigation">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <!-- Navigation Content -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <!-- Categories -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="category-tabs" role="tablist">
+                        <!-- Tabs will be populated here -->
+                    </ul>
+
+                    <!-- Theme Toggle -->
+                    <div class="theme-toggle-wrapper">
+                        <button id="theme-toggle" class="btn btn-link nav-link" aria-label="Toggle theme">
+                            <i class="bi bi-moon-fill dark-icon"></i>
+                            <i class="bi bi-sun-fill light-icon"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
