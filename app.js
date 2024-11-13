@@ -424,32 +424,8 @@ class VideoPlayer {
     }
 
     playVideo(videoId) {
-        const video = this.videos.find(v => v.id === videoId);
-        if (!video || !this.modal) return;
-
-        const modalTitleElement = document.getElementById('videoModalTitle');
-        const playerElement = document.getElementById('player');
-        
-        if (modalTitleElement) {
-            modalTitleElement.textContent = video.title;
-        }
-        
-        if (playerElement) {
-            playerElement.innerHTML = `
-                <iframe 
-                    src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            `;
-        }
-        
-        try {
-            this.modal.show();
-        } catch (error) {
-            console.error('Error showing modal:', error);
-        }
+        // Navigate to video page with video ID
+        window.location.href = `video.html?v=${videoId}`;
     }
 
     showError(message) {

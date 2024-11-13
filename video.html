@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Watch cricket videos from international cricket boards">
+    <meta name="author" content="Cricket Videos">
+    
+    <title>Watch Video - Cricket Videos</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <a class="navbar-brand" href="index.html" aria-label="Cricket Videos Home">
+                    <h1>Cricket Videos</h1>
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button class="navbar-toggler" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#navbarContent" 
+                        aria-controls="navbarContent" 
+                        aria-expanded="false" 
+                        aria-label="Toggle navigation">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <!-- Navigation Content -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <!-- Categories -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="category-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#matches">Match Highlights</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#interviews">Interviews & Press</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#classic">Classic Matches</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#other">Other Videos</a>
+                        </li>
+                    </ul>
+
+                    <!-- Additional Navigation -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contact</a>
+                        </li>
+                    </ul>
+
+                    <!-- Theme Toggle -->
+                    <div class="theme-toggle-wrapper">
+                        <button id="theme-toggle" class="btn btn-link nav-link" aria-label="Toggle theme">
+                            <i class="bi bi-moon-fill dark-icon"></i>
+                            <i class="bi bi-sun-fill light-icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container-fluid main-content">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="video-player-container">
+                    <div class="ratio ratio-16x9 mb-4">
+                        <div id="player"></div>
+                    </div>
+                    <h1 id="videoTitle" class="mb-3"></h1>
+                    <div id="videoMeta" class="mb-4">
+                        <span id="channelName"></span> • 
+                        <span id="viewCount"></span> • 
+                        <span id="uploadDate"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>About Cricket Videos</h3>
+                    <p>Cricket Videos brings you the latest cricket content from around the world. Watch match highlights, interviews, press conferences, and classic matches from international cricket boards.</p>
+                </div>
+                <div class="col-md-4">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h3>Legal Information</h3>
+                    <p>All videos are sourced from official cricket board channels. Cricket Videos does not host any videos directly. All rights belong to their respective owners.</p>
+                    <p>For any content-related issues, please contact us at <a href="mailto:contact@cricketvideos.com">contact@cricketvideos.com</a></p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="copyright-text">
+                        Copyright © 2024 Cricket Videos. All rights reserved.
+                        All trademarks, logos, and content are property of their respective owners.
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <ul class="social-icons" aria-label="Social media links">
+                        <li><a href="#" aria-label="Facebook" onclick="return false;"><i class="bi bi-facebook"></i></a></li>
+                        <li><a href="#" aria-label="Twitter" onclick="return false;"><i class="bi bi-twitter"></i></a></li>
+                        <li><a href="#" aria-label="YouTube" onclick="return false;"><i class="bi bi-youtube"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get video ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoId = urlParams.get('v');
+
+        // Load video if ID exists
+        if (videoId) {
+            const player = document.getElementById('player');
+            player.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            `;
+
+            // Load video details from JSON
+            fetch('static/data/all_videos.json')
+                .then(response => response.json())
+                .then(videos => {
+                    const video = videos.find(v => v.id === videoId);
+                    if (video) {
+                        document.getElementById('videoTitle').textContent = video.title;
+                        document.getElementById('channelName').textContent = video.channel_name;
+                        document.getElementById('viewCount').textContent = `${formatViews(video.views)} views`;
+                        document.getElementById('uploadDate').textContent = formatDate(video.upload_date);
+                        document.title = `${video.title} - Cricket Videos`;
+                    }
+                });
+        }
+
+        // Helper functions for formatting
+        function formatViews(views) {
+            const num = parseInt(views);
+            if (isNaN(num)) return views;
+            if (num >= 1000000) return `${(num/1000000).toFixed(1)}M`;
+            if (num >= 1000) return `${(num/1000).toFixed(1)}K`;
+            return num.toString();
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Theme toggle functionality
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-bs-theme', theme);
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const darkIcon = document.querySelector('.dark-icon');
+            const lightIcon = document.querySelector('.light-icon');
+            if (newTheme === 'dark') {
+                darkIcon.style.display = 'none';
+                lightIcon.style.display = 'inline-block';
+            } else {
+                darkIcon.style.display = 'inline-block';
+                lightIcon.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html> 
