@@ -8,10 +8,9 @@ class VideoPlayer {
         this.currentCategory = 'matches';
         this.modal = null;
         this.categories = {
-            'matches': 'Match Highlights',
-            'all': 'All Videos',
-            'interviews': 'Interviews & Press',
+            'matches': 'Latest Highlights',
             'classic': 'Classic Matches',
+            'interviews': 'Interviews & Press',
             'other': 'Other Videos'
         };
 

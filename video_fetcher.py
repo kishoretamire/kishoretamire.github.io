@@ -326,7 +326,7 @@ class VideoFetcher:
                 part="id",
                 channelId=channel_id,
                 order="date",
-                maxResults=50,
+                maxResults=400,
                 type="video"
             )
             response = request.execute()
@@ -370,7 +370,7 @@ class VideoFetcher:
                         }
                         videos.append(video_data)
                         
-                        if len(videos) >= 30:
+                        if len(videos) >= 200:
                             break
                     except Exception as e:
                         logger.error(f"Error processing video {video.get('id')}: {e}")
@@ -386,13 +386,93 @@ class VideoFetcher:
                 return self.fetch_channel_videos(channel_id, channel_name)
             raise
     
+    def fetch_classic_matches(self):
+        try:
+            self.youtube = self.get_youtube_service()
+            
+            # Search for classic cricket match highlights
+            request = self.youtube.search().list(
+                part="id",
+                q="classic cricket match highlights",
+                order="viewCount",  # Changed to viewCount to prioritize popular videos
+                maxResults=200,
+                type="video",
+                videoDuration="medium"  # Filter for medium length videos
+            )
+            response = request.execute()
+            
+            videos = []
+            video_ids = [item['id']['videoId'] for item in response.get('items', [])]
+            
+            if not video_ids:
+                return []
+            
+            # Get detailed video information
+            video_response = self.youtube.videos().list(
+                part="snippet,contentDetails,statistics,status",
+                id=','.join(video_ids)
+            ).execute()
+            
+            for video in video_response.get('items', []):
+                if (video['status'].get('embeddable', False) and 
+                    video['status'].get('privacyStatus') == 'public' and 
+                    not is_short(video)):
+                    try:
+                        # Check if video has at least 100k views
+                        view_count = int(video['statistics'].get('viewCount', '0'))
+                        if view_count < 100000:
+                            continue
+                            
+                        video_data = {
+                            'id': video['id'],
+                            'title': video['snippet']['title'],
+                            'thumbnail_src': get_best_thumbnail(video),
+                            'thumbnail_url': get_best_thumbnail(video),
+                            'duration': video['contentDetails']['duration'],
+                            'views': video['statistics'].get('viewCount', 'N/A'),
+                            'category': 'classic',
+                            'teams': extract_teams_from_text(video['snippet']['title'] + ' ' + video['snippet'].get('description', '')),
+                            'channel_id': video['snippet']['channelId'],
+                            'channel_name': video['snippet']['channelTitle'],
+                            'upload_date': video['snippet']['publishedAt']
+                        }
+                        videos.append(video_data)
+                        
+                        if len(videos) >= 100:
+                            break
+                    except Exception as e:
+                        logger.error(f"Error processing video {video.get('id')}: {e}")
+                        continue
+            
+            return videos
+            
+        except HttpError as e:
+            if e.resp.status in [403, 429]:  # Quota exceeded
+                logger.warning(f"Quota exceeded for key: {self.youtube._developerKey[:10]}...")
+                self.key_manager.update_quota_usage(self.youtube._developerKey, 
+                                                  self.key_manager.daily_quota_limit)
+                return self.fetch_classic_matches()
+            raise
+    
     def fetch_all_videos(self):
         all_new_videos = []
         
+        # First fetch classic matches from general YouTube search
+        logger.info("Fetching classic matches from YouTube")
+        try:
+            classic_videos = self.fetch_classic_matches()
+            all_new_videos.extend(classic_videos)
+            logger.info(f"Fetched {len(classic_videos)} classic matches")
+        except Exception as e:
+            logger.error(f"Error fetching classic matches: {e}")
+        
+        # Then fetch other categories from specific channels
         for channel_name, channel_id in CRICKET_CHANNELS.items():
             logger.info(f"Fetching new videos for {channel_name}")
             try:
                 channel_videos = self.fetch_channel_videos(channel_id, channel_name)
+                # Filter out classic matches as we already have them
+                channel_videos = [v for v in channel_videos if v['category'] != 'classic']
                 all_new_videos.extend(channel_videos)
                 logger.info(f"Fetched {len(channel_videos)} new videos from {channel_name}")
             except Exception as e:
