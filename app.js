@@ -316,10 +316,19 @@ class VideoPlayer {
             existingMessage.remove();
         }
 
+        // Create a new row for the message
         const messageDiv = document.createElement('div');
-        messageDiv.className = 'col-12 text-center mt-4 no-more-videos-message';
-        messageDiv.innerHTML = '<p class="no-more-videos">No more videos to load</p>';
-        document.getElementById('video-grid').querySelector('.row').appendChild(messageDiv);
+        messageDiv.className = 'row mt-4 no-more-videos-message';
+        messageDiv.innerHTML = `
+            <div class="col-12">
+                <div class="text-center">
+                    <p class="no-more-videos">No more videos to load</p>
+                </div>
+            </div>
+        `;
+        
+        // Add the new row after the video grid
+        document.getElementById('video-grid').appendChild(messageDiv);
         
         // Hide the load more button
         document.getElementById('load-more').style.display = 'none';
