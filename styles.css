@@ -1600,6 +1600,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
+    margin-top: 1rem;
 }
 
 [data-bs-theme="light"] .back-button {
@@ -1613,6 +1614,13 @@ body {
 
 .back-button i {
     font-size: 1.2em;
+}
+
+/* Adjust back button margin for mobile */
+@media (max-width: 768px) {
+    .back-button {
+        margin-top: 2rem;
+    }
 }
 
 /* Facebook Comments Styles */
