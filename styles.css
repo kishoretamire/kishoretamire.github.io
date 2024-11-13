@@ -175,7 +175,8 @@ body {
 /* Responsive adjustments for main content */
 @media (max-width: 768px) {
     .main-content {
-        padding-top: 100px !important;
+        margin-top: 60px !important;
+        padding: 1rem;
     }
 }
 
@@ -1526,7 +1527,7 @@ body {
 
 /* Video Player Page Styles */
 .video-player-container {
-    margin-top: 80px;
+    margin-top: 0.5rem;
     padding: 2rem;
     background: var(--bg-secondary-dark);
     border-radius: 12px;
@@ -1581,4 +1582,94 @@ body {
 
 [data-bs-theme="light"] #videoMeta {
     color: var(--text-secondary-light);
+}
+
+.back-button {
+    color: var(--text-primary-dark);
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+[data-bs-theme="light"] .back-button {
+    color: var(--text-primary-light);
+}
+
+.back-button:hover {
+    color: #E50914;  /* Netflix red */
+    transform: translateX(-4px);
+}
+
+.back-button i {
+    font-size: 1.2em;
+}
+
+/* Facebook Comments Styles */
+.comments-section {
+    border-top: 1px solid var(--border-color-dark);
+    padding-top: 2rem;
+}
+
+[data-bs-theme="light"] .comments-section {
+    border-top: 1px solid var(--border-color-light);
+}
+
+.comments-section h3 {
+    color: var(--text-primary-dark);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+[data-bs-theme="light"] .comments-section h3 {
+    color: var(--text-primary-light);
+}
+
+/* Make comments plugin responsive */
+.fb-comments, .fb-comments iframe, .fb-comments span {
+    width: 100% !important;
+}
+
+/* Dark theme adjustments */
+[data-bs-theme="dark"] .fb-comments {
+    color-scheme: dark;
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 1rem;
+    opacity: 0.9;
+}
+
+/* Light theme adjustments */
+[data-bs-theme="light"] .fb-comments {
+    color-scheme: light;
+    background: var(--bg-secondary-light);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+/* Adjust iframe background in dark mode */
+[data-bs-theme="dark"] .fb-comments iframe {
+    background: #1a1a1a !important;
+    filter: brightness(0.8);
+}
+
+/* Make comment count visible in dark mode */
+[data-bs-theme="dark"] .fb_iframe_widget_fluid span {
+    background: transparent !important;
+}
+
+[data-bs-theme="dark"] .fb_iframe_widget span {
+    filter: brightness(1.2) !important;
+}
+
+[data-bs-theme="dark"] ._1drq {
+    color: #fff !important;
+}
+
+/* Add theme transition */
+.fb-comments {
+    transition: all 0.3s ease;
 }
