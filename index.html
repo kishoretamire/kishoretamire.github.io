@@ -3,28 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Watch the latest cricket videos, match highlights, interviews, and classic matches from international cricket boards. Stay updated with cricket content from around the world.">
-    <meta name="keywords" content="cricket videos, cricket highlights, match highlights, cricket interviews, classic cricket matches, international cricket, cricket australia, england cricket, pakistan cricket">
-    <meta name="author" content="Cricket Videos">
-    <meta name="robots" content="index, follow">
+    <meta name="description" content="Watch latest cricket match highlights, classic matches, press conferences and interviews from official cricket boards. Get daily updated cricket videos from Cricket Australia, England Cricket, Pakistan Cricket and more." />
+    <meta name="keywords" content="cricket highlights, latest cricket highlights, cricket match highlights, cricket videos, classic cricket matches, cricket interviews, cricket press conference, cricket australia videos, england cricket videos, pakistan cricket videos" />
+    <meta name="author" content="Latest Cricket Highlights">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     
-    <title>Cricket Videos - Watch Cricket Highlights, Interviews & Classic Matches</title>
+    <title>Latest Cricket Highlights - Watch Cricket Highlights, Interviews & Classic Matches</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
     
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourdomain.com/">
-    <meta property="og:title" content="Cricket Videos - Watch Cricket Highlights & Matches">
-    <meta property="og:description" content="Watch the latest cricket videos, match highlights, interviews, and classic matches from international cricket boards.">
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Latest Cricket Highlights" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://latestcrickethighlights.com/" />
+    <meta property="og:title" content="Latest Cricket Highlights - Watch Latest Cricket Match Highlights & Videos" />
+    <meta property="og:description" content="Watch latest cricket match highlights, classic matches, press conferences and interviews from official cricket boards. Updated daily with new cricket videos." />
     <meta property="og:image" content="path-to-your-logo.png">
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://yourdomain.com/">
-    <meta property="twitter:title" content="Cricket Videos - Watch Cricket Highlights & Matches">
-    <meta property="twitter:description" content="Watch the latest cricket videos, match highlights, interviews, and classic matches from international cricket boards.">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Latest Cricket Highlights - Watch Latest Cricket Match Highlights & Videos" />
+    <meta name="twitter:description" content="Watch latest cricket match highlights, classic matches, press conferences and interviews from official cricket boards. Updated daily with new cricket videos." />
     <meta property="twitter:image" content="path-to-your-logo.png">
 
     <!-- Stylesheets -->
@@ -32,14 +33,37 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
 
-    <!-- Schema.org markup for Google -->
+    <!-- Schema.org markup -->
     <script type="application/ld+json">
     {
-        "@context": "http://schema.org",
+        "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "Cricket Videos",
-        "description": "Watch cricket highlights, interviews, and classic matches from international cricket boards",
-        "url": "https://yourdomain.com"
+        "name": "Latest Cricket Highlights",
+        "url": "https://latestcrickethighlights.com",
+        "description": "Watch latest cricket match highlights, classic matches, press conferences and interviews from official cricket boards.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://latestcrickethighlights.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <!-- Video schema for homepage -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": [
+            {
+                "@type": "VideoObject",
+                "position": 1,
+                "name": "Latest Cricket Highlights",
+                "description": "Watch latest cricket match highlights from international cricket boards",
+                "thumbnailUrl": "https://latestcrickethighlights.com/images/thumbnail.jpg",
+                "uploadDate": "2024-01-01"
+            }
+        ]
     }
     </script>
 </head>
@@ -52,8 +76,8 @@
         <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
             <div class="container-fluid">
                 <!-- Logo -->
-                <a class="navbar-brand" href="/" aria-label="Cricket Videos Home">
-                    <h1>Cricket Videos</h1>
+                <a class="navbar-brand" href="/" aria-label="Latest Cricket Highlights Home">
+                    <h1>Latest Cricket Highlights</h1>
                 </a>
 
                 <!-- Mobile Menu Button -->
@@ -125,14 +149,14 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
-                    <h3>About Cricket Videos</h3>
-                    <p>Cricket Videos brings you the latest cricket content from around the world. Watch match highlights, interviews, press conferences, and classic matches from international cricket boards.</p>
+                    <h3>About Latest Cricket Highlights</h3>
+                    <p>Latest Cricket Highlights brings you the latest cricket content from around the world. Watch match highlights, interviews, press conferences, and classic matches from international cricket boards.</p>
                 </div>
                 <div class="col-md-4">
                     <h3>Quick Links</h3>
                     <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="about.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
                         <li><a href="privacy.html">Privacy Policy</a></li>
                         <li><a href="terms.html">Terms of Service</a></li>
                         <li><a href="disclaimer.html">Disclaimer</a></li>
@@ -140,23 +164,23 @@
                 </div>
                 <div class="col-md-4">
                     <h3>Legal Information</h3>
-                    <p>All videos are sourced from official cricket board channels. Cricket Videos does not host any videos directly. All rights belong to their respective owners.</p>
-                    <p>For any content-related issues, please contact us at <a href="mailto:contact@cricketvideos.com">contact@cricketvideos.com</a></p>
+                    <p>All videos are sourced from official cricket board channels. Latest Cricket Highlights does not host any videos directly. All rights belong to their respective owners.</p>
+                    <p>For any content-related issues, please contact us at <a href="mailto:contact@latestcrickethighlights.com">contact@latestcrickethighlights.com</a></p>
                 </div>
             </div>
             <hr>
             <div class="row">
                 <div class="col-md-8">
                     <p class="copyright-text">
-                        Copyright © 2024 Cricket Videos. All rights reserved.
+                        Copyright © 2024 Latest Cricket Highlights. All rights reserved.
                         All trademarks, logos, and content are property of their respective owners.
                     </p>
                 </div>
                 <div class="col-md-4">
                     <ul class="social-icons" aria-label="Social media links">
-                        <li><a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a></li>
-                        <li><a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a></li>
-                        <li><a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a></li>
+                        <li><a href="#" aria-label="Facebook" onclick="return false;"><i class="bi bi-facebook"></i></a></li>
+                        <li><a href="#" aria-label="Twitter" onclick="return false;"><i class="bi bi-twitter"></i></a></li>
+                        <li><a href="#" aria-label="YouTube" onclick="return false;"><i class="bi bi-youtube"></i></a></li>
                     </ul>
                 </div>
             </div>

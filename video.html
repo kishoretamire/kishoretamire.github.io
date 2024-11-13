@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Watch cricket videos from international cricket boards">
-    <meta name="author" content="Cricket Videos">
+    <meta name="author" content="Latest Cricket Highlights">
     
-    <title>Watch Video - Cricket Videos</title>
+    <title>Watch Video - Latest Cricket Highlights</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
@@ -22,6 +22,20 @@
             src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0" 
             nonce="random_nonce">
     </script>
+    
+    <!-- Add in head section -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Cricket Match Video",
+        "description": "Watch cricket match highlights and videos",
+        "uploadDate": "",
+        "thumbnailUrl": "",
+        "contentUrl": "",
+        "embedUrl": ""
+    }
+    </script>
 </head>
 <body>
     <!-- Header -->
@@ -29,8 +43,8 @@
         <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
             <div class="container-fluid">
                 <!-- Logo -->
-                <a class="navbar-brand" href="index.html" aria-label="Cricket Videos Home">
-                    <h1>Cricket Videos</h1>
+                <a class="navbar-brand" href="index.html" aria-label="Latest Cricket Highlights Home">
+                    <h1>Latest Cricket Highlights</h1>
                 </a>
 
                 <!-- Mobile Menu Button -->
@@ -123,8 +137,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
-                    <h3>About Cricket Videos</h3>
-                    <p>Cricket Videos brings you the latest cricket content from around the world. Watch match highlights, interviews, press conferences, and classic matches from international cricket boards.</p>
+                    <h3>About Latest Cricket Highlights</h3>
+                    <p>Latest Cricket Highlights brings you the latest cricket content from around the world. Watch match highlights, interviews, press conferences, and classic matches from international cricket boards.</p>
                 </div>
                 <div class="col-md-4">
                     <h3>Quick Links</h3>
@@ -138,15 +152,15 @@
                 </div>
                 <div class="col-md-4">
                     <h3>Legal Information</h3>
-                    <p>All videos are sourced from official cricket board channels. Cricket Videos does not host any videos directly. All rights belong to their respective owners.</p>
-                    <p>For any content-related issues, please contact us at <a href="mailto:contact@cricketvideos.com">contact@cricketvideos.com</a></p>
+                    <p>All videos are sourced from official cricket board channels. Latest Cricket Highlights does not host any videos directly. All rights belong to their respective owners.</p>
+                    <p>For any content-related issues, please contact us at <a href="mailto:contact@latestcrickethighlights.com">contact@latestcrickethighlights.com</a></p>
                 </div>
             </div>
             <hr>
             <div class="row">
                 <div class="col-md-8">
                     <p class="copyright-text">
-                        Copyright © 2024 Cricket Videos. All rights reserved.
+                        Copyright © 2024 Latest Cricket Highlights. All rights reserved.
                         All trademarks, logos, and content are property of their respective owners.
                     </p>
                 </div>
@@ -192,7 +206,7 @@
                         document.getElementById('channelName').textContent = video.channel_name;
                         document.getElementById('viewCount').textContent = `${formatViews(video.views)} views`;
                         document.getElementById('uploadDate').textContent = formatDate(video.upload_date);
-                        document.title = `${video.title} - Cricket Videos`;
+                        document.title = `${video.title} - Latest Cricket Highlights`;
                         
                         // Update Facebook Comments URL dynamically
                         const fbComments = document.querySelector('.fb-comments');
@@ -204,6 +218,16 @@
                                 FB.XFBML.parse();
                             }
                         }
+                        
+                        // Update schema markup
+                        const schemaScript = document.querySelector('script[type="application/ld+json"]');
+                        const schemaData = JSON.parse(schemaScript.innerHTML);
+                        schemaData.name = video.title;
+                        schemaData.description = video.title;
+                        schemaData.uploadDate = video.upload_date;
+                        schemaData.thumbnailUrl = video.thumbnail_url;
+                        schemaData.embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                        schemaScript.innerHTML = JSON.stringify(schemaData);
                     }
                 });
         }

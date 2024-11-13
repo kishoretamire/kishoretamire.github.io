@@ -84,7 +84,7 @@ body {
 
 .site-header .navbar-brand h1 {
     color: #E50914;  /* Netflix red */
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
     letter-spacing: -0.5px;
@@ -1672,4 +1672,53 @@ body {
 /* Add theme transition */
 .fb-comments {
     transition: all 0.3s ease;
+}
+
+/* Update brand styles if needed */
+.site-header .navbar-brand h1 {
+    font-size: 1.5rem;  /* Slightly smaller to accommodate longer name */
+}
+
+@media (max-width: 768px) {
+    .site-header .navbar-brand h1 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Ad Container Styles */
+.ad-container {
+    text-align: center;
+    margin: 1rem auto;
+    min-height: 90px;
+    background: transparent;
+    overflow: hidden;
+    clear: both;
+}
+
+.top-ad {
+    max-width: 728px;
+    margin-bottom: 2rem;
+}
+
+.horizontal-ad {
+    max-width: 970px;
+    margin: 1.5rem auto;
+}
+
+.in-feed-ad {
+    max-width: 728px;
+    margin: 2rem auto;
+}
+
+/* Responsive ad containers */
+@media (max-width: 768px) {
+    .ad-container {
+        min-height: 50px;
+    }
+    
+    .top-ad,
+    .horizontal-ad,
+    .in-feed-ad {
+        max-width: 320px;
+    }
 }

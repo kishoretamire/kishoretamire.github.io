@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Sitemap: https://latestcrickethighlights.com/sitemap.xml
+
+# Prevent duplicate content
+Disallow: /*?* 
