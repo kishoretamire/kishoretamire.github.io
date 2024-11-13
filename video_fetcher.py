@@ -1,81 +1,50 @@
-import os
 import json
-import sqlite3
-from datetime import datetime, timezone
+import os
 import logging
+from datetime import datetime
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from config import CRICKET_CHANNELS
 from key_manager import YouTubeKeyManager
 import time
-import isodate  # Add this for parsing YouTube duration format
+import isodate
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class VideoDatabaseManager:
-    def __init__(self, db_path='videos.db'):
-        self.db_path = db_path
-        self.init_db()
-        
-    def init_db(self):
-        with sqlite3.connect(self.db_path) as conn:
-            c = conn.cursor()
-            c.execute('''
-                CREATE TABLE IF NOT EXISTS videos (
-                    id TEXT PRIMARY KEY,
-                    title TEXT,
-                    thumbnail_url TEXT,
-                    duration TEXT,
-                    views TEXT,
-                    category TEXT,
-                    channel_id TEXT,
-                    channel_name TEXT,
-                    upload_date TIMESTAMP,
-                    data JSON
-                )
-            ''')
-            c.execute('CREATE INDEX IF NOT EXISTS idx_upload_date ON videos(upload_date DESC)')
-            conn.commit()
+def load_existing_json(file_path):
+    """Load existing JSON file if it exists"""
+    try:
+        if os.path.exists(file_path):
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+    except Exception as e:
+        logger.warning(f"Could not load existing file {file_path}: {e}")
+    return []
+
+def merge_videos(existing_videos, new_videos):
+    """Merge new videos with existing ones, avoiding duplicates"""
+    # Create a dictionary of existing videos by ID
+    existing_dict = {video['id']: video for video in existing_videos}
     
-    def store_videos(self, videos):
-        """Store multiple videos in the database"""
-        with sqlite3.connect(self.db_path) as conn:
-            c = conn.cursor()
-            for video in videos:
-                try:
-                    c.execute('''
-                        INSERT OR REPLACE INTO videos 
-                        (id, title, thumbnail_url, duration, views, category, 
-                         channel_id, channel_name, upload_date, data)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ''', (
-                        video['id'],
-                        video['title'],
-                        video['thumbnail_url'],
-                        video['duration'],
-                        video['views'],
-                        video['category'],
-                        video['channel_id'],
-                        video['channel_name'],
-                        video['upload_date'],
-                        json.dumps(video)
-                    ))
-                except sqlite3.IntegrityError:
-                    logger.warning(f"Duplicate video ID: {video['id']}")
-            conn.commit()
+    # Add or update videos
+    for video in new_videos:
+        existing_dict[video['id']] = video
+    
+    # Convert back to list and sort by upload date
+    merged = list(existing_dict.values())
+    merged.sort(key=lambda x: x['upload_date'], reverse=True)
+    return merged
 
 def is_short(video_details):
     """Check if video is a YouTube Short"""
     try:
-        # Check duration
         duration_str = video_details['contentDetails']['duration']
         duration = isodate.parse_duration(duration_str)
         if duration.total_seconds() <= 60:
             return True
 
-        # Check title for shorts indicators
         title = video_details['snippet']['title'].lower()
         if any(indicator in title for indicator in ['#shorts', '#short', '#ytshorts']):
             return True
@@ -84,6 +53,14 @@ def is_short(video_details):
     except Exception as e:
         logger.error(f"Error checking if video is short: {e}")
         return False
+
+def get_best_thumbnail(video):
+    """Get the best quality thumbnail URL"""
+    thumbnails = video['snippet']['thumbnails']
+    for quality in ['maxres', 'high', 'medium', 'default']:
+        if quality in thumbnails:
+            return thumbnails[quality]['url']
+    return f"https://i.ytimg.com/vi/{video['id']}/hqdefault.jpg"
 
 def get_team_variations():
     """Get variations of team names"""
@@ -112,10 +89,7 @@ def extract_teams_from_text(text):
     return list(teams)
 
 def categorize_video(title, description='', channel_id=''):
-    """
-    Categorize video based on its title and description.
-    For Pakistan Cricket channel, only use title.
-    """
+    """Categorize video based on title and description"""
     title_lower = title.lower()
     description_lower = description.lower() if description else ''
     
@@ -282,34 +256,13 @@ def categorize_video(title, description='', channel_id=''):
     # If no specific category is found
     return 'other', teams
 
-def get_best_thumbnail(video):
-    """Get the best quality thumbnail URL"""
-    thumbnails = video['snippet']['thumbnails']
-    # Try to get the highest quality thumbnail available
-    for quality in ['maxres', 'high', 'medium', 'default']:
-        if quality in thumbnails:
-            return thumbnails[quality]['url']
-    return f"https://i.ytimg.com/vi/{video['id']}/hqdefault.jpg"  # Fallback to HQ default
-
-def is_embeddable(video_details):
-    """Check if video can be embedded"""
-    try:
-        # Check status and embeddable flag
-        if 'status' in video_details:
-            if video_details['status'].get('embeddable', False) is False:
-                return False
-            if video_details['status'].get('privacyStatus', '') != 'public':
-                return False
-        return True
-    except Exception as e:
-        logger.error(f"Error checking if video is embeddable: {e}")
-        return False
-
 class VideoFetcher:
     def __init__(self, api_keys):
         self.key_manager = YouTubeKeyManager(api_keys)
-        self.db = VideoDatabaseManager()
         self.youtube = None
+        
+        # Create static/data directory if it doesn't exist
+        os.makedirs('static/data', exist_ok=True)
     
     def get_youtube_service(self):
         api_key = self.key_manager.get_current_key()
@@ -454,6 +407,72 @@ class VideoFetcher:
                 return self.fetch_classic_matches()
             raise
     
+    def update_json_files(self, new_videos):
+        """Update JSON files with new videos"""
+        try:
+            # Update category-specific files
+            categories = ['matches', 'interviews', 'classic', 'other']
+            for category in categories:
+                file_path = f'static/data/{category}_videos.json'
+                existing_videos = load_existing_json(file_path)
+                
+                # Filter new videos for this category
+                new_category_videos = [v for v in new_videos if v['category'] == category]
+                
+                if new_category_videos:
+                    merged_videos = merge_videos(existing_videos, new_category_videos)
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        json.dump(merged_videos, f, ensure_ascii=False, indent=2)
+                    logger.info(f"Updated {category}_videos.json with {len(merged_videos)} videos")
+            
+            # Update all_videos.json
+            all_videos_path = 'static/data/all_videos.json'
+            existing_all = load_existing_json(all_videos_path)
+            merged_all = merge_videos(existing_all, new_videos)
+            with open(all_videos_path, 'w', encoding='utf-8') as f:
+                json.dump(merged_all, f, ensure_ascii=False, indent=2)
+            logger.info(f"Updated all_videos.json with {len(merged_all)} total videos")
+            
+            # Update team stats
+            teams_path = 'static/data/teams.json'
+            team_stats = {}
+            
+            for video in merged_all:
+                for team in video.get('teams', []):
+                    if team not in team_stats:
+                        team_stats[team] = {
+                            'name': team,
+                            'video_count': 0,
+                            'matches': 0,
+                            'latest_video': None
+                        }
+                    
+                    team_stats[team]['video_count'] += 1
+                    if video['category'] == 'matches':
+                        team_stats[team]['matches'] += 1
+                    
+                    if not team_stats[team]['latest_video'] or \
+                       video['upload_date'] > team_stats[team]['latest_video']['upload_date']:
+                        team_stats[team]['latest_video'] = {
+                            'id': video['id'],
+                            'title': video['title'],
+                            'thumbnail_url': video['thumbnail_url'],
+                            'upload_date': video['upload_date']
+                        }
+            
+            with open(teams_path, 'w', encoding='utf-8') as f:
+                json.dump({
+                    'teams': list(team_stats.values()),
+                    'variations': get_team_variations()
+                }, f, ensure_ascii=False, indent=2)
+            logger.info(f"Updated teams.json with {len(team_stats)} teams")
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error updating JSON files: {e}")
+            return False
+    
     def fetch_all_videos(self):
         all_new_videos = []
         
@@ -480,31 +499,29 @@ class VideoFetcher:
             
             time.sleep(1)
         
-        # Store all videos in database
+        # Update JSON files
         if all_new_videos:
-            self.db.store_videos(all_new_videos)
-            logger.info(f"Added {len(all_new_videos)} new videos to storage")
+            success = self.update_json_files(all_new_videos)
+            if success:
+                logger.info(f"Successfully updated JSON files with {len(all_new_videos)} new videos")
+            else:
+                logger.error("Failed to update JSON files")
         else:
             logger.info("No new videos found")
         
         return all_new_videos
 
-def main():
+if __name__ == "__main__":
     from config import get_api_keys
     
     api_keys = get_api_keys()
     if not any(api_keys):
         logger.error("No API keys configured")
-        return
+        exit(1)
     
     fetcher = VideoFetcher(api_keys)
     videos = fetcher.fetch_all_videos()
     
-    if videos:
-        logger.info(f"Successfully fetched {len(videos)} videos total")
-    else:
+    if not videos:
         logger.error("Failed to fetch any videos")
-        exit(1)
-
-if __name__ == "__main__":
-    main() 
+        exit(1) 
