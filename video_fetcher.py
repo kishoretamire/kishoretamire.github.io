@@ -257,12 +257,15 @@ def categorize_video(title, description='', channel_id=''):
     return 'other', teams
 
 class VideoFetcher:
-    def __init__(self, api_keys):
+    def __init__(self, api_keys, base_path=None):
         self.key_manager = YouTubeKeyManager(api_keys)
         self.youtube = None
         
+        # Use base_path if provided, otherwise use default
+        self.base_path = base_path or '.'
+        
         # Create static/data directory if it doesn't exist
-        os.makedirs('static/data', exist_ok=True)
+        os.makedirs(f'{self.base_path}/static/data', exist_ok=True)
     
     def get_youtube_service(self):
         api_key = self.key_manager.get_current_key()
@@ -413,7 +416,7 @@ class VideoFetcher:
             # Update category-specific files
             categories = ['matches', 'interviews', 'classic', 'other']
             for category in categories:
-                file_path = f'static/data/{category}_videos.json'
+                file_path = f'{self.base_path}/static/data/{category}_videos.json'
                 existing_videos = load_existing_json(file_path)
                 
                 # Filter new videos for this category
@@ -426,7 +429,7 @@ class VideoFetcher:
                     logger.info(f"Updated {category}_videos.json with {len(merged_videos)} videos")
             
             # Update all_videos.json
-            all_videos_path = 'static/data/all_videos.json'
+            all_videos_path = f'{self.base_path}/static/data/all_videos.json'
             existing_all = load_existing_json(all_videos_path)
             merged_all = merge_videos(existing_all, new_videos)
             with open(all_videos_path, 'w', encoding='utf-8') as f:
@@ -434,7 +437,7 @@ class VideoFetcher:
             logger.info(f"Updated all_videos.json with {len(merged_all)} total videos")
             
             # Update team stats
-            teams_path = 'static/data/teams.json'
+            teams_path = f'{self.base_path}/static/data/teams.json'
             team_stats = {}
             
             for video in merged_all:
