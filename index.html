@@ -67,7 +67,9 @@
                 "name": "Latest Cricket Highlights",
                 "description": "Watch latest cricket match highlights from international cricket boards",
                 "thumbnailUrl": "https://latestcrickethighlights.com/images/thumbnail.jpg",
-                "uploadDate": "2024-01-01"
+                "uploadDate": "2024-01-01",
+                "duration": "PT15M",
+                "contentUrl": "https://latestcrickethighlights.com/video?v=VIDEO_ID"
             }
         ]
     }
@@ -103,6 +105,20 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="category-tabs" role="tablist">
                         <!-- Tabs will be populated here -->
                     </ul>
+
+                    <!-- Add Search Container -->
+                    <div class="search-container">
+                        <div class="input-group">
+                            <input type="text" 
+                                   id="searchInput" 
+                                   class="form-control" 
+                                   placeholder="Search videos..." 
+                                   aria-label="Search videos">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>
 
                     <!-- Additional Navigation -->
                     <ul class="navbar-nav ms-auto">
@@ -201,6 +217,42 @@
         // Theme initialization
         const theme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-bs-theme', theme);
+    </script>
+
+    <!-- Add breadcrumb navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Latest Highlights</li>
+        </ol>
+    </nav>
+
+    <!-- Add error tracking -->
+    <script>
+    window.addEventListener('error', function(e) {
+        // Send error to analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'javascript_error', {
+                'error_message': e.message,
+                'error_url': e.filename,
+                'error_line': e.lineno
+            });
+        }
+    });
+
+    // Add performance monitoring
+    if ('performance' in window) {
+        window.addEventListener('load', function() {
+            const timing = performance.timing;
+            const loadTime = timing.loadEventEnd - timing.navigationStart;
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'performance', {
+                    'page_load_time': loadTime
+                });
+            }
+        });
+    }
     </script>
 </body>
 </html> 

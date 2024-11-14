@@ -2,7 +2,8 @@ const CHANNEL_ID = 'UCHf0witGYPnp5RYuijgV3Vw'; // Cricket Australia channel ID
 
 class VideoPlayer {
     constructor() {
-        this.videos = [];
+        this.videos = [];        // Current filtered/displayed videos
+        this.allVideos = [];     // Store all videos for searching
         this.currentPage = 1;
         this.loading = false;
         this.currentCategory = 'matches';
@@ -18,6 +19,7 @@ class VideoPlayer {
         this.basePath = this.getBasePath();
         this.init();
         this.initTheme();
+        this.initSearch();
     }
 
     getBasePath() {
@@ -99,31 +101,26 @@ class VideoPlayer {
             document.getElementById('loading').style.display = 'block';
             document.getElementById('load-more').style.display = 'none';
             
-            // Construct URL using basePath
             const url = `${this.basePath}/static/data/${this.currentCategory}_videos.json`;
-            console.log('Fetching videos from:', url);
-            
             const response = await fetch(url);
-            console.log('Response status:', response.status);
             
             if (!response.ok) {
                 throw new Error(`Failed to load videos: ${response.status}`);
             }
 
-            const allVideos = await response.json();
-            console.log('Loaded videos:', allVideos.length);
+            this.allVideos = await response.json();  // Store all videos
             
             // Calculate pagination
             const startIndex = (this.currentPage - 1) * 20;
             const endIndex = startIndex + 20;
-            const pageVideos = allVideos.slice(startIndex, endIndex);
+            const pageVideos = this.allVideos.slice(startIndex, endIndex);
 
             if (pageVideos.length > 0) {
                 this.videos = pageVideos;
                 this.renderVideos();
                 
                 // Show/hide load more button
-                const hasMore = endIndex < allVideos.length;
+                const hasMore = endIndex < this.allVideos.length;
                 document.getElementById('load-more').style.display = hasMore ? 'block' : 'none';
                 if (!hasMore) {
                     this.showNoMoreVideos();
@@ -133,7 +130,7 @@ class VideoPlayer {
             }
         } catch (error) {
             console.error('Error loading videos:', error);
-            this.showError(`Failed to load videos: ${error.message}. Path: ${url}`);
+            this.showError(`Failed to load videos: ${error.message}`);
         } finally {
             document.getElementById('loading').style.display = 'none';
         }
@@ -155,10 +152,11 @@ class VideoPlayer {
             <div class="col">
                 <div class="video-card" data-video-id="${video.id}">
                     <div class="video-thumbnail">
-                        <img src="${video.thumbnail_src || video.thumbnail_url}" 
-                             alt="${video.title}"
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+                             data-src="${video.thumbnail_url}"
                              loading="lazy"
-                             onerror="this.src='https://i.ytimg.com/vi/${video.id}/hqdefault.jpg'">
+                             alt="${video.title}"
+                             class="lazy">
                         <div class="play-button">
                             <i class="bi bi-play-fill"></i>
                         </div>
@@ -197,10 +195,31 @@ class VideoPlayer {
                 ${videosHtml}
             </div>
         `;
+
+        // Add intersection observer for lazy loading
+        const lazyImages = document.querySelectorAll('img.lazy');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    observer.unobserve(img);
+                }
+            });
+        });
+        
+        lazyImages.forEach(img => imageObserver.observe(img));
     }
 
     async changeCategory(category) {
         if (category === this.currentCategory) return;
+        
+        // Clear search input
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.value = '';
+        }
         
         this.currentCategory = category;
         this.currentPage = 1;
@@ -497,8 +516,178 @@ class VideoPlayer {
             });
         }
     }
+
+    initSearch() {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', this.debounce(() => {
+                const query = searchInput.value;
+                this.filterVideos(query);
+            }, 300));
+        }
+    }
+
+    filterVideos(query) {
+        if (!query) {
+            // If search is empty, restore original videos for current category
+            const startIndex = (this.currentPage - 1) * 20;
+            const endIndex = startIndex + 20;
+            this.videos = this.allVideos.slice(startIndex, endIndex);
+            
+            // Show load more button if there are more videos
+            const hasMore = endIndex < this.allVideos.length;
+            document.getElementById('load-more').style.display = hasMore ? 'block' : 'none';
+            if (!hasMore) {
+                this.showNoMoreVideos();
+            }
+        } else {
+            // Filter videos based on search query
+            this.videos = this.allVideos.filter(video => 
+                video.title.toLowerCase().includes(query.toLowerCase()) ||
+                (video.teams && video.teams.some(team => 
+                    team.toLowerCase().includes(query.toLowerCase())
+                ))
+            );
+            
+            // Hide load more button during search
+            document.getElementById('load-more').style.display = 'none';
+            
+            // Remove any existing "no more videos" message
+            const existingMessage = document.querySelector('.no-more-videos-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+        }
+        this.renderVideos();
+    }
+
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    async loadTeams() {
+        try {
+            const response = await fetch(`${this.basePath}/static/data/teams.json`);
+            const data = await response.json();
+            this.renderTeamFilters(data.teams);
+        } catch (error) {
+            console.error('Error loading teams:', error);
+        }
+    }
+
+    renderTeamFilters(teams) {
+        const filterContainer = document.getElementById('teamFilters');
+        if (!filterContainer) return;
+
+        const html = teams.map(team => `
+            <div class="team-filter">
+                <input type="checkbox" id="team-${team.name}" value="${team.name}">
+                <label for="team-${team.name}">${team.name} (${team.video_count})</label>
+            </div>
+        `).join('');
+
+        filterContainer.innerHTML = html;
+    }
+
+    // Add share functionality to video page
+    initShareButtons() {
+        const url = window.location.href;
+        const title = document.getElementById('videoTitle').textContent;
+
+        document.getElementById('shareWhatsapp').href = `whatsapp://send?text=${encodeURIComponent(title + ' ' + url)}`;
+        document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+    }
+
+    // Track watched videos
+    trackVideoWatch(videoId) {
+        let watched = JSON.parse(localStorage.getItem('watchedVideos') || '[]');
+        if (!watched.includes(videoId)) {
+            watched.push(videoId);
+            localStorage.setItem('watchedVideos', JSON.stringify(watched));
+        }
+    }
+
+    // Mark watched videos in the grid
+    markWatchedVideos() {
+        const watched = JSON.parse(localStorage.getItem('watchedVideos') || '[]');
+        watched.forEach(videoId => {
+            const card = document.querySelector(`[data-video-id="${videoId}"]`);
+            if (card) {
+                card.classList.add('watched');
+            }
+        });
+    }
+
+    // Implement infinite scroll
+    initInfiniteScroll() {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && !this.loading && this.hasMore) {
+                    this.loadMoreVideos();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        const sentinel = document.getElementById('infinite-scroll-sentinel');
+        if (sentinel) {
+            observer.observe(sentinel);
+        }
+    }
+
+    // Implement lazy loading for images
+    initLazyLoading() {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        document.querySelectorAll('img.lazy').forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     window.videoPlayer = new VideoPlayer();
-}); 
+});
+
+// Add error tracking
+window.addEventListener('error', function(e) {
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'javascript_error', {
+            'error_message': e.message,
+            'error_url': e.filename,
+            'error_line': e.lineno
+        });
+    }
+});
+
+// Add performance monitoring
+if ('performance' in window) {
+    window.addEventListener('load', function() {
+        const timing = performance.timing;
+        const loadTime = timing.loadEventEnd - timing.navigationStart;
+        
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'performance', {
+                'page_load_time': loadTime
+            });
+        }
+    });
+} 
