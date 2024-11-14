@@ -20,6 +20,7 @@ class VideoPlayer {
         this.init();
         this.initTheme();
         this.initSearch();
+        this.initEventListeners();
     }
 
     getBasePath() {
@@ -148,68 +149,56 @@ class VideoPlayer {
             return;
         }
 
-        const videosHtml = this.videos.map(video => `
-            <div class="col">
-                <div class="video-card" data-video-id="${video.id}">
-                    <div class="video-thumbnail">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
-                             data-src="${video.thumbnail_url}"
-                             loading="lazy"
-                             alt="${video.title}"
-                             class="lazy">
-                        <div class="play-button">
-                            <i class="bi bi-play-fill"></i>
+        const videosHtml = this.videos.map(video => {
+            const isExternal = video.source === 'IPL' || video.source === 'BCCI';
+            
+            return `
+                <div class="col">
+                    ${isExternal ? `
+                        <!-- External Video (IPL/BCCI) -->
+                        <a href="${video.external_url}" target="_blank" rel="noopener noreferrer" class="video-link">
+                            <div class="video-card" data-video-id="${video.id}" data-source="${video.source}">
+                                <div class="video-thumbnail">
+                                    <img src="${video.thumbnail_url}" alt="${video.title}" loading="lazy">
+                                    <div class="play-button external">
+                                        <i class="bi bi-box-arrow-up-right"></i>
+                                    </div>
+                                    <div class="ipl-disclaimer">
+                                        ${video.disclaimer}
+                                    </div>
+                                </div>
+                                <div class="video-info">
+                                    <h5 class="video-title">${video.title}</h5>
+                                    <div class="video-meta">
+                                        <span><i class="bi bi-calendar3"></i> ${this.formatDate(video.upload_date)}</span>
+                                        <span><i class="bi bi-camera-video"></i> ${video.channel_name || 'Cricket'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    ` : `
+                        <!-- YouTube Video -->
+                        <div class="video-card" data-video-id="${video.id}" data-source="${video.source || 'youtube'}">
+                            <div class="video-thumbnail">
+                                <img src="${video.thumbnail_url}" alt="${video.title}" loading="lazy">
+                                <div class="play-button">
+                                    <i class="bi bi-play-fill"></i>
+                                </div>
+                            </div>
+                            <div class="video-info">
+                                <h5 class="video-title">${video.title}</h5>
+                                <div class="video-meta">
+                                    <span><i class="bi bi-calendar3"></i> ${this.formatDate(video.upload_date)}</span>
+                                    <span><i class="bi bi-camera-video"></i> ${video.channel_name || 'Cricket'}</span>
+                                </div>
+                            </div>
                         </div>
-                        ${video.duration ? `
-                            <span class="duration-badge">
-                                <i class="bi bi-clock"></i> 
-                                ${this.formatDuration(video.duration)}
-                            </span>
-                        ` : ''}
-                        ${video.views && video.views !== 'N/A' ? `
-                            <span class="views-badge">
-                                <i class="bi bi-eye"></i> 
-                                ${this.formatViews(video.views)}
-                            </span>
-                        ` : ''}
-                    </div>
-                    <div class="video-info">
-                        <h5 class="video-title">${video.title}</h5>
-                        <div class="video-meta">
-                            <span>
-                                <i class="bi bi-calendar3"></i> 
-                                ${this.formatDate(video.upload_date)}
-                            </span>
-                            <span>
-                                <i class="bi bi-camera-video"></i> 
-                                ${video.channel_name || 'Cricket'}
-                            </span>
-                        </div>
-                    </div>
+                    `}
                 </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
-        grid.innerHTML = `
-            <div class="row g-4">
-                ${videosHtml}
-            </div>
-        `;
-
-        // Add intersection observer for lazy loading
-        const lazyImages = document.querySelectorAll('img.lazy');
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.remove('lazy');
-                    observer.unobserve(img);
-                }
-            });
-        });
-        
-        lazyImages.forEach(img => imageObserver.observe(img));
+        grid.innerHTML = `<div class="row g-4">${videosHtml}</div>`;
     }
 
     async changeCategory(category) {
@@ -233,37 +222,75 @@ class VideoPlayer {
     }
 
     async loadMoreVideos() {
-        if (this.loading) return;
-        
         try {
             this.loading = true;
             document.getElementById('loading').style.display = 'block';
             
-            const url = `${this.basePath}/static/data/${this.currentCategory}_videos.json`;
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error('Failed to load more videos');
-            }
-
-            const allVideos = await response.json();
-            
-            // Calculate next page
-            this.currentPage++;
-            const startIndex = (this.currentPage - 1) * 20;
+            const startIndex = this.currentPage * 20;
             const endIndex = startIndex + 20;
-            const newPageVideos = allVideos.slice(startIndex, endIndex);
-
-            if (newPageVideos.length > 0) {
-                // Append new videos to existing ones
-                this.videos = [...this.videos, ...newPageVideos];
-                this.renderMoreVideos(newPageVideos);
+            const nextPageVideos = this.allVideos.slice(startIndex, endIndex);
+            
+            if (nextPageVideos.length > 0) {
+                this.currentPage++;
+                this.videos = [...this.videos, ...nextPageVideos];
                 
-                // Show/hide load more button and message
-                const hasMore = endIndex < allVideos.length;
-                document.getElementById('load-more').style.display = 'none'; // Hide first
-                if (hasMore) {
-                    document.getElementById('load-more').style.display = 'block';
-                } else {
+                // Append new videos instead of re-rendering all
+                const grid = document.querySelector('#video-grid .row');
+                const newVideosHtml = nextPageVideos.map(video => {
+                    const isExternal = video.source === 'IPL' || video.source === 'BCCI';
+                    
+                    return `
+                        <div class="col">
+                            ${isExternal ? `
+                                <!-- External Video (IPL/BCCI) -->
+                                <a href="${video.external_url}" target="_blank" rel="noopener noreferrer" class="video-link">
+                                    <div class="video-card" data-video-id="${video.id}" data-source="${video.source}">
+                                        <div class="video-thumbnail">
+                                            <img src="${video.thumbnail_url}" alt="${video.title}" loading="lazy">
+                                            <div class="play-button external">
+                                                <i class="bi bi-box-arrow-up-right"></i>
+                                            </div>
+                                            <div class="ipl-disclaimer">
+                                                ${video.disclaimer}
+                                            </div>
+                                        </div>
+                                        <div class="video-info">
+                                            <h5 class="video-title">${video.title}</h5>
+                                            <div class="video-meta">
+                                                <span><i class="bi bi-calendar3"></i> ${this.formatDate(video.upload_date)}</span>
+                                                <span><i class="bi bi-camera-video"></i> ${video.channel_name || 'Cricket'}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            ` : `
+                                <!-- YouTube Video -->
+                                <div class="video-card" data-video-id="${video.id}" data-source="${video.source || 'youtube'}">
+                                    <div class="video-thumbnail">
+                                        <img src="${video.thumbnail_url}" alt="${video.title}" loading="lazy">
+                                        <div class="play-button">
+                                            <i class="bi bi-play-fill"></i>
+                                        </div>
+                                    </div>
+                                    <div class="video-info">
+                                        <h5 class="video-title">${video.title}</h5>
+                                        <div class="video-meta">
+                                            <span><i class="bi bi-calendar3"></i> ${this.formatDate(video.upload_date)}</span>
+                                            <span><i class="bi bi-camera-video"></i> ${video.channel_name || 'Cricket'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `}
+                        </div>
+                    `;
+                }).join('');
+                
+                grid.insertAdjacentHTML('beforeend', newVideosHtml);
+                
+                // Show/hide load more button
+                const hasMore = endIndex < this.allVideos.length;
+                document.getElementById('load-more').style.display = hasMore ? 'block' : 'none';
+                if (!hasMore) {
                     this.showNoMoreVideos();
                 }
             } else {
@@ -273,58 +300,10 @@ class VideoPlayer {
         } catch (error) {
             console.error('Error loading more videos:', error);
             this.showError('Failed to load more videos.');
-            document.getElementById('load-more').style.display = 'none';
         } finally {
             this.loading = false;
             document.getElementById('loading').style.display = 'none';
         }
-    }
-
-    renderMoreVideos(newVideos) {
-        const grid = document.getElementById('video-grid').querySelector('.row');
-        
-        const newHtml = newVideos.map(video => `
-            <div class="col">
-                <div class="video-card" data-video-id="${video.id}">
-                    <div class="video-thumbnail">
-                        <img src="${video.thumbnail_src || video.thumbnail_url}" 
-                             alt="${video.title}"
-                             loading="lazy"
-                             onerror="this.src='https://i.ytimg.com/vi/${video.id}/hqdefault.jpg'">
-                        <div class="play-button">
-                            <i class="bi bi-play-fill"></i>
-                        </div>
-                        ${video.duration ? `
-                            <span class="duration-badge">
-                                <i class="bi bi-clock"></i> 
-                                ${this.formatDuration(video.duration)}
-                            </span>
-                        ` : ''}
-                        ${video.views && video.views !== 'N/A' ? `
-                            <span class="views-badge">
-                                <i class="bi bi-eye"></i> 
-                                ${this.formatViews(video.views)}
-                            </span>
-                        ` : ''}
-                    </div>
-                    <div class="video-info">
-                        <h5 class="video-title">${video.title}</h5>
-                        <div class="video-meta">
-                            <span>
-                                <i class="bi bi-calendar3"></i> 
-                                ${this.formatDate(video.upload_date)}
-                            </span>
-                            <span>
-                                <i class="bi bi-camera-video"></i> 
-                                ${video.channel_name || 'Cricket'}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-        
-        grid.insertAdjacentHTML('beforeend', newHtml);
     }
 
     showNoMoreVideos() {
@@ -389,21 +368,43 @@ class VideoPlayer {
         }
     }
 
-    formatDate(dateString) {
+    formatDate(dateStr) {
+        if (!dateStr) return 'Unknown date';
+        
+        // Handle BCCI date format (e.g., "2nd Nov, 2024")
+        if (dateStr.includes(',')) {
+            const parts = dateStr.split(',');
+            const year = parts[1].trim();
+            const monthDay = parts[0].trim().split(' ');
+            const month = monthDay[1];
+            const day = monthDay[0].replace(/(?:st|nd|rd|th)/, ''); // Remove ordinal suffixes
+            
+            const date = new Date(`${month} ${day}, ${year}`);
+            const timeDiff = new Date() - date;
+            const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            
+            if (daysAgo < 1) return 'Today';
+            if (daysAgo === 1) return 'Yesterday';
+            if (daysAgo < 7) return `${daysAgo} days ago`;
+            if (daysAgo < 30) return `${Math.floor(daysAgo / 7)} weeks ago`;
+            if (daysAgo < 365) return `${Math.floor(daysAgo / 30)} months ago`;
+            return `${Math.floor(daysAgo / 365)} years ago`;
+        }
+        
+        // Handle regular ISO date format
         try {
-            const date = new Date(dateString);
-            const now = new Date();
-            const diff = now - date;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-            if (days === 0) return 'Today';
-            if (days === 1) return 'Yesterday';
-            if (days < 7) return `${days} days ago`;
-            if (days < 30) return `${Math.floor(days / 7)} weeks ago`;
-            if (days < 365) return `${Math.floor(days / 30)} months ago`;
-            return `${Math.floor(days / 365)} years ago`;
+            const date = new Date(dateStr);
+            const timeDiff = new Date() - date;
+            const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            
+            if (daysAgo < 1) return 'Today';
+            if (daysAgo === 1) return 'Yesterday';
+            if (daysAgo < 7) return `${daysAgo} days ago`;
+            if (daysAgo < 30) return `${Math.floor(daysAgo / 7)} weeks ago`;
+            if (daysAgo < 365) return `${Math.floor(daysAgo / 30)} months ago`;
+            return `${Math.floor(daysAgo / 365)} years ago`;
         } catch (e) {
-            return dateString;
+            return 'Unknown date';
         }
     }
 
@@ -433,10 +434,22 @@ class VideoPlayer {
         const videoGrid = document.getElementById('video-grid');
         if (videoGrid) {
             videoGrid.addEventListener('click', (e) => {
-                const card = e.target.closest('.video-card');
-                if (card) {
-                    const videoId = card.dataset.videoId;
-                    this.playVideo(videoId);
+                const videoCard = e.target.closest('.video-card');
+                if (!videoCard) return;
+
+                // Check if it's an IPL or BCCI video
+                if (videoCard.dataset.source === 'IPL' || videoCard.dataset.source === 'BCCI') {
+                    // Let the default link behavior handle it
+                    return;
+                }
+
+                // Prevent default only for YouTube videos
+                e.preventDefault();
+
+                // Regular YouTube video
+                const videoId = videoCard.dataset.videoId;
+                if (videoId) {
+                    window.location.href = `video.html?v=${videoId}`;
                 }
             });
         }
@@ -542,12 +555,15 @@ class VideoPlayer {
             }
         } else {
             // Filter videos based on search query
-            this.videos = this.allVideos.filter(video => 
-                video.title.toLowerCase().includes(query.toLowerCase()) ||
-                (video.teams && video.teams.some(team => 
+            this.videos = this.allVideos.filter(video => {
+                const titleMatch = video.title.toLowerCase().includes(query.toLowerCase());
+                const teamsMatch = video.teams && video.teams.some(team => 
                     team.toLowerCase().includes(query.toLowerCase())
-                ))
-            );
+                );
+                const sourceMatch = video.source && video.source.toLowerCase().includes(query.toLowerCase());
+                
+                return titleMatch || teamsMatch || sourceMatch;
+            });
             
             // Hide load more button during search
             document.getElementById('load-more').style.display = 'none';
@@ -659,6 +675,28 @@ class VideoPlayer {
 
         document.querySelectorAll('img.lazy').forEach(img => {
             imageObserver.observe(img);
+        });
+    }
+
+    initEventListeners() {
+        document.getElementById('video-grid').addEventListener('click', (e) => {
+            const videoCard = e.target.closest('.video-card');
+            if (!videoCard) return;
+
+            // Check if it's an IPL or BCCI video
+            if (videoCard.dataset.source === 'IPL' || videoCard.dataset.source === 'BCCI') {
+                // Let the default link behavior handle it
+                return;
+            }
+
+            // Prevent default only for YouTube videos
+            e.preventDefault();
+
+            // Regular YouTube video
+            const videoId = videoCard.dataset.videoId;
+            if (videoId) {
+                window.location.href = `video.html?v=${videoId}`;
+            }
         });
     }
 }

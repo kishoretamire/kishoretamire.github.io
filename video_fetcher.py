@@ -4,10 +4,12 @@ import logging
 from datetime import datetime
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from config import CRICKET_CHANNELS
+from config import CRICKET_CHANNELS, IPL_VIDEO_BASE_URL, IPL_DISCLAIMER, BCCI_VIDEO_BASE_URL, BCCI_DISCLAIMER
 from key_manager import YouTubeKeyManager
 import time
 import isodate
+import requests
+from bs4 import BeautifulSoup
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -24,17 +26,67 @@ def load_existing_json(file_path):
     return []
 
 def merge_videos(existing_videos, new_videos):
-    """Merge new videos with existing ones, avoiding duplicates"""
-    # Create a dictionary of existing videos by ID
-    existing_dict = {video['id']: video for video in existing_videos}
+    """Merge new videos with existing ones, avoiding duplicates and sorting by upload date"""
+    # Create a dictionary of existing videos by ID and external_url
+    existing_dict = {}
+    for video in existing_videos:
+        existing_dict[video['id']] = video
+        # Also index by external_url for IPL/BCCI videos
+        if video.get('source') in ['IPL', 'BCCI'] and video.get('external_url'):
+            existing_dict[video['external_url']] = video
     
     # Add or update videos
     for video in new_videos:
+        # For IPL/BCCI videos, check both ID and external_url
+        if video.get('source') in ['IPL', 'BCCI']:
+            # Skip if video already exists by external_url
+            if video.get('external_url') in existing_dict:
+                logger.debug(f"Skipping duplicate {video.get('source')} video: {video.get('title')}")
+                continue
+            # Skip if video already exists by ID
+            if video['id'] in existing_dict:
+                logger.debug(f"Skipping duplicate {video.get('source')} video by ID: {video.get('title')}")
+                continue
+        else:
+            # For YouTube videos, just check ID
+            if video['id'] in existing_dict:
+                logger.debug(f"Skipping duplicate video: {video.get('title')}")
+                continue
+        
+        # Add new video
         existing_dict[video['id']] = video
+        if video.get('source') in ['IPL', 'BCCI'] and video.get('external_url'):
+            existing_dict[video['external_url']] = video
     
-    # Convert back to list and sort by upload date
-    merged = list(existing_dict.values())
-    merged.sort(key=lambda x: x['upload_date'], reverse=True)
+    # Convert back to list and remove any duplicates
+    merged = list({v['id']: v for v in existing_dict.values()}.values())
+    
+    # Parse dates for sorting
+    def parse_date(video):
+        try:
+            date_str = video.get('upload_date', '')
+            if not date_str:
+                return datetime.min
+                
+            if ',' in date_str:  # IPL/BCCI format (e.g., "2nd Nov, 2024")
+                parts = date_str.split(',')
+                year = parts[1].strip()
+                month_day = parts[0].strip().split(' ')
+                month = month_day[1]
+                day = month_day[0].replace('th', '').replace('nd', '').replace('rd', '').replace('st', '')
+                return datetime.strptime(f"{day} {month} {year}", "%d %b %Y")
+            elif 'T' in date_str:  # YouTube ISO format with time (e.g., "2022-07-28T21:41:27Z")
+                return datetime.strptime(date_str.split('T')[0], "%Y-%m-%d")
+            else:  # Simple date format (e.g., "2022-07-28")
+                return datetime.strptime(date_str, "%Y-%m-%d")
+        except Exception as e:
+            logger.error(f"Error parsing date '{date_str}': {e}")
+            return datetime.min  # Default to oldest date if parsing fails
+    
+    # Sort by upload date, newest first
+    merged.sort(key=lambda x: parse_date(x), reverse=True)
+    
+    logger.info(f"Merged videos: {len(merged)} total, {len(new_videos)} new")
     return merged
 
 def is_short(video_details):
@@ -493,14 +545,32 @@ class VideoFetcher:
             logger.info(f"Fetching new videos for {channel_name}")
             try:
                 channel_videos = self.fetch_channel_videos(channel_id, channel_name)
-                # Filter out classic matches as we already have them
                 channel_videos = [v for v in channel_videos if v['category'] != 'classic']
                 all_new_videos.extend(channel_videos)
                 logger.info(f"Fetched {len(channel_videos)} new videos from {channel_name}")
             except Exception as e:
                 logger.error(f"Error fetching videos for {channel_name}: {e}")
-            
             time.sleep(1)
+        
+        # Fetch IPL videos
+        logger.info("Fetching IPL videos")
+        try:
+            ipl_videos = self.fetch_ipl_videos()
+            if ipl_videos:
+                all_new_videos.extend(ipl_videos)
+                logger.info("Successfully fetched IPL videos")
+        except Exception as e:
+            logger.error(f"Error fetching IPL videos: {e}")
+        
+        # Fetch BCCI videos
+        logger.info("Fetching BCCI videos")
+        try:
+            bcci_videos = self.fetch_bcci_videos()
+            if bcci_videos:
+                all_new_videos.extend(bcci_videos)
+                logger.info("Successfully fetched BCCI videos")
+        except Exception as e:
+            logger.error(f"Error fetching BCCI videos: {e}")
         
         # Update JSON files
         if all_new_videos:
@@ -513,6 +583,157 @@ class VideoFetcher:
             logger.info("No new videos found")
         
         return all_new_videos
+    
+    def fetch_ipl_videos(self):
+        """Fetch IPL video information by scraping the website"""
+        try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Cookie': 'BCCI_COOKIE_CONSENT=Y'
+            }
+            
+            response = requests.get(IPL_VIDEO_BASE_URL, headers=headers)
+            logger.info(f"IPL response status: {response.status_code}")
+            
+            if not response.ok:
+                logger.error(f"Failed to fetch IPL page: {response.status_code}")
+                return []
+            
+            soup = BeautifulSoup(response.text, 'html.parser')
+            video_elements = soup.find_all('a', class_='ap-watch-btn playerpopup')
+            logger.info(f"Found {len(video_elements)} IPL video elements")
+            
+            videos = []
+            for element in video_elements:
+                try:
+                    # Extract data from attributes
+                    video_data = {
+                        'id': f"ipl_{element['data-videoid']}",
+                        'title': element['data-title'],
+                        'thumbnail_url': element['data-thumbnile'],
+                        'external_url': element['data-share'],
+                        'category': 'matches',
+                        'teams': self.extract_ipl_teams(element['data-title']),
+                        'source': 'IPL',
+                        'upload_date': element['data-videodate'],  # Use data-videodate directly
+                        'disclaimer': IPL_DISCLAIMER,
+                        'channel_name': 'IPL',
+                        'views': element['data-videoview']
+                    }
+                    videos.append(video_data)
+                    logger.debug(f"Successfully processed IPL video: {video_data['title']}")
+                    
+                except Exception as e:
+                    logger.error(f"Error processing IPL video element: {e}")
+                    continue
+            
+            logger.info(f"Successfully processed {len(videos)} IPL videos")
+            return videos
+            
+        except Exception as e:
+            logger.error(f"Error fetching IPL videos: {e}")
+            return []
+
+    def extract_ipl_teams(self, title):
+        """Extract team names from IPL video title"""
+        # Add logic to extract team names from title
+        # Example: "CSK vs MI Highlights" -> ["CSK", "MI"]
+        teams = []
+        ipl_teams = {
+            'CSK': 'Chennai Super Kings',
+            'MI': 'Mumbai Indians',
+            'RCB': 'Royal Challengers Bangalore',
+            'KKR': 'Kolkata Knight Riders',
+            'DC': 'Delhi Capitals',
+            'PBKS': 'Punjab Kings',
+            'RR': 'Rajasthan Royals',
+            'SRH': 'Sunrisers Hyderabad',
+            'GT': 'Gujarat Titans',
+            'LSG': 'Lucknow Super Giants'
+        }
+        
+        for short_name in ipl_teams:
+            if short_name in title:
+                teams.append(ipl_teams[short_name])
+        
+        return teams or ['IPL']  # Return ['IPL'] if no teams found
+
+    def parse_ipl_date(self, date_str):
+        """Convert IPL date format to ISO format"""
+        try:
+            # Add date parsing logic based on IPL's date format
+            # Return in ISO format: YYYY-MM-DD
+            return datetime.strptime(date_str, '%d %B %Y').strftime('%Y-%m-%d')
+        except:
+            return datetime.now().strftime('%Y-%m-%d')
+
+    def fetch_bcci_videos(self):
+        """Fetch BCCI video information by scraping the website"""
+        try:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5'
+            }
+            
+            logger.info(f"Fetching BCCI videos from: {BCCI_VIDEO_BASE_URL}")
+            response = requests.get(BCCI_VIDEO_BASE_URL, headers=headers)
+            logger.info(f"BCCI response status: {response.status_code}")
+            
+            if not response.ok:
+                logger.error(f"Failed to fetch BCCI page: {response.status_code}")
+                return []
+            
+            soup = BeautifulSoup(response.text, 'html.parser')
+            video_elements = soup.find_all('a', class_='playerpopup')
+            logger.info(f"Found {len(video_elements)} BCCI video elements")
+            
+            videos = []
+            for element in video_elements:
+                try:
+                    # Generate video URL from data-videoslug if data-share is missing
+                    video_url = element.get('data-share') or f"https://www.bcci.tv/videos/{element.get('data-videoslug', '')}"
+                    
+                    video_data = {
+                        'id': f"bcci_{element['data-videoid']}",
+                        'title': element['data-title'],
+                        'thumbnail_url': element['data-thumbnile'],
+                        'external_url': video_url,  # Use generated URL if data-share is missing
+                        'category': 'matches',
+                        'teams': extract_teams_from_text(element['data-title']),
+                        'source': 'BCCI',
+                        'upload_date': element['data-videodate'],
+                        'disclaimer': BCCI_DISCLAIMER,
+                        'channel_name': 'BCCI',
+                        'views': element['data-videoview']
+                    }
+                    videos.append(video_data)
+                    logger.debug(f"Successfully processed BCCI video: {video_data['title']}")
+                    
+                except Exception as e:
+                    logger.error(f"Error processing BCCI video element: {e}")
+                    continue
+            
+            logger.info(f"Successfully processed {len(videos)} BCCI videos")
+            return videos
+            
+        except Exception as e:
+            logger.error(f"Error fetching BCCI videos: {e}")
+            return []
+
+    def parse_bcci_date(self, date_str):
+        """Convert BCCI date format to ISO format"""
+        try:
+            # Example: "2nd Nov, 2024" -> "2024-11-02"
+            return datetime.strptime(date_str, '%dth %b, %Y').strftime('%Y-%m-%d')
+        except:
+            try:
+                # Try alternate format: "2 Nov, 2024" -> "2024-11-02"
+                return datetime.strptime(date_str, '%d %b, %Y').strftime('%Y-%m-%d')
+            except:
+                return datetime.now().strftime('%Y-%m-%d')
 
 if __name__ == "__main__":
     from config import get_api_keys

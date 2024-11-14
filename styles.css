@@ -1824,3 +1824,42 @@ body {
         max-width: 100%;
     }
 }
+
+/* IPL Video Styles */
+.video-card .external {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.ipl-disclaimer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.video-card[data-source="IPL"]:hover .ipl-disclaimer {
+    opacity: 1;
+}
+
+/* External link icon */
+.video-card .external i {
+    font-size: 1.5em;
+}
+
+/* IPL source badge */
+.video-card[data-source="IPL"] .video-info::before {
+    content: "IPL";
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #E50914;
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}

@@ -23,3 +23,20 @@ CRICKET_CHANNELS = {
     'Sri Lanka Cricket': 'UCJA-NQ4MtcRIog66wziD8fA',
     'Sony Sports Network': 'UC_WKb6N9iTGc77hxwXLDrbA'
 }
+
+# Add IPL configuration
+IPL_VIDEO_BASE_URL = "https://www.iplt20.com/videos/highlights"
+IPL_DISCLAIMER = "IPL videos are available on the official IPLT20.com website. Click to watch on the official platform."
+
+# Add BCCI configuration
+BCCI_VIDEO_BASE_URL = "https://www.bcci.tv/videos/highlights"
+BCCI_DISCLAIMER = "BCCI videos are available on the official BCCI.tv website. Click to watch on the official platform."
+
+# Constants
+IPL_VIDEO_BASE_URL = "https://www.iplt20.com/videos/highlights"
+BCCI_VIDEO_BASE_URL = "https://www.bcci.tv/videos/highlights"
+IPL_DISCLAIMER = "IPL videos are available on the official IPLT20.com website. Click to watch on the official platform."
+BCCI_DISCLAIMER = "BCCI videos are available on the official BCCI.tv website. Click to watch on the official platform."
+
+# S3 Configuration
+BUCKET_NAME = 'latestcrickethighlights-videos'
