@@ -1863,3 +1863,50 @@ body {
     border-radius: 4px;
     font-size: 0.8rem;
 }
+
+/* Mobile Search Styles */
+.search-container-mobile {
+    padding: 1rem;
+    background: var(--bg-secondary-dark);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 56px; /* Height of navbar */
+    z-index: 1020;
+}
+
+[data-bs-theme="light"] .search-container-mobile {
+    background: var(--bg-secondary-light);
+}
+
+.search-container-mobile .input-group {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.search-container-mobile input {
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary-dark);
+    color: var(--text-primary-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 8px 0 0 8px;
+}
+
+[data-bs-theme="light"] .search-container-mobile input {
+    background: var(--bg-primary-light);
+    color: var(--text-primary-light);
+}
+
+.search-container-mobile button {
+    border: 1px solid var(--border-color);
+    border-left: none;
+    background: var(--bg-primary-dark);
+    color: var(--text-secondary-dark);
+    border-radius: 0 8px 8px 0;
+}
+
+/* Hide desktop search on mobile */
+@media (max-width: 991px) {
+    .navbar .search-container {
+        display: none;
+    }
+}

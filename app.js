@@ -531,13 +531,39 @@ class VideoPlayer {
     }
 
     initSearch() {
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.addEventListener('input', this.debounce(() => {
-                const query = searchInput.value;
-                this.filterVideos(query);
-            }, 300));
-        }
+        // Create search container
+        const searchContainer = document.createElement('div');
+        searchContainer.className = 'search-container-mobile d-lg-none';  // Show only on mobile
+        searchContainer.innerHTML = `
+            <div class="input-group">
+                <input type="text" 
+                       id="searchInputMobile" 
+                       class="form-control" 
+                       placeholder="Search videos..." 
+                       aria-label="Search videos">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        `;
+
+        // Insert after navbar
+        const navbar = document.querySelector('.navbar');
+        navbar.parentNode.insertBefore(searchContainer, navbar.nextSibling);
+
+        // Add event listeners for both desktop and mobile search
+        ['searchInput', 'searchInputMobile'].forEach(id => {
+            const searchInput = document.getElementById(id);
+            if (searchInput) {
+                searchInput.addEventListener('input', this.debounce(() => {
+                    const query = searchInput.value;
+                    // Sync both search inputs
+                    document.getElementById('searchInput').value = query;
+                    document.getElementById('searchInputMobile').value = query;
+                    this.filterVideos(query);
+                }, 300));
+            }
+        });
     }
 
     filterVideos(query) {
