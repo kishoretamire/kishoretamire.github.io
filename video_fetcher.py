@@ -403,7 +403,7 @@ class VideoFetcher:
                 part="id",
                 q="classic cricket match highlights",
                 order="viewCount",  # Changed to viewCount to prioritize popular videos
-                maxResults=200,
+                maxResults=1000,
                 type="video",
                 videoDuration="medium"  # Filter for medium length videos
             )
@@ -446,7 +446,7 @@ class VideoFetcher:
                         }
                         videos.append(video_data)
                         
-                        if len(videos) >= 100:
+                        if len(videos) >= 500:
                             break
                     except Exception as e:
                         logger.error(f"Error processing video {video.get('id')}: {e}")
