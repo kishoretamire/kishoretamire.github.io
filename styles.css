@@ -1910,3 +1910,15 @@ body {
         display: none;
     }
 }
+
+/* Add margin to video grid container on mobile */
+@media (max-width: 991px) {
+    #video-grid {
+        margin-top: 70px; /* Height of search container + some spacing */
+    }
+    
+    /* Adjust position when filters are visible */
+    .filters-container + #video-grid {
+        margin-top: 0;
+    }
+}
