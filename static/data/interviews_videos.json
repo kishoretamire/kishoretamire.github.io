@@ -8,8 +8,8 @@
     "views": "37510",
     "category": "interviews",
     "teams": [
-      "Pakistan",
-      "Australia"
+      "Australia",
+      "Pakistan"
     ],
     "channel_id": "UCiWrjBhlICf_L_RK5y6Vrxw",
     "channel_name": "Pakistan Cricket",
@@ -24,9 +24,7 @@
     "views": "34954",
     "category": "interviews",
     "teams": [
-      "Sri Lanka",
-      "New Zealand",
-      "South Africa"
+      "New Zealand"
     ],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
@@ -41,8 +39,7 @@
     "views": "4283",
     "category": "interviews",
     "teams": [
-      "New Zealand",
-      "Sri Lanka"
+      "New Zealand"
     ],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
@@ -56,11 +53,7 @@
     "duration": "PT5M12S",
     "views": "5625",
     "category": "interviews",
-    "teams": [
-      "Sri Lanka",
-      "New Zealand",
-      "South Africa"
-    ],
+    "teams": [],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
     "upload_date": "2024-11-12T12:22:03Z"
@@ -73,11 +66,7 @@
     "duration": "PT8M1S",
     "views": "12779",
     "category": "interviews",
-    "teams": [
-      "Sri Lanka",
-      "New Zealand",
-      "South Africa"
-    ],
+    "teams": [],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
     "upload_date": "2024-11-12T09:10:13Z"
@@ -92,8 +81,7 @@
     "category": "interviews",
     "teams": [
       "Sri Lanka",
-      "New Zealand",
-      "South Africa"
+      "New Zealand"
     ],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
@@ -109,8 +97,7 @@
     "category": "interviews",
     "teams": [
       "Sri Lanka",
-      "New Zealand",
-      "South Africa"
+      "New Zealand"
     ],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
@@ -125,9 +112,8 @@
     "views": "25899",
     "category": "interviews",
     "teams": [
-      "South Africa",
-      "Pakistan",
-      "Australia"
+      "Australia",
+      "Pakistan"
     ],
     "channel_id": "UCiWrjBhlICf_L_RK5y6Vrxw",
     "channel_name": "Pakistan Cricket",
@@ -143,9 +129,7 @@
     "category": "interviews",
     "teams": [
       "Sri Lanka",
-      "India",
-      "New Zealand",
-      "South Africa"
+      "New Zealand"
     ],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
@@ -160,8 +144,8 @@
     "views": "3420",
     "category": "interviews",
     "teams": [
-      "New Zealand",
-      "Sri Lanka"
+      "Sri Lanka",
+      "New Zealand"
     ],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
@@ -175,10 +159,7 @@
     "duration": "PT28M2S",
     "views": "14463",
     "category": "interviews",
-    "teams": [
-      "West Indies",
-      "Sri Lanka"
-    ],
+    "teams": [],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
     "upload_date": "2023-05-25T14:27:33Z"
@@ -191,10 +172,7 @@
     "duration": "PT1M10S",
     "views": "5125",
     "category": "interviews",
-    "teams": [
-      "West Indies",
-      "Sri Lanka"
-    ],
+    "teams": [],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
     "channel_name": "Sri Lanka Cricket",
     "upload_date": "2023-05-12T09:47:49Z"
@@ -208,7 +186,7 @@
     "views": "6815",
     "category": "interviews",
     "teams": [
-      "West Indies",
+      "Ireland",
       "Sri Lanka"
     ],
     "channel_id": "UCJA-NQ4MtcRIog66wziD8fA",
