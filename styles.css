@@ -1784,6 +1784,7 @@ body {
     background: var(--bg-secondary-dark);
     border-radius: 8px;
     overflow: hidden;
+    width: 100%;
 }
 
 [data-bs-theme="light"] .search-container .input-group {
@@ -1795,6 +1796,8 @@ body {
     background: transparent;
     color: var(--text-primary-dark);
     padding: 0.5rem 1rem;
+    min-width: 200px;
+    width: 100%;
 }
 
 [data-bs-theme="light"] .search-container input {
@@ -1810,6 +1813,7 @@ body {
     border: none;
     color: var(--text-secondary-dark);
     background: transparent;
+    padding: 0.5rem 1rem;
 }
 
 .search-container button:hover {
@@ -1822,6 +1826,10 @@ body {
     .search-container {
         margin: 1rem 0;
         max-width: 100%;
+    }
+    
+    .search-container input {
+        min-width: 150px;
     }
 }
 
@@ -1881,6 +1889,7 @@ body {
 .search-container-mobile .input-group {
     max-width: 100%;
     margin: 0 auto;
+    width: 100%;
 }
 
 .search-container-mobile input {
@@ -1889,6 +1898,8 @@ body {
     color: var(--text-primary-dark);
     padding: 0.5rem 1rem;
     border-radius: 8px 0 0 8px;
+    min-width: 200px;
+    width: 100%;
 }
 
 [data-bs-theme="light"] .search-container-mobile input {
@@ -1902,6 +1913,7 @@ body {
     background: var(--bg-primary-dark);
     color: var(--text-secondary-dark);
     border-radius: 0 8px 8px 0;
+    padding: 0.5rem 1rem;
 }
 
 /* Hide desktop search on mobile */

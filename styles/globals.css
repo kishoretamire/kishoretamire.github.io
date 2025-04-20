@@ -1,0 +1,70 @@
+/* Search button styling */
+.search-button {
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.search-button:hover {
+  background: linear-gradient(145deg, #1d4ed8, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+}
+
+.search-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+/* Dark mode specific styles */
+[data-theme='dark'] .search-button {
+  background: linear-gradient(145deg, #3b82f6, #2563eb);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+[data-theme='dark'] .search-button:hover {
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.4);
+}
+
+/* Search icon styling */
+.search-icon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+/* Search button loading state */
+.search-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: linear-gradient(145deg, #64748b, #475569);
+}
+
+[data-theme='dark'] .search-button:disabled {
+  background: linear-gradient(145deg, #475569, #334155);
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+}
+
+.button-text {
+  display: inline-block;
+  vertical-align: middle;
+} 
