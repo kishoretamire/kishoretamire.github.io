@@ -1783,7 +1783,6 @@ body {
 .search-container .input-group {
     background: var(--bg-secondary-dark);
     border-radius: 8px;
-    overflow: hidden;
     width: 100%;
 }
 
@@ -1792,12 +1791,13 @@ body {
 }
 
 .search-container input {
-    border: none;
+    border: 1px solid var(--border-color);
     background: transparent;
     color: var(--text-primary-dark);
     padding: 0.5rem 1rem;
     min-width: 200px;
     width: 100%;
+    border-radius: 8px 0 0 8px;
 }
 
 [data-bs-theme="light"] .search-container input {
@@ -1806,73 +1806,52 @@ body {
 
 .search-container input:focus {
     box-shadow: none;
-    background: transparent;
 }
 
 .search-container button {
-    border: none;
+    border: 1px solid var(--border-color);
+    border-left: none;
     color: var(--text-secondary-dark);
     background: transparent;
     padding: 0.5rem 1rem;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.2s ease;
+}
+
+[data-bs-theme="light"] .search-container button {
+    color: #6c757d;
+    border: 1px solid rgba(0, 0, 0, 0.175);
+    border-left: none;
 }
 
 .search-container button:hover {
     color: var(--text-primary-dark);
-    background: transparent;
+    background: rgba(255, 255, 255, 0.1);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .search-container {
-        margin: 1rem 0;
-        max-width: 100%;
-    }
-    
-    .search-container input {
-        min-width: 150px;
-    }
+[data-bs-theme="light"] .search-container button:hover {
+    color: #212529;
+    background: rgba(0, 0, 0, 0.05);
 }
 
-/* IPL Video Styles */
-.video-card .external {
-    background: rgba(0, 0, 0, 0.8);
+.search-container button:active {
+    background: rgba(255, 255, 255, 0.15);
 }
 
-.ipl-disclaimer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 0.5rem;
-    font-size: 0.8rem;
-    text-align: center;
+[data-bs-theme="light"] .search-container button:active {
+    background: rgba(0, 0, 0, 0.1);
 }
 
-.video-card[data-source="IPL"]:hover .ipl-disclaimer {
-    opacity: 1;
+.search-container .input-group {
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-/* External link icon */
-.video-card .external i {
-    font-size: 1.5em;
+[data-bs-theme="light"] .search-container .input-group {
+    border-color: rgba(0, 0, 0, 0.175);
 }
 
-/* IPL source badge */
-.video-card[data-source="IPL"] .video-info::before {
-    content: "IPL";
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    background: #E50914;
-    color: #fff;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-}
-
-/* Mobile Search Styles */
+/* Mobile search styles */
 .search-container-mobile {
     padding: 1rem;
     background: var(--bg-secondary-dark);
@@ -1914,6 +1893,32 @@ body {
     color: var(--text-secondary-dark);
     border-radius: 0 8px 8px 0;
     padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+[data-bs-theme="light"] .search-container-mobile button {
+    background: var(--bg-primary-light);
+    color: #6c757d;
+}
+
+.search-container-mobile button:hover {
+    background: var(--bg-secondary-dark);
+    color: var(--text-primary-dark);
+}
+
+[data-bs-theme="light"] .search-container-mobile button:hover {
+    background: var(--bg-secondary-light);
+    color: #212529;
+}
+
+.search-container-mobile button:active {
+    background: var(--bg-secondary-dark);
+    opacity: 0.9;
+}
+
+[data-bs-theme="light"] .search-container-mobile button:active {
+    background: var(--bg-secondary-light);
+    opacity: 0.9;
 }
 
 /* Hide desktop search on mobile */
@@ -1933,4 +1938,43 @@ body {
     .filters-container + #video-grid {
         margin-top: 0;
     }
+}
+
+/* IPL Video Styles */
+.video-card .external {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.ipl-disclaimer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.video-card[data-source="IPL"]:hover .ipl-disclaimer {
+    opacity: 1;
+}
+
+/* External link icon */
+.video-card .external i {
+    font-size: 1.5em;
+}
+
+/* IPL source badge */
+.video-card[data-source="IPL"] .video-info::before {
+    content: "IPL";
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #E50914;
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
 }

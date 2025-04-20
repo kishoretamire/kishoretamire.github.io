@@ -20,7 +20,8 @@ CRICKET_CHANNELS = {
     'England Cricket': 'UCz1D0n02BR3t51KuBOPmfTQ',
     'Pakistan Cricket': 'UCiWrjBhlICf_L_RK5y6Vrxw',
     'West Indies Cricket': 'UC2MHTOXktfTK26aDKyQs3cQ',
-    'Sri Lanka Cricket': 'UCJA-NQ4MtcRIog66wziD8fA'
+    'Sri Lanka Cricket': 'UCJA-NQ4MtcRIog66wziD8fA',
+    'PakistanSuperLeague': 'UCpNzXJ5jpcJojC5mHQvGA8w'
 }
 
 # Add IPL configuration

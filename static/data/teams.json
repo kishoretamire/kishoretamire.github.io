@@ -1,22 +1,9 @@
 {
   "international_teams": [
     {
-      "name": "India",
-      "video_count": 66,
-      "matches": 10,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "bcci_5563696",
-        "title": "IND vs BAN 2024, 2nd T20I: Match Highlights",
-        "thumbnail_url": "https://brightcove.iplt20.com/output/input/6363035078112-1728740693.jpg",
-        "upload_date": "9th Oct, 2024",
-        "category": "classic"
-      }
-    },
-    {
       "name": "England",
-      "video_count": 50,
-      "matches": 5,
+      "video_count": 436,
+      "matches": 6,
       "domestic_matches": 0,
       "latest_video": {
         "id": "bcci_5565845",
@@ -27,22 +14,9 @@
       }
     },
     {
-      "name": "New Zealand",
-      "video_count": 44,
-      "matches": 2,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "bcci_5566121",
-        "title": "One Final Push ft. Shubman Gill | ICC Champions Trophy 2025 | Final | India vs New Zealand",
-        "thumbnail_url": "https://brightcove.iplt20.com/output/input/6369788452112-1741490475.jpg",
-        "upload_date": "8th Mar, 2025",
-        "category": "other"
-      }
-    },
-    {
       "name": "Pakistan",
-      "video_count": 43,
-      "matches": 1,
+      "video_count": 319,
+      "matches": 24,
       "domestic_matches": 0,
       "latest_video": {
         "id": "bcci_5566068",
@@ -53,22 +27,9 @@
       }
     },
     {
-      "name": "Sri Lanka",
-      "video_count": 34,
-      "matches": 1,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "r-_p1S-JnGQ",
-        "title": "01st ODI Highlights | Sri Lanka vs Australia 2025",
-        "thumbnail_url": "https://i.ytimg.com/vi/r-_p1S-JnGQ/maxresdefault.jpg",
-        "upload_date": "2025-02-13T03:36:22Z",
-        "category": "matches"
-      }
-    },
-    {
       "name": "West Indies",
-      "video_count": 27,
-      "matches": 2,
+      "video_count": 302,
+      "matches": 4,
       "domestic_matches": 0,
       "latest_video": {
         "id": "kAXp18gcgF4",
@@ -80,7 +41,7 @@
     },
     {
       "name": "Australia",
-      "video_count": 25,
+      "video_count": 216,
       "matches": 3,
       "domestic_matches": 0,
       "latest_video": {
@@ -92,21 +53,138 @@
       }
     },
     {
-      "name": "South Africa",
-      "video_count": 18,
+      "name": "India",
+      "video_count": 201,
+      "matches": 10,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "bcci_5563696",
+        "title": "IND vs BAN 2024, 2nd T20I: Match Highlights",
+        "thumbnail_url": "https://brightcove.iplt20.com/output/input/6363035078112-1728740693.jpg",
+        "upload_date": "9th Oct, 2024",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "Sri Lanka",
+      "video_count": 199,
+      "matches": 1,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "r-_p1S-JnGQ",
+        "title": "01st ODI Highlights | Sri Lanka vs Australia 2025",
+        "thumbnail_url": "https://i.ytimg.com/vi/r-_p1S-JnGQ/maxresdefault.jpg",
+        "upload_date": "2025-02-13T03:36:22Z",
+        "category": "matches"
+      }
+    },
+    {
+      "name": "New Zealand",
+      "video_count": 143,
+      "matches": 25,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "bcci_5566121",
+        "title": "One Final Push ft. Shubman Gill | ICC Champions Trophy 2025 | Final | India vs New Zealand",
+        "thumbnail_url": "https://brightcove.iplt20.com/output/input/6369788452112-1741490475.jpg",
+        "upload_date": "8th Mar, 2025",
+        "category": "other"
+      }
+    },
+    {
+      "name": "West Indies Women",
+      "video_count": 84,
       "matches": 0,
       "domestic_matches": 0,
       "latest_video": {
-        "id": "9AMngYVC6Fg",
-        "title": "Maharaj Picks up 3-Fer & Carty Hits 42 | Highlights | West Indies v South Africa | 1st Test Day 3",
-        "thumbnail_url": "https://i.ytimg.com/vi/9AMngYVC6Fg/maxresdefault.jpg",
-        "upload_date": "2024-08-09T22:33:34Z",
+        "id": "BESkVA5ud2w",
+        "title": "Highlights | West Indies Women v Ireland Women | Matthews Stars with Bat & Ball! | 1st CG United ODI",
+        "thumbnail_url": "https://i.ytimg.com/vi/BESkVA5ud2w/maxresdefault.jpg",
+        "upload_date": "2023-06-27T13:32:09Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "Pakistan Women",
+      "video_count": 70,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "2UCTuJkyQHk",
+        "title": "Ireland Team Experiences Culture and Heritage Of Pakistan | Ireland Women's Tour of Pakistan 2022",
+        "thumbnail_url": "https://i.ytimg.com/vi/2UCTuJkyQHk/hqdefault.jpg",
+        "upload_date": "2022-11-18T17:06:06Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "South Africa",
+      "video_count": 68,
+      "matches": 2,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "fi5VIsfSu3w",
+        "title": "PCB Archives - 𝐋𝐀𝐒𝐓 𝐎𝐕𝐄𝐑 𝐓𝐇𝐑𝐈𝐋𝐋𝐄𝐑! 𝐑𝐚𝐳𝐳𝐚𝐪 𝐯𝐬 𝐌𝐨𝐫𝐤𝐞𝐥 | Pakistan vs South Africa 2nd ODI, 2010 | PCB",
+        "thumbnail_url": "https://i.ytimg.com/vi/fi5VIsfSu3w/maxresdefault.jpg",
+        "upload_date": "2025-04-13T21:56:13Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "Bangladesh",
+      "video_count": 63,
+      "matches": 3,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "bcci_5563696",
+        "title": "IND vs BAN 2024, 2nd T20I: Match Highlights",
+        "thumbnail_url": "https://brightcove.iplt20.com/output/input/6363035078112-1728740693.jpg",
+        "upload_date": "9th Oct, 2024",
         "category": "classic"
       }
     },
     {
       "name": "England Women",
-      "video_count": 10,
+      "video_count": 45,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "W2oHpY95SKY",
+        "title": "🍿 30 To Win From 25 balls | England Women v Australia 2023",
+        "thumbnail_url": "https://i.ytimg.com/vi/W2oHpY95SKY/maxresdefault.jpg",
+        "upload_date": "2024-11-06T06:00:18Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "Ireland",
+      "video_count": 30,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "Ry3wRVGPfyo",
+        "title": "Pope Scores 205 off 208 Balls | Highlights - England v Ireland Day 2 | LV= Insurance Test 2023",
+        "thumbnail_url": "https://i.ytimg.com/vi/Ry3wRVGPfyo/maxresdefault.jpg",
+        "upload_date": "2023-06-02T18:15:24Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "Sri Lanka Women",
+      "video_count": 28,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "WcALCY_bm3E",
+        "title": "Chamari Athapaththu previews Sri Lanka vs Australia game | ICC Women's T20 World Cup 2023",
+        "thumbnail_url": "https://i.ytimg.com/vi/WcALCY_bm3E/maxresdefault.jpg",
+        "upload_date": "2023-02-16T10:49:56Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "Australia Women",
+      "video_count": 14,
       "matches": 0,
       "domestic_matches": 0,
       "latest_video": {
@@ -119,7 +197,7 @@
     },
     {
       "name": "Afghanistan",
-      "video_count": 8,
+      "video_count": 12,
       "matches": 0,
       "domestic_matches": 0,
       "latest_video": {
@@ -131,15 +209,119 @@
       }
     },
     {
-      "name": "Bangladesh",
-      "video_count": 7,
-      "matches": 2,
+      "name": "India Women",
+      "video_count": 12,
+      "matches": 0,
       "domestic_matches": 0,
       "latest_video": {
-        "id": "bcci_5563696",
-        "title": "IND vs BAN 2024, 2nd T20I: Match Highlights",
-        "thumbnail_url": "https://brightcove.iplt20.com/output/input/6363035078112-1728740693.jpg",
+        "id": "gtyEZpLWMG8",
+        "title": "Clinical England Claim Series | Highlights - England v India | 3rd Women's Vitality IT20 2022",
+        "thumbnail_url": "https://i.ytimg.com/vi/gtyEZpLWMG8/maxresdefault.jpg",
+        "upload_date": "2022-09-15T21:24:36Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "Zimbabwe",
+      "video_count": 11,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "rH3JHqNWMzY",
+        "title": "Sri Lanka seal T20 series vs Zimbabwe with dominant win | 3rd T20I Highlights",
+        "thumbnail_url": "https://i.ytimg.com/vi/rH3JHqNWMzY/maxresdefault.jpg",
+        "upload_date": "2024-01-19T07:05:00Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "South Africa Women",
+      "video_count": 11,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "K-Euj9VpKNk",
+        "title": "Ecclestone's RECORD OVER | 26 Runs Off 6 Balls | England v South Africa | Women's Vitality IT20 2022",
+        "thumbnail_url": "https://i.ytimg.com/vi/K-Euj9VpKNk/maxresdefault.jpg",
+        "upload_date": "2022-08-02T05:00:12Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "Ireland Women",
+      "video_count": 8,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "BESkVA5ud2w",
+        "title": "Highlights | West Indies Women v Ireland Women | Matthews Stars with Bat & Ball! | 1st CG United ODI",
+        "thumbnail_url": "https://i.ytimg.com/vi/BESkVA5ud2w/maxresdefault.jpg",
+        "upload_date": "2023-06-27T13:32:09Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "Sri Lanka U19",
+      "video_count": 8,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "HnxCYc9pR-U",
+        "title": "5th Youth ODI Highlights | 5-0 clean sweep | Sri Lanka vs Bangladesh | Under 19",
+        "thumbnail_url": "https://i.ytimg.com/vi/HnxCYc9pR-U/hqdefault.jpg",
+        "upload_date": "2021-10-26T07:23:15Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "New Zealand Women",
+      "video_count": 8,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "6ymaku45bow",
+        "title": "England v New Zealand Highlights | Beaumont Ton in Huge Win! | 5th Women’s Royal London ODI 2021",
+        "thumbnail_url": "https://i.ytimg.com/vi/6ymaku45bow/hqdefault.jpg",
+        "upload_date": "2021-09-26T17:57:27Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "India U19",
+      "video_count": 7,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "bcci_5563709",
+        "title": "India U19 vs Australia U19: 2nd Multi-Day Match, Day 3 - Highlights",
+        "thumbnail_url": "https://brightcove.iplt20.com/output/input/6363036447112-1728491346.jpg",
         "upload_date": "9th Oct, 2024",
+        "category": "other"
+      }
+    },
+    {
+      "name": "West Indies A",
+      "video_count": 7,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "qlz6Stotg7k",
+        "title": "West Indies A vs India A - Match Highlights | 3rd Test - Day 4 | India A Tour of West Indies",
+        "thumbnail_url": "https://i.ytimg.com/vi/qlz6Stotg7k/hqdefault.jpg",
+        "upload_date": "2019-08-10T22:38:55Z",
+        "category": "classic"
+      }
+    },
+    {
+      "name": "India A",
+      "video_count": 7,
+      "matches": 0,
+      "domestic_matches": 0,
+      "latest_video": {
+        "id": "qlz6Stotg7k",
+        "title": "West Indies A vs India A - Match Highlights | 3rd Test - Day 4 | India A Tour of West Indies",
+        "thumbnail_url": "https://i.ytimg.com/vi/qlz6Stotg7k/hqdefault.jpg",
+        "upload_date": "2019-08-10T22:38:55Z",
         "category": "classic"
       }
     },
@@ -157,99 +339,21 @@
       }
     },
     {
-      "name": "India U19",
+      "name": "Bangladesh U19",
       "video_count": 6,
       "matches": 0,
       "domestic_matches": 0,
       "latest_video": {
-        "id": "bcci_5563709",
-        "title": "India U19 vs Australia U19: 2nd Multi-Day Match, Day 3 - Highlights",
-        "thumbnail_url": "https://brightcove.iplt20.com/output/input/6363036447112-1728491346.jpg",
-        "upload_date": "9th Oct, 2024",
-        "category": "other"
-      }
-    },
-    {
-      "name": "Ireland",
-      "video_count": 6,
-      "matches": 0,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "Ry3wRVGPfyo",
-        "title": "Pope Scores 205 off 208 Balls | Highlights - England v Ireland Day 2 | LV= Insurance Test 2023",
-        "thumbnail_url": "https://i.ytimg.com/vi/Ry3wRVGPfyo/maxresdefault.jpg",
-        "upload_date": "2023-06-02T18:15:24Z",
-        "category": "classic"
-      }
-    },
-    {
-      "name": "South Africa Women",
-      "video_count": 6,
-      "matches": 0,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "K-Euj9VpKNk",
-        "title": "Ecclestone's RECORD OVER | 26 Runs Off 6 Balls | England v South Africa | Women's Vitality IT20 2022",
-        "thumbnail_url": "https://i.ytimg.com/vi/K-Euj9VpKNk/maxresdefault.jpg",
-        "upload_date": "2022-08-02T05:00:12Z",
-        "category": "classic"
-      }
-    },
-    {
-      "name": "Australia Women",
-      "video_count": 5,
-      "matches": 0,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "W2oHpY95SKY",
-        "title": "🍿 30 To Win From 25 balls | England Women v Australia 2023",
-        "thumbnail_url": "https://i.ytimg.com/vi/W2oHpY95SKY/maxresdefault.jpg",
-        "upload_date": "2024-11-06T06:00:18Z",
-        "category": "classic"
-      }
-    },
-    {
-      "name": "Zimbabwe",
-      "video_count": 4,
-      "matches": 0,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "rH3JHqNWMzY",
-        "title": "Sri Lanka seal T20 series vs Zimbabwe with dominant win | 3rd T20I Highlights",
-        "thumbnail_url": "https://i.ytimg.com/vi/rH3JHqNWMzY/maxresdefault.jpg",
-        "upload_date": "2024-01-19T07:05:00Z",
-        "category": "classic"
-      }
-    },
-    {
-      "name": "West Indies Women",
-      "video_count": 3,
-      "matches": 0,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "BESkVA5ud2w",
-        "title": "Highlights | West Indies Women v Ireland Women | Matthews Stars with Bat & Ball! | 1st CG United ODI",
-        "thumbnail_url": "https://i.ytimg.com/vi/BESkVA5ud2w/maxresdefault.jpg",
-        "upload_date": "2023-06-27T13:32:09Z",
-        "category": "classic"
-      }
-    },
-    {
-      "name": "India Women",
-      "video_count": 3,
-      "matches": 0,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "gtyEZpLWMG8",
-        "title": "Clinical England Claim Series | Highlights - England v India | 3rd Women's Vitality IT20 2022",
-        "thumbnail_url": "https://i.ytimg.com/vi/gtyEZpLWMG8/maxresdefault.jpg",
-        "upload_date": "2022-09-15T21:24:36Z",
+        "id": "HnxCYc9pR-U",
+        "title": "5th Youth ODI Highlights | 5-0 clean sweep | Sri Lanka vs Bangladesh | Under 19",
+        "thumbnail_url": "https://i.ytimg.com/vi/HnxCYc9pR-U/hqdefault.jpg",
+        "upload_date": "2021-10-26T07:23:15Z",
         "category": "classic"
       }
     },
     {
       "name": "Pakistan U19",
-      "video_count": 2,
+      "video_count": 3,
       "matches": 0,
       "domestic_matches": 0,
       "latest_video": {
@@ -261,41 +365,28 @@
       }
     },
     {
-      "name": "Ireland Women",
-      "video_count": 1,
+      "name": "West Indies U19",
+      "video_count": 2,
       "matches": 0,
       "domestic_matches": 0,
       "latest_video": {
-        "id": "BESkVA5ud2w",
-        "title": "Highlights | West Indies Women v Ireland Women | Matthews Stars with Bat & Ball! | 1st CG United ODI",
-        "thumbnail_url": "https://i.ytimg.com/vi/BESkVA5ud2w/maxresdefault.jpg",
-        "upload_date": "2023-06-27T13:32:09Z",
+        "id": "WtPXDqQKILg",
+        "title": "🔴LIVE West Indies U19s vs Sri Lanka U19s | Tri-Nation Under-19 Tournament",
+        "thumbnail_url": "https://i.ytimg.com/vi/WtPXDqQKILg/hqdefault.jpg",
+        "upload_date": "2019-12-17T14:51:09Z",
         "category": "classic"
       }
     },
     {
-      "name": "Sri Lanka Women",
+      "name": "England U19",
       "video_count": 1,
       "matches": 0,
       "domestic_matches": 0,
       "latest_video": {
-        "id": "WcALCY_bm3E",
-        "title": "Chamari Athapaththu previews Sri Lanka vs Australia game | ICC Women's T20 World Cup 2023",
-        "thumbnail_url": "https://i.ytimg.com/vi/WcALCY_bm3E/maxresdefault.jpg",
-        "upload_date": "2023-02-16T10:49:56Z",
-        "category": "classic"
-      }
-    },
-    {
-      "name": "Pakistan Women",
-      "video_count": 1,
-      "matches": 0,
-      "domestic_matches": 0,
-      "latest_video": {
-        "id": "bO0weiw7pT0",
-        "title": "Heavy Combat | Pakistan vs West Indies | 3rd T20I Highlights | MA2E",
-        "thumbnail_url": "https://i.ytimg.com/vi/bO0weiw7pT0/maxresdefault.jpg",
-        "upload_date": "2021-03-11T13:00:09Z",
+        "id": "pr1zdEWqAEA",
+        "title": "🔴LIVE West Indies U19s vs England U19s | Tri-Nation Under-19 Tournament",
+        "thumbnail_url": "https://i.ytimg.com/vi/pr1zdEWqAEA/hqdefault.jpg",
+        "upload_date": "2019-12-09T02:49:20Z",
         "category": "classic"
       }
     }

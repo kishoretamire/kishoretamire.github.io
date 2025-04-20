@@ -231,7 +231,7 @@ def categorize_video(title, description='', channel_id='', source=''):
         'ranji', 'irani', 'syed mushtaq', 'vijay hazare',
         'super50', 'plunket shield', 'sheffield', 'marsh',
         'royal london', 't20 blast', 'vitality blast',
-        'cpl', 'bbl', 'psl', 'bpl', 'lanka premier', 'hundred'
+        'cpl', 'bbl', 'bpl', 'lanka premier', 'hundred'
     ]
     
     international_indicators = [
@@ -243,6 +243,10 @@ def categorize_video(title, description='', channel_id='', source=''):
     
     # Check for highlights in title
     if any(indicator in title_lower for indicator in highlight_indicators):
+        # Special case for PakistanSuperLeague channel
+        if channel_id == 'UCpNzXJ5jpcJojC5mHQvGA8w':
+            return 'matches', teams
+            
         # Check if it's domestic or international
         is_domestic = any(indicator in f"{title_lower} {description_lower}" 
                         for indicator in domestic_indicators)
@@ -280,75 +284,74 @@ class VideoFetcher:
         return build('youtube', 'v3', developerKey=api_key, cache_discovery=False)
     
     def fetch_channel_videos(self, channel_id, channel_name):
+        """Fetch videos from a YouTube channel"""
         try:
-            self.youtube = self.get_youtube_service()
-            
-            # Get latest videos from channel
-            request = self.youtube.search().list(
-                part="id",
-                channelId=channel_id,
-                order="date",
-                maxResults=400,
-                type="video"
-            )
-            response = request.execute()
-            
+            youtube = self.get_youtube_service()
             videos = []
-            video_ids = [item['id']['videoId'] for item in response.get('items', [])]
+            next_page_token = None
             
-            if not video_ids:
-                return []
-            
-            # Get detailed video information
-            video_response = self.youtube.videos().list(
-                part="snippet,contentDetails,statistics,status",
-                id=','.join(video_ids)
-            ).execute()
-            
-            for video in video_response.get('items', []):
-                if (video['status'].get('embeddable', False) and 
-                    video['status'].get('privacyStatus') == 'public' and 
-                    not is_short(video)):
-                    try:
-                        # Pass source as channel name for categorization
-                        category, teams = categorize_video(
-                            video['snippet']['title'],
-                            video['snippet'].get('description', ''),
-                            video['snippet'].get('channelId', ''),
-                            channel_name  # Add source parameter
-                        )
-                        
+            while True:
+                # Get channel's uploads
+                request = youtube.search().list(
+                    part="id,snippet",
+                    channelId=channel_id,
+                    maxResults=50,
+                    order="date",
+                    type="video",
+                    pageToken=next_page_token
+                )
+                response = request.execute()
+                
+                video_ids = []
+                for item in response['items']:
+                    # For ICC Cricket channel, only include videos with "Short Highlights"
+                    if channel_id == 'UCpNzXJ5jpcJojC5mHQvGA8w':
+                        if 'Short Highlights' not in item['snippet']['title']:
+                            continue
+                    
+                    video_ids.append(item['id']['videoId'])
+                
+                if video_ids:
+                    # Get detailed video information
+                    video_request = youtube.videos().list(
+                        part="snippet,contentDetails,statistics",
+                        id=','.join(video_ids)
+                    )
+                    video_response = video_request.execute()
+                    
+                    for video in video_response['items']:
+                        # Skip shorts
+                        if is_short(video):
+                            continue
+                            
+                        # Create video object
                         video_data = {
                             'id': video['id'],
                             'title': video['snippet']['title'],
-                            'thumbnail_src': get_best_thumbnail(video),
-                            'thumbnail_url': get_best_thumbnail(video),
+                            'thumbnail_url': video['snippet']['thumbnails']['high']['url'],
                             'duration': video['contentDetails']['duration'],
-                            'views': video['statistics'].get('viewCount', 'N/A'),
-                            'category': category,
-                            'teams': teams,
+                            'views': video.get('statistics', {}).get('viewCount', 'N/A'),
+                            'category': categorize_video(
+                                video['snippet']['title'],
+                                video['snippet'].get('description', ''),
+                                channel_id
+                            )[0],
+                            'teams': extract_teams_from_text(video['snippet']['title']),
                             'channel_id': channel_id,
                             'channel_name': channel_name,
-                            'source': channel_name,  # Add source field
                             'upload_date': video['snippet']['publishedAt']
                         }
                         videos.append(video_data)
-                        
-                        if len(videos) >= 200:
-                            break
-                    except Exception as e:
-                        logger.error(f"Error processing video {video.get('id')}: {e}")
-                        continue
-            
+                
+                next_page_token = response.get('nextPageToken')
+                if not next_page_token:
+                    break
+                
             return videos
             
-        except HttpError as e:
-            if e.resp.status in [403, 429]:  # Quota exceeded
-                logger.warning(f"Quota exceeded for key: {self.youtube._developerKey[:10]}...")
-                self.key_manager.update_quota_usage(self.youtube._developerKey, 
-                                                  self.key_manager.daily_quota_limit)
-                return self.fetch_channel_videos(channel_id, channel_name)
-            raise
+        except Exception as e:
+            logger.error(f"Error fetching videos for channel {channel_name}: {e}")
+            return []
     
     def fetch_classic_matches(self):
         try:
